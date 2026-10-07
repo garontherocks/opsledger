@@ -20,6 +20,10 @@ test('authenticated incident acceptance against PostgreSQL protocol',async t=>{
     return r.cookies.map(c=>c.name+'='+c.value).join('; ');
   }
   try{
+    await t.test('incorrect password cannot create a browser session',async()=>{
+      const response=await app.inject({method:'POST',url:'/api/auth/sign-in/email',remoteAddress:'127.0.0.99',headers:{origin:settings.BASE_URL},payload:{email:'north-reporter@example.test',password:'Incorrect synthetic password9!'}});
+      assert.equal(response.statusCode,401);assert.equal(response.cookies.length,0);
+    });
     const version=await database.pool.query('show server_version');
     t.diagnostic('Backend '+database.backend+'; server_version '+version.rows[0].server_version);
     const cookie=await login('north-reporter@example.test'),southCookie=await login('south-reporter@example.test');
@@ -77,6 +81,10 @@ test('authenticated incident acceptance against PostgreSQL protocol',async t=>{
         }
       }while(cursor);
       assert.equal(ids.length,5);assert.equal(new Set(ids).size,5);
+      for(const [index,id] of ids.entries())await database.pool.query("UPDATE incidents SET created_at='2026-01-01T00:00:00Z'::timestamptz + $2::integer * interval '0.0001 second' WHERE id=$1",[id,index+1]);
+      const preciseIds:string[]=[];const store=new Store(database.pool,settings.AUTH_SECRET);cursor=null;
+      do{const page=await store.list('north-reporter',NORTH,1,cursor??undefined);preciseIds.push(...page.items.map(x=>x.id));cursor=page.nextCursor;}while(cursor);
+      assert.equal(preciseIds.length,5);assert.equal(new Set(preciseIds).size,5);
     });
     await t.test('foreign keys reject cross-workspace service at DB boundary',async()=>{
       await assert.rejects(database.pool.query('INSERT INTO incidents(id,workspace_id,service_id,reporter_id,title,description,severity) VALUES($1,$2,$3,$4,$5,$6,$7)',
@@ -99,6 +107,11 @@ test('authenticated incident acceptance against PostgreSQL protocol',async t=>{
       const dead=new Pool({host:'127.0.0.1',port:1,connectionTimeoutMillis:100});
       const failed=await buildApp(new Store(dead,settings.AUTH_SECRET),settings);
       try{const r=await failed.inject('/health/ready');assert.equal(r.statusCode,503);assert.ok(r.json().error.requestId);assert.ok(!r.body.includes('ECONNREFUSED'));}finally{await failed.close();await dead.end();}
+    });
+    await t.test('production request rate limit remains enforced',async()=>{
+      for(let i=0;i<100;i++)assert.equal((await app.inject({url:'/health/live',remoteAddress:'127.0.0.202'})).statusCode,200);
+      const response=await app.inject({url:'/health/live',remoteAddress:'127.0.0.202'});
+      assert.equal(response.statusCode,429);assert.ok(response.json().error.requestId);
     });
   }finally{await app.close();await database.close();}
 });

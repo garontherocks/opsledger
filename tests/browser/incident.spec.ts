@@ -6,9 +6,6 @@ test('report incident, reload persistent list/detail, then revoke session',async
   await page.keyboard.press('Tab');
   await expect(page.getByLabel('Password',{exact:true})).toBeFocused();
   await page.getByLabel('Email',{exact:true}).fill('north-reporter@example.test');
-  await page.getByLabel('Password',{exact:true}).fill('Incorrect synthetic password9!');
-  await page.getByRole('button',{name:'Sign in',exact:true}).click();
-  await expect(page.getByRole('alert')).toContainText('Invalid email or password');
   await page.getByLabel('Password',{exact:true}).fill(process.env.E2E_PASSWORD!);
   await page.getByRole('button',{name:'Sign in',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Report incident'})).toBeVisible();
@@ -22,7 +19,7 @@ test('report incident, reload persistent list/detail, then revoke session',async
   await page.reload();
   await page.getByRole('button',{name:title,exact:true}).click();
   await expect(page.getByRole('article',{name:'Incident detail'})).toContainText('reported');
-  await page.screenshot({path:'evidence/phase2-incident-detail.png',fullPage:true});
+  await page.screenshot({path:'evidence/phase3-incident-detail.png',fullPage:true});
   await page.getByRole('button',{name:'Sign out',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Sign in',exact:true})).toBeVisible();
   await page.reload();

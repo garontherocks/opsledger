@@ -5,6 +5,7 @@ import { Incident, type NewIncident } from '../../../packages/contracts/src/inci
 import {Activity,type IncidentAction} from '../../../packages/contracts/src/lifecycle.ts';
 import {nextState,type State} from './lifecycle.ts';
 import {HttpError} from './errors.ts';
+import {audit} from './audit.ts';
 export {HttpError} from './errors.ts';
 
 const Cursor=z.strictObject({workspaceId:z.uuid(),userId:z.string(),time:z.iso.datetime(),id:z.uuid()});
@@ -22,14 +23,20 @@ export class Store {
   async services(workspaceId:string){
     const r=await this.pool.query('SELECT id,name FROM services WHERE workspace_id=$1 AND active=true ORDER BY name',[workspaceId]);return r.rows;
   }
-  async create(userId:string,workspaceId:string,input:NewIncident){
+  async create(userId:string,workspaceId:string,input:NewIncident,requestId:string=crypto.randomUUID()){
+    const client=await this.pool.connect();
+    try{
     // The INSERT predicate verifies membership and service again in the write statement.
-    const r=await this.pool.query(`INSERT INTO incidents(id,workspace_id,service_id,reporter_id,title,description,severity)
+    const r=await client.query(`WITH made AS (INSERT INTO incidents(id,workspace_id,service_id,reporter_id,title,description,severity)
       SELECT $1,$2,$3,$4,$5,$6,$7 WHERE EXISTS(SELECT 1 FROM services WHERE id=$3 AND workspace_id=$2 AND active=true)
-      AND EXISTS(SELECT 1 FROM memberships WHERE user_id=$4 AND workspace_id=$2 AND active=true) RETURNING *`,
-      [crypto.randomUUID(),workspaceId,input.serviceId,userId,input.title,input.description,input.severity]);
+      AND EXISTS(SELECT 1 FROM memberships WHERE user_id=$4 AND workspace_id=$2 AND active=true) RETURNING *),
+      logged AS (INSERT INTO audit_events(workspace_id,actor_id,action,object_type,object_id,revision,request_id)
+      SELECT workspace_id,reporter_id,'incident.create','incident',id,revision,$8 FROM made RETURNING object_id)
+      SELECT made.* FROM made JOIN logged ON logged.object_id=made.id`,
+      [crypto.randomUUID(),workspaceId,input.serviceId,userId,input.title,input.description,input.severity,requestId]);
     if(!r.rowCount)throw new HttpError(404,'not_found','Resource not found');
     return this.dto(r.rows[0]);
+    }finally{client.release();}
   }
   private dto(row:Record<string,unknown>){
     const date=(x:unknown)=>x instanceof Date?x.toISOString():new Date(String(x)).toISOString();
@@ -49,7 +56,7 @@ export class Store {
     const items=rows.slice(0,pageSize).map(row=>Activity.parse({id:row.id,revision:row.revision,actorId:row.actor_id,kind:row.kind,fromState:row.from_state,toState:row.to_state,note:row.note,assigneeId:row.assignee_id,createdAt:row.created_at.toISOString()}));
     return {items,nextBeforeRevision:rows.length>pageSize?items.at(-1)?.revision??null:null};
   }
-  async act(userId:string,workspaceId:string,id:string,input:IncidentAction){
+  async act(userId:string,workspaceId:string,id:string,input:IncidentAction,requestId:string=crypto.randomUUID()){
     const client=await this.pool.connect();
     try{
       await client.query('BEGIN');
@@ -75,6 +82,7 @@ export class Store {
       const note=input.action==='comment'?input.body:input.action==='resolve'?input.resolutionSummary:input.action==='reopen'?input.reason:null;
       await client.query('INSERT INTO incident_activity(id,incident_id,revision,actor_id,kind,from_state,to_state,note,assignee_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)',[activityId,id,updated.rows[0].revision,userId,input.action,current.state,state,note,assignee]);
       if(input.action==='comment')await client.query('INSERT INTO incident_comments(id,incident_id,activity_id,author_id,body) VALUES($1,$2,$3,$4,$5)',[crypto.randomUUID(),id,activityId,userId,input.body]);
+      await audit(client,workspaceId,userId,'incident.'+input.action,'incident',id,updated.rows[0].revision,requestId);
       const result=this.dto(updated.rows[0]);await client.query('COMMIT');return result;
     }catch(error){await client.query('ROLLBACK');throw error;}finally{client.release();}
   }
@@ -92,13 +100,13 @@ export class Store {
   }
   async list(userId:string,workspaceId:string,pageSize:number,raw?:string){
     const cursor=raw?this.decode(raw,userId,workspaceId):null;
-    const r=await this.pool.query(`SELECT * FROM incidents WHERE workspace_id=$1
+    const r=await this.pool.query(`SELECT *,to_char(created_at AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS cursor_time FROM incidents WHERE workspace_id=$1
       AND ($2::timestamptz IS NULL OR (created_at,id)<($2::timestamptz,$3::uuid))
       ORDER BY created_at DESC,id DESC LIMIT $4`,[workspaceId,cursor?.time??null,cursor?.id??null,pageSize+1]);
     const items=r.rows.slice(0,pageSize).map(row=>this.dto(row));const last=items.at(-1);
     let nextCursor:string|null=null;
     if(r.rows.length>pageSize&&last){
-      const payload=Buffer.from(JSON.stringify({workspaceId,userId,time:last.createdAt,id:last.id})).toString('base64url');
+      const payload=Buffer.from(JSON.stringify({workspaceId,userId,time:r.rows[pageSize-1].cursor_time,id:last.id})).toString('base64url');
       nextCursor=payload+'.'+this.sign(payload);
     }
     return {items,nextCursor};

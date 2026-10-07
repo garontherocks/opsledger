@@ -1,0 +1,14 @@
+import {z} from 'zod';
+const text=(min:number,max:number)=>z.string().trim().refine(x=>[...x].length>=min&&[...x].length<=max,'Invalid character length');
+export const Content=z.strictObject({title:text(5,120),body:text(10,10000),category:z.enum(['operations','recovery','security'])});
+export const CreateRunbook=Content.extend({serviceId:z.uuid().optional()});
+export const NewVersion=Content.extend({expectedRevision:z.number().int().min(1).max(2147483646)});
+export const PublishAction=z.strictObject({action:z.enum(['publish','withdraw']),expectedRevision:z.number().int().min(1).max(2147483646)});
+export const RunbookParams=z.strictObject({workspaceId:z.uuid(),runbookId:z.uuid()});
+export const VersionParams=RunbookParams.extend({number:z.coerce.number().int().min(1).max(2147483647)});
+export const Search=z.strictObject({q:z.string().trim().max(200).default(''),status:z.enum(['published','draft','withdrawn']).default('published'),sort:z.enum(['title','newest']).default('title'),serviceId:z.uuid().optional(),category:z.enum(['operations','recovery','security']).optional(),pageSize:z.coerce.number().int().min(1).max(50).default(20),cursor:z.string().max(2000).optional()});
+export const RunbookVersion=z.strictObject({id:z.uuid(),workspaceId:z.uuid(),serviceId:z.uuid().nullable(),number:z.number().int(),revision:z.number().int(),title:z.string(),body:z.string(),category:z.string(),status:z.enum(['draft','published','withdrawn']),contentHash:z.string(),createdBy:z.string(),createdAt:z.iso.datetime()});
+export const AuditQuery=z.strictObject({before:z.string().regex(/^[1-9][0-9]{0,18}$/).refine(x=>/^[1-9][0-9]{0,18}$/.test(x)&&BigInt(x)<=9223372036854775807n,'Invalid audit boundary').optional(),pageSize:z.coerce.number().int().min(1).max(100).default(50)});
+export type ContentInput=z.infer<typeof Content>;
+export type SearchInput=z.infer<typeof Search>;
+export type RunbookDTO=z.infer<typeof RunbookVersion>;

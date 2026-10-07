@@ -4,9 +4,11 @@ import type { IncidentDTO } from '../../../packages/contracts/src/incident.ts';
 import './style.css';
 import {api} from './api.ts';
 import {IncidentDetail} from './IncidentDetail.tsx';
+import {KnowledgePanel} from './KnowledgePanel.tsx';
 type Identity={user:{name:string,email:string},workspaces:{id:string,name:string,role:string}[]};
 type Service={id:string,name:string};
 function App(){
+  const [view,setView]=useState('incidents');
   const [identity,setIdentity]=useState<Identity|null>(null),[workspace,setWorkspace]=useState('');
   const [items,setItems]=useState<IncidentDTO[]>([]),[services,setServices]=useState<Service[]>([]);
   const [detail,setDetail]=useState<IncidentDTO|null>(null),[cursor,setCursor]=useState<string|null>(null);
@@ -50,7 +52,8 @@ function App(){
       })}>Sign out</button></nav>
       {!identity.workspaces.length?<p>No active workspace access.</p>:<>
       <label htmlFor="workspace">Workspace</label><select id="workspace" disabled={busy} value={workspace} onChange={e=>setWorkspace(e.target.value)}>{identity.workspaces.map(w=><option key={w.id} value={w.id}>{w.name}</option>)}</select>
-      <div className="columns"><section><h2>Report incident</h2><form onSubmit={create}>
+      <nav><button onClick={()=>setView('incidents')}>Open incidents</button><button onClick={()=>setView('knowledge')}>Open knowledge</button></nav>
+      {view==='incidents'&&<div className="columns"><section><h2>Report incident</h2><form onSubmit={create}>
         <label>Title<input name="title" minLength={5} maxLength={120} required/></label>
         <label>Description<textarea name="description" minLength={10} maxLength={5000} required/></label>
         <label htmlFor="service">Service</label><select id="service" name="serviceId" required>{services.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}</select>
@@ -63,8 +66,10 @@ function App(){
           setItems(old=>[...old,...page.items]);setCursor(page.nextCursor);
         })}>Load more</button>}
         {detail&&<IncidentDetail key={detail.id} incident={detail} workspace={workspace} role={identity.workspaces.find(w=>w.id===workspace)?.role??''} busy={busy} execute={action} onChange={value=>{setDetail(value);setItems(old=>old.map(i=>i.id===value.id?value:i));}}/>}
-        </section></div></>}
+        </section></div>}
+      {view==='knowledge'&&<KnowledgePanel key={workspace} workspace={workspace} role={identity.workspaces.find(w=>w.id===workspace)?.role??''} services={services}/>}
       </>}
-      <footer>OpsLedger · Local lab · Phase 2</footer></main>;
+      </>}
+      <footer>OpsLedger · Local lab · Phase 3</footer></main>;
 }
 const element=document.getElementById('root');if(!element)throw new Error('Missing root');createRoot(element).render(<App/>);

@@ -35,5 +35,5 @@ test('lead moves incident through lifecycle; stale second tab must refresh',asyn
  await expect(detail).toContainText('Revision 7');
  await page.reload();await page.getByRole('button',{name:title,exact:true}).click();
  await expect(page.getByRole('article',{name:'Incident detail'})).toContainText('The timeout returned');
- await page.screenshot({path:'evidence/phase2-lifecycle.png',fullPage:true});
+ await page.screenshot({path:'evidence/phase3-lifecycle.png',fullPage:true});
 });

@@ -1,4 +1,4 @@
-name: Phase 2 acceptance
+name: Phase 3 acceptance
 on: [push, pull_request]
 permissions:
   contents: read
@@ -33,15 +33,15 @@ jobs:
       - run: npm run test:unit
       - run: npm audit --audit-level=moderate
       - if: matrix.lane == 'api'
-        run: npm run test:integration | tee evidence/phase2-ci-integration.log
+        run: npm run test:integration | tee evidence/phase3-ci-integration.log
       - if: matrix.lane == 'browser'
         run: npx playwright install --with-deps chromium
       - if: matrix.lane == 'browser'
-        run: npm run test:e2e | tee evidence/phase2-ci-e2e.log
+        run: npm run test:e2e | tee evidence/phase3-ci-e2e.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
-          name: phase2-${{ matrix.lane }}-${{ github.sha }}
+          name: phase3-${{ matrix.lane }}-${{ github.sha }}
           path: |
-            evidence/phase2-*
+            evidence/phase3-*
           retention-days: 7

@@ -11,11 +11,16 @@ import { createAuth } from './auth.ts';
 import { Store,HttpError } from './store.ts';
 import { CreateIncident,Incident,ListQuery,Params,DetailParams } from '../../../packages/contracts/src/incident.ts';
 import {Action,HistoryQuery,Activity} from '../../../packages/contracts/src/lifecycle.ts';
+import {Knowledge} from './knowledge.ts';
+import {CreateRunbook,NewVersion,PublishAction,RunbookParams,VersionParams,Search,RunbookVersion,AuditQuery} from '../../../packages/contracts/src/knowledge.ts';
 
 export async function buildApp(store:Store,settings:Settings,serveWeb=false){
   const auth=createAuth(store.pool,settings);
+  const knowledge=new Knowledge(store.pool,settings.AUTH_SECRET);
+  const identities=new WeakMap<FastifyRequest,string>();
   const app=Fastify({bodyLimit:32768,genReqId:()=>crypto.randomUUID(),logger:settings.NODE_ENV==='test'?false:{
-    redact:['req.headers.cookie','req.headers.authorization','res.headers["set-cookie"]'],level:'info'},
+    redact:['req.headers.cookie','req.headers.authorization','res.headers["set-cookie"]'],level:'info',
+    serializers:{req:(request:{method:string,url:string})=>({method:request.method,path:request.url.split('?')[0]?.slice(0,200)})}},
   }).withTypeProvider<ZodTypeProvider>();
   app.setValidatorCompiler(validatorCompiler);app.setSerializerCompiler(serializerCompiler);
   await app.register(rateLimit,{max:100,timeWindow:'1 minute'});
@@ -28,7 +33,7 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false){
       if(request.headers['sec-fetch-site']==='cross-site')throw new HttpError(403,'forbidden_origin','Origin denied');
     }
   });
-  app.setErrorHandler((error,request,reply)=>{
+  app.setErrorHandler(async(error,request,reply)=>{
     const record=error && typeof error==='object'?error:{};
     const code='code' in record?String(record.code):'';
     const status=error instanceof HttpError?error.status:
@@ -36,6 +41,12 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false){
       'statusCode' in record&&record.statusCode===429?429:
       ['ECONNREFUSED','ETIMEDOUT','57P01','08006'].includes(code)?503:500;
     if(status>=500)request.log.error({code,requestId:request.id},'Request failed');
+    if([403,404].includes(status)&&identities.has(request)){
+      const params=request.params as Record<string,string>;
+      if(params?.workspaceId){try{
+        await store.pool.query("INSERT INTO audit_events(workspace_id,actor_id,action,object_type,object_id,revision,request_id) SELECT workspace_id,user_id,'access.denied',$3,$4,0,$5 FROM memberships WHERE workspace_id=$1 AND user_id=$2",[params.workspaceId,identities.get(request),request.routeOptions.url?.includes('/runbooks')?'runbook':params.incidentId?'incident':'workspace',params.runbookId??params.incidentId??null,request.id]);
+      }catch{request.log.warn({requestId:request.id},'Denial audit unavailable');}}
+    }
     reply.code(status).send({error:{code:error instanceof HttpError?error.code:status===400?'validation_error':status===503?'unavailable':status===413?'body_too_large':status===429?'rate_limited':'internal_error',
       message:status>=500?'Service unavailable':error instanceof HttpError?error.message:'Request rejected',requestId:request.id}});
   });
@@ -54,7 +65,7 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false){
   }});
   async function identity(request:FastifyRequest){
     const session=await auth.api.getSession({headers:fromNodeHeaders(request.headers)});
-    if(!session)throw new HttpError(401,'unauthenticated','Sign in required');return session.user;
+    if(!session)throw new HttpError(401,'unauthenticated','Sign in required');identities.set(request,session.user.id);return session.user;
   }
   app.get('/api/v1/me',async request=>{const user=await identity(request);return {user:{id:user.id,name:user.name,email:user.email},workspaces:await store.me(user.id)};});
   app.get('/api/v1/workspaces/:workspaceId/services',{schema:{params:Params}},async request=>{
@@ -62,7 +73,7 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false){
   });
   app.post('/api/v1/workspaces/:workspaceId/incidents',{schema:{params:Params,body:CreateIncident,response:{201:Incident}}},async(request,reply)=>{
     const user=await identity(request);await store.member(user.id,request.params.workspaceId);
-    const result=await store.create(user.id,request.params.workspaceId,request.body);
+    const result=await store.create(user.id,request.params.workspaceId,request.body,request.id);
     return reply.code(201).header('location','/api/v1/workspaces/'+result.workspaceId+'/incidents/'+result.id).send(result);
   });
   app.get('/api/v1/workspaces/:workspaceId/incidents',{schema:{params:Params,querystring:ListQuery,response:{200:z.object({items:z.array(Incident),nextCursor:z.string().nullable()})}}},async request=>{
@@ -78,13 +89,31 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false){
     const user=await identity(request);await store.member(user.id,request.params.workspaceId);return store.assignees(request.params.workspaceId);
   });
   app.post('/api/v1/workspaces/:workspaceId/incidents/:incidentId/actions',{schema:{params:DetailParams,body:Action,response:{200:Incident}}},async request=>{
-    const user=await identity(request);return store.act(user.id,request.params.workspaceId,request.params.incidentId,request.body);
+    const user=await identity(request);return store.act(user.id,request.params.workspaceId,request.params.incidentId,request.body,request.id);
   });
   app.get('/api/v1/workspaces/:workspaceId/incidents/:incidentId/activity',{schema:{params:DetailParams,querystring:HistoryQuery,response:{200:z.object({items:z.array(Activity),nextBeforeRevision:z.number().nullable()})}}},async request=>{
     const user=await identity(request);await store.member(user.id,request.params.workspaceId);
     return store.history(request.params.workspaceId,request.params.incidentId,request.query.pageSize,request.query.beforeRevision);
   });
   app.get('/health/ready',async()=>{await store.pool.query('SELECT 1');return {status:'ready'};});
+  app.post('/api/v1/workspaces/:workspaceId/runbooks',{schema:{params:Params,body:CreateRunbook,response:{201:RunbookVersion}}},async(request,reply)=>{
+    const user=await identity(request);return reply.code(201).send(await knowledge.write(user.id,request.params.workspaceId,request.body,undefined,undefined,request.id));
+  });
+  app.post('/api/v1/workspaces/:workspaceId/runbooks/:runbookId/versions',{schema:{params:RunbookParams,body:NewVersion,response:{201:RunbookVersion}}},async(request,reply)=>{
+    const user=await identity(request);return reply.code(201).send(await knowledge.write(user.id,request.params.workspaceId,request.body,request.params.runbookId,undefined,request.id));
+  });
+  app.post('/api/v1/workspaces/:workspaceId/runbooks/:runbookId/versions/:number/actions',{schema:{params:VersionParams,body:PublishAction,response:{200:RunbookVersion}}},async request=>{
+    const user=await identity(request);return knowledge.write(user.id,request.params.workspaceId,{expectedRevision:request.body.expectedRevision},request.params.runbookId,{action:request.body.action,number:request.params.number},request.id);
+  });
+  app.get('/api/v1/workspaces/:workspaceId/runbooks/:runbookId/versions/:number',{schema:{params:VersionParams,response:{200:RunbookVersion}}},async request=>{
+    const user=await identity(request);return knowledge.version(user.id,request.params.workspaceId,request.params.runbookId,request.params.number);
+  });
+  app.get('/api/v1/workspaces/:workspaceId/runbooks',{schema:{params:Params,querystring:Search,response:{200:z.object({items:z.array(RunbookVersion),nextCursor:z.string().nullable()})}}},async request=>{
+    const user=await identity(request);return knowledge.search(user.id,request.params.workspaceId,request.query);
+  });
+  app.get('/api/v1/workspaces/:workspaceId/audit',{schema:{params:Params,querystring:AuditQuery}},async request=>{
+    const user=await identity(request);return knowledge.events(user.id,request.params.workspaceId,request.query.pageSize,request.query.before);
+  });
   if(serveWeb){
     await app.register(staticPlugin,{root:resolve('apps/web/dist'),prefix:'/'});
     app.setNotFoundHandler((request,reply)=>{
