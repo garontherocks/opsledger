@@ -1,0 +1,28 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> opsledger@0.1.0 test:integration
+> node --experimental-strip-types --test tests/integration.test.ts
+
+▶ authenticated incident acceptance against PostgreSQL protocol
+  ✔ no session fails; safe identity contains no auth secrets (10.921929ms)
+  ✔ create persists expected server-controlled fields (16.362853ms)
+  ✔ cross-workspace IDs, membership and service spoof denied (16.696577ms)
+  ✔ revoked member rejected despite valid auth session (81.196164ms)
+  ✔ inactive and unknown service denied without inserting rows (12.568946ms)
+  ✔ invalid/spoofed body and oversized input rejected (8.764502ms)
+  ✔ pagination stable with ties; tampered/cross-user cursor rejected (44.83573ms)
+  ✔ foreign keys reject cross-workspace service at DB boundary (3.131147ms)
+  ✔ signup closed, hostile origin/Host cannot grant auth access (10.777722ms)
+  ✔ expired session rejected with cookie still present (6.606835ms)
+  ✔ revocation invalidates subsequent browser/API access (8.201783ms)
+  ✔ database outage returns 503 with safe correlated envelope (6.678984ms)
+✔ authenticated incident acceptance against PostgreSQL protocol (2198.087015ms)
+ℹ Backend pglite-socket; server_version 18.3
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3073.236813

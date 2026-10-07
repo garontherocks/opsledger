@@ -1,0 +1,17 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> opsledger@0.1.0 test:unit
+> node --experimental-strip-types --test tests/domain.test.ts
+
+✔ input trims and counts Unicode code points (2.337509ms)
+✔ whitespace, short text, invalid severity and privileged fields fail (0.361105ms)
+✔ pagination is bounded and unknown query fields fail (0.945758ms)
+✔ production cannot enable lab mode or plain HTTP (2.60346ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 164.726496

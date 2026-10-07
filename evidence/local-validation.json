@@ -1,0 +1,35 @@
+{
+  "source_sha": "9ba5b0cf6c6a113d0c6b376fcaae50a9a97ae0ef",
+  "branch": "feat/incident-first-slice",
+  "date": "2026-10-07",
+  "local": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "domain_tests": 4,
+    "api_db_subtests": 12,
+    "api_db_total": 13,
+    "browser_tests": 1,
+    "startup_smoke": "passed",
+    "audit_vulnerabilities": 0
+  },
+  "database": {
+    "backend": "pglite-socket",
+    "server_version": "18.3",
+    "native_target": "18.6",
+    "native_validation": "pending"
+  },
+  "browser": {
+    "driver": "Playwright 1.64.0",
+    "binary": "Chromium Headless Shell 141.0.7390.37",
+    "default_download": "failed",
+    "explicit_binary_override": true
+  },
+  "ci": {
+    "workflow": "configured",
+    "run_url": null,
+    "status": "not_executed"
+  },
+  "phase_status": "local implementation verified; native and remote CI completion gates pending",
+  "next_phase_started": false
+}
