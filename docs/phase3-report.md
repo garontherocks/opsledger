@@ -2,7 +2,7 @@
 
 Date: 2026-10-07 UTC. Scope: Phase 3 only.
 Branch: feat/knowledge-search-audit.
-Validated source SHA: 701bf77816f9e1e1e6b5c1beb6dfef8b0f035250.
+Validated source SHA: 35071fe4cd3efa5336940fa488670f9708d1b581.
 
 **Status: implementation and local acceptance verified. Full phase completion remains pending native PostgreSQL deployment/concurrency and actual remote CI evidence.** The user authorized proceeding beyond the earlier pending gates. Those gates are preserved, not retroactively claimed complete. Phase 4 has not started; no remote PR, merge or deployment.
 
