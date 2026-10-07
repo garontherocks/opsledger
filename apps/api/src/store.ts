@@ -2,12 +2,12 @@ import { Pool } from 'pg';
 import { z } from 'zod';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { Incident, type NewIncident } from '../../../packages/contracts/src/incident.ts';
+import {Activity,type IncidentAction} from '../../../packages/contracts/src/lifecycle.ts';
+import {nextState,type State} from './lifecycle.ts';
+import {HttpError} from './errors.ts';
+export {HttpError} from './errors.ts';
 
 const Cursor=z.strictObject({workspaceId:z.uuid(),userId:z.string(),time:z.iso.datetime(),id:z.uuid()});
-export class HttpError extends Error {
-  status:number;code:string;
-  constructor(status:number,code:string,message:string){super(message);this.status=status;this.code=code;}
-}
 export class Store {
   pool:Pool;private secret:string;
   constructor(pool:Pool,secret:string){this.pool=pool;this.secret=secret;}
@@ -34,11 +34,49 @@ export class Store {
   private dto(row:Record<string,unknown>){
     const date=(x:unknown)=>x instanceof Date?x.toISOString():new Date(String(x)).toISOString();
     return Incident.parse({id:row.id,workspaceId:row.workspace_id,serviceId:row.service_id,reporterId:row.reporter_id,title:row.title,
-      description:row.description,severity:row.severity,state:row.state,revision:row.revision,createdAt:date(row.created_at),updatedAt:date(row.updated_at)});
+      description:row.description,severity:row.severity,state:row.state,revision:row.revision,assigneeId:row.assignee_id,resolutionSummary:row.resolution_summary,createdAt:date(row.created_at),updatedAt:date(row.updated_at)});
   }
   async detail(workspaceId:string,id:string){
     const r=await this.pool.query('SELECT * FROM incidents WHERE workspace_id=$1 AND id=$2',[workspaceId,id]);
     if(!r.rowCount)throw new HttpError(404,'not_found','Resource not found');return this.dto(r.rows[0]);
+  }
+  async assignees(workspaceId:string){
+    return (await this.pool.query('SELECT m.user_id AS id,u.name FROM memberships m JOIN "user" u ON u.id=m.user_id WHERE m.workspace_id=$1 AND m.active=true AND m.role IN (\'responder\',\'lead\') ORDER BY u.name',[workspaceId])).rows;
+  }
+  async history(workspaceId:string,id:string,pageSize:number,before?:number){
+    await this.detail(workspaceId,id);
+    const rows=(await this.pool.query('SELECT * FROM incident_activity WHERE incident_id=$1 AND ($2::integer IS NULL OR revision<$2) ORDER BY revision DESC LIMIT $3',[id,before??null,pageSize+1])).rows;
+    const items=rows.slice(0,pageSize).map(row=>Activity.parse({id:row.id,revision:row.revision,actorId:row.actor_id,kind:row.kind,fromState:row.from_state,toState:row.to_state,note:row.note,assigneeId:row.assignee_id,createdAt:row.created_at.toISOString()}));
+    return {items,nextBeforeRevision:rows.length>pageSize?items.at(-1)?.revision??null:null};
+  }
+  async act(userId:string,workspaceId:string,id:string,input:IncidentAction){
+    const client=await this.pool.connect();
+    try{
+      await client.query('BEGIN');
+      const membership=await client.query('SELECT role FROM memberships WHERE workspace_id=$1 AND user_id=$2 AND active=true FOR SHARE',[workspaceId,userId]);
+      if(!membership.rowCount)throw new HttpError(404,'not_found','Resource not found');
+      const found=await client.query('SELECT * FROM incidents WHERE workspace_id=$1 AND id=$2 FOR UPDATE',[workspaceId,id]);
+      if(!found.rowCount)throw new HttpError(404,'not_found','Resource not found');
+      const role:string=membership.rows[0].role;
+      const privileged=['resolve','close','reopen'].includes(input.action);
+      if(input.action!=='comment' && (privileged?role!=='lead':!['responder','lead'].includes(role)))throw new HttpError(403,'forbidden_action','Action not permitted');
+      const current=found.rows[0];
+      if(current.revision!==input.expectedRevision)throw new HttpError(409,'revision_conflict','Incident changed; refresh before retrying');
+      const state=nextState(current.state as State,role,input);
+      const assignee='assigneeId' in input&&input.assigneeId?input.assigneeId:current.assignee_id;
+      if(['triage','assign','investigate','reopen'].includes(input.action) && assignee){
+        const member=await client.query('SELECT user_id FROM memberships WHERE workspace_id=$1 AND user_id=$2 AND active=true AND role IN (\'responder\',\'lead\') FOR SHARE',[workspaceId,assignee]);
+        if(!member.rowCount)throw new HttpError(404,'invalid_assignee','Assignee unavailable');
+      }
+      const resolution=input.action==='resolve'?input.resolutionSummary:input.action==='reopen'?null:current.resolution_summary;
+      const updated=await client.query('UPDATE incidents SET state=$3,assignee_id=$4,resolution_summary=$5,revision=revision+1,updated_at=clock_timestamp() WHERE workspace_id=$1 AND id=$2 AND revision=$6 RETURNING *',[workspaceId,id,state,assignee,resolution,input.expectedRevision]);
+      if(!updated.rowCount)throw new HttpError(409,'revision_conflict','Incident changed; refresh before retrying');
+      const activityId=crypto.randomUUID();
+      const note=input.action==='comment'?input.body:input.action==='resolve'?input.resolutionSummary:input.action==='reopen'?input.reason:null;
+      await client.query('INSERT INTO incident_activity(id,incident_id,revision,actor_id,kind,from_state,to_state,note,assignee_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)',[activityId,id,updated.rows[0].revision,userId,input.action,current.state,state,note,assignee]);
+      if(input.action==='comment')await client.query('INSERT INTO incident_comments(id,incident_id,activity_id,author_id,body) VALUES($1,$2,$3,$4,$5)',[crypto.randomUUID(),id,activityId,userId,input.body]);
+      const result=this.dto(updated.rows[0]);await client.query('COMMIT');return result;
+    }catch(error){await client.query('ROLLBACK');throw error;}finally{client.release();}
   }
   private sign(payload:string){return createHmac('sha256',this.secret).update(payload).digest('base64url');}
   private decode(raw:string,userId:string,workspaceId:string){

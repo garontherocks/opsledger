@@ -9,7 +9,7 @@ import{buildApp}from'../apps/api/src/app.ts';
 import{config}from'../apps/api/src/config.ts';
 
 test('authenticated incident acceptance against PostgreSQL protocol',async t=>{
-  const database=await testDatabase();const password=crypto.randomUUID()+'-Pass9!';
+  const database=await testDatabase();const password=process.env.TEST_PASSWORD??crypto.randomUUID()+'-Pass9!';
   const settings=config({DATABASE_URL:'postgresql://localhost/opsledger_test',AUTH_SECRET:crypto.randomUUID()+crypto.randomUUID(),BASE_URL:'http://localhost:3100',NODE_ENV:'test'});
   await migrate(database.pool);await seedLab(database.pool,password);await seedLab(database.pool,password);
   const app=await buildApp(new Store(database.pool,settings.AUTH_SECRET),settings);await app.ready();

@@ -2,14 +2,10 @@ import { createRoot } from 'react-dom/client';
 import { useEffect,useState,type FormEvent } from 'react';
 import type { IncidentDTO } from '../../../packages/contracts/src/incident.ts';
 import './style.css';
-type Identity={user:{name:string,email:string},workspaces:{id:string,name:string}[]};
+import {api} from './api.ts';
+import {IncidentDetail} from './IncidentDetail.tsx';
+type Identity={user:{name:string,email:string},workspaces:{id:string,name:string,role:string}[]};
 type Service={id:string,name:string};
-async function api<T>(path:string,options?:RequestInit):Promise<T>{
-  const response=await fetch(path,{...options,headers:{'content-type':'application/json',...options?.headers}});
-  const data=await response.json();
-  if(!response.ok)throw Object.assign(new Error(data.error?.message??data.message??'Request failed'),{status:response.status});
-  return data as T;
-}
 function App(){
   const [identity,setIdentity]=useState<Identity|null>(null),[workspace,setWorkspace]=useState('');
   const [items,setItems]=useState<IncidentDTO[]>([]),[services,setServices]=useState<Service[]>([]);
@@ -66,9 +62,9 @@ function App(){
           const page=await api<{items:IncidentDTO[],nextCursor:string|null}>('/api/v1/workspaces/'+workspace+'/incidents?cursor='+encodeURIComponent(cursor));
           setItems(old=>[...old,...page.items]);setCursor(page.nextCursor);
         })}>Load more</button>}
-        {detail&&<article aria-label="Incident detail"><h3>{detail.title}</h3><p>{detail.description}</p><dl><dt>Status</dt><dd>{detail.state}</dd><dt>Severity</dt><dd>{detail.severity}</dd><dt>Revision</dt><dd>{detail.revision}</dd></dl></article>}
+        {detail&&<IncidentDetail key={detail.id} incident={detail} workspace={workspace} role={identity.workspaces.find(w=>w.id===workspace)?.role??''} busy={busy} execute={action} onChange={value=>{setDetail(value);setItems(old=>old.map(i=>i.id===value.id?value:i));}}/>}
         </section></div></>}
       </>}
-      <footer>OpsLedger · Local lab · Phase 1</footer></main>;
+      <footer>OpsLedger · Local lab · Phase 2</footer></main>;
 }
 const element=document.getElementById('root');if(!element)throw new Error('Missing root');createRoot(element).render(<App/>);

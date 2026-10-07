@@ -8,7 +8,8 @@ export type NewIncident = z.infer<typeof CreateIncident>;
 export const Incident = z.strictObject({
   id:z.uuid(),workspaceId:z.uuid(),serviceId:z.uuid(),reporterId:z.string(),
   title:z.string(),description:z.string(),severity:z.enum(['low','medium','high','critical']),
-  state:z.literal('reported'),revision:z.literal(1),createdAt:z.iso.datetime(),updatedAt:z.iso.datetime(),
+  state:z.enum(['reported','triaged','investigating','resolved','closed']),revision:z.number().int().min(1),
+  assigneeId:z.string().nullable(),resolutionSummary:z.string().nullable(),createdAt:z.iso.datetime(),updatedAt:z.iso.datetime(),
 });
 export type IncidentDTO = z.infer<typeof Incident>;
 export const ErrorDTO = z.object({error:z.object({code:z.string(),message:z.string(),requestId:z.string()})});

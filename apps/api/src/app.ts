@@ -10,6 +10,7 @@ import type { Settings } from './config.ts';
 import { createAuth } from './auth.ts';
 import { Store,HttpError } from './store.ts';
 import { CreateIncident,Incident,ListQuery,Params,DetailParams } from '../../../packages/contracts/src/incident.ts';
+import {Action,HistoryQuery,Activity} from '../../../packages/contracts/src/lifecycle.ts';
 
 export async function buildApp(store:Store,settings:Settings,serveWeb=false){
   const auth=createAuth(store.pool,settings);
@@ -73,6 +74,16 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false){
     return store.detail(request.params.workspaceId,request.params.incidentId);
   });
   app.get('/health/live',async()=>({status:'ok'}));
+  app.get('/api/v1/workspaces/:workspaceId/assignees',{schema:{params:Params}},async request=>{
+    const user=await identity(request);await store.member(user.id,request.params.workspaceId);return store.assignees(request.params.workspaceId);
+  });
+  app.post('/api/v1/workspaces/:workspaceId/incidents/:incidentId/actions',{schema:{params:DetailParams,body:Action,response:{200:Incident}}},async request=>{
+    const user=await identity(request);return store.act(user.id,request.params.workspaceId,request.params.incidentId,request.body);
+  });
+  app.get('/api/v1/workspaces/:workspaceId/incidents/:incidentId/activity',{schema:{params:DetailParams,querystring:HistoryQuery,response:{200:z.object({items:z.array(Activity),nextBeforeRevision:z.number().nullable()})}}},async request=>{
+    const user=await identity(request);await store.member(user.id,request.params.workspaceId);
+    return store.history(request.params.workspaceId,request.params.incidentId,request.query.pageSize,request.query.beforeRevision);
+  });
   app.get('/health/ready',async()=>{await store.pool.query('SELECT 1');return {status:'ready'};});
   if(serveWeb){
     await app.register(staticPlugin,{root:resolve('apps/web/dist'),prefix:'/'});

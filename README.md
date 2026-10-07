@@ -1,6 +1,6 @@
-# OpsLedger — Phase 1
+# OpsLedger — Phase 2
 
-Authenticated incident creation, list and detail. No model dependency. Branch: feat/incident-first-slice. No merge or deployment.
+Authenticated incident creation, lifecycle, assignment, comments and activity. Every action requires the current revision. No model dependency. Branch: feat/incident-state-machine. No merge or deployment.
 
 ## Native local startup
 
@@ -24,6 +24,8 @@ Integration and E2E default to separate transient PGlite test databases. Set TES
 
 Optional harness: `LAB_MODE=true npm run db:lab` hosts persistent PGlite on port 55432. Explicitly set DATABASE_URL to postgresql://postgres@127.0.0.1:55432/postgres, then migrate/seed/build/start. This is test tooling, not native PostgreSQL deployment. The application never silently selects it.
 
-Generate OpenAPI with `node --experimental-strip-types scripts/openapi.ts`. See docs/phase1-architecture.md, docs/phase1-report.md and evidence for actual results. Phase 0 probes are preserved in lab/phase0, outside product checks.
+Generate OpenAPI with `node --experimental-strip-types scripts/openapi.ts`. See docs/phase2-architecture.md, docs/phase2-report.md and evidence for actual results. Phase 0 probes and Phase 1 reports remain historical.
 
-Remote CI/native server acceptance remains pending until a real run is available. Phase 2 has not started.
+To upgrade a Phase 1 database, run migrations and the synthetic seed again using the retained credentials; incident rows and previous migration checksums are preserved. For lifecycle UI use north-lead@example.test with that same local synthetic password. Reporters can comment, responders can triage/assign/investigate, and only leads can resolve/close/reopen. Admin/editor membership does not imply lead privileges. Refresh after a stale-revision conflict; actions are never silently retried.
+
+Remote CI/native PostgreSQL acceptance remains pending. The native test uses a controlled row lock and checks two waiting backend PIDs; the default PGlite run explicitly skips it. Phase 3 has not started.

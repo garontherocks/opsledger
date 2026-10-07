@@ -22,7 +22,7 @@ test('report incident, reload persistent list/detail, then revoke session',async
   await page.reload();
   await page.getByRole('button',{name:title,exact:true}).click();
   await expect(page.getByRole('article',{name:'Incident detail'})).toContainText('reported');
-  await page.screenshot({path:'evidence/incident-detail.png',fullPage:true});
+  await page.screenshot({path:'evidence/phase2-incident-detail.png',fullPage:true});
   await page.getByRole('button',{name:'Sign out',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Sign in',exact:true})).toBeVisible();
   await page.reload();

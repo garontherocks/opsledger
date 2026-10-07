@@ -7,7 +7,7 @@ export async function testDatabase(port=55432){
   if(external){
     const url=new URL(external);
     if(!['127.0.0.1','localhost'].includes(url.hostname)||!url.pathname.endsWith('_test'))throw new Error('Only disposable localhost _test databases allowed');
-    const pool=new Pool({connectionString:external,max:1,connectionTimeoutMillis:2000});
+    const pool=new Pool({connectionString:external,max:4,connectionTimeoutMillis:2000});
     await migrate(pool);
     return {pool,backend:'postgresql-server',close:()=>pool.end()};
   }

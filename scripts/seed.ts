@@ -11,10 +11,10 @@ export async function seedLab(pool:Pool,password:string){
     for(const [id,name] of [[NORTH,'NorthLab'],[SOUTH,'SouthLab']])await client.query('INSERT INTO workspaces VALUES($1,$2) ON CONFLICT DO NOTHING',[id,name]);
     for(const [id,workspace,name]of [[NORTH_SERVICE,NORTH,'InvoiceWorker'],[SOUTH_SERVICE,SOUTH,'NotificationGateway']])
       await client.query('INSERT INTO services(id,workspace_id,name) VALUES($1,$2,$3) ON CONFLICT DO NOTHING',[id,workspace,name]);
-    for(const [id,workspace,active]of [['north-reporter',NORTH,true],['south-reporter',SOUTH,true],['revoked-reporter',NORTH,false]]){
+    for(const [id,workspace,active,role]of [['north-reporter',NORTH,true,'reporter'],['south-reporter',SOUTH,true,'reporter'],['revoked-reporter',NORTH,false,'reporter'],['north-responder',NORTH,true,'responder'],['north-lead',NORTH,true,'lead'],['north-editor',NORTH,true,'editor'],['north-admin',NORTH,true,'admin'],['south-responder',SOUTH,true,'responder'],['revoked-responder',NORTH,false,'responder']]){
       await client.query('INSERT INTO "user"(id,name,email,email_verified,created_at,updated_at) VALUES($1,$2,$3,true,now(),now()) ON CONFLICT DO NOTHING',[id,id,id+'@example.test']);
       await client.query('INSERT INTO account(id,account_id,provider_id,user_id,password,created_at,updated_at) VALUES($1,$2,$3,$2,$4,now(),now()) ON CONFLICT DO NOTHING',[id+'-account',id,'credential',hash]);
-      await client.query('INSERT INTO memberships VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING',[id,workspace,'reporter',active]);
+      await client.query('INSERT INTO memberships VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING',[id,workspace,role,active]);
     }
     await client.query('COMMIT');
   }catch(error){await client.query('ROLLBACK');throw error;}finally{client.release();}
