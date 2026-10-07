@@ -1,0 +1,6 @@
+spike/node_modules/
+spike/dist/
+*.log
+evidence/audit-full.json
+evidence/registry-metadata.json
+evidence/node24-types.json
