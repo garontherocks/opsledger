@@ -1,0 +1,56 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> opsledger@0.1.0 test:integration
+> node --experimental-strip-types scripts/integration-runner.ts
+
+2026-10-07T23:33:26.006Z WARN [Better Auth]: Invalid password
+▶ authenticated incident acceptance against PostgreSQL protocol
+  ✔ incorrect password cannot create a browser session (141.174743ms)
+  ✔ no session fails; safe identity contains no auth secrets (11.822507ms)
+  ✔ create persists expected server-controlled fields (18.427256ms)
+  ✔ cross-workspace IDs, membership and service spoof denied (27.244192ms)
+  ✔ revoked member rejected despite valid auth session (87.514129ms)
+  ✔ inactive and unknown service denied without inserting rows (20.574128ms)
+  ✔ invalid/spoofed body and oversized input rejected (5.934128ms)
+  ✔ pagination stable with ties; tampered/cross-user cursor rejected (124.221986ms)
+  ✔ foreign keys reject cross-workspace service at DB boundary (3.229885ms)
+  ✔ signup closed, hostile origin/Host cannot grant auth access (14.360608ms)
+  ✔ expired session rejected with cookie still present (8.270165ms)
+  ✔ revocation invalidates subsequent browser/API access (12.202891ms)
+  ✔ database outage returns 503 with safe correlated envelope (9.641414ms)
+  ✔ production request rate limit remains enforced (14.359727ms)
+✔ authenticated incident acceptance against PostgreSQL protocol (2814.155893ms)
+ℹ Backend pglite-socket; server_version 18.3
+▶ Phase 3 version/search/ACL/audit acceptance
+  ✔ 24 synthetic runbooks seed repeatably; current-public search uses FTS (17.056624ms)
+  ✔ both sort modes paginate equal titles/timestamps without duplicates; cursor scope enforced (62.438834ms)
+  ✔ draft/withdrawn versions and other workspaces cannot leak to readers (45.01514ms)
+  ✔ newest cursor preserves PostgreSQL microsecond precision (11.741715ms)
+  ✔ publication, immutable citations, append, stale write and withdrawal (70.928978ms)
+  ✔ DB rejects content/scope edits and audit update/delete (7.154076ms)
+  ✔ audit insertion failure rolls back knowledge creation and incident command (23.085791ms)
+  ✔ audit is scoped, bounded, correlatable and omits content/auth data (9.780955ms)
+  ✔ incident lifecycle continues when knowledge table is unavailable (21.869584ms)
+✔ Phase 3 version/search/ACL/audit acceptance (2986.451231ms)
+ℹ Backend pglite-socket; server_version 18.3
+▶ Phase 2 lifecycle, permission, rollback and concurrent-write acceptance
+  ✔ complete lifecycle, reassignment, comments and bounded history (91.651029ms)
+  ✔ reporter/editor/admin cannot triage; responders cannot resolve; scope checked (41.090142ms)
+  ✔ invalid transitions, assignees, resolution/reopen and mass assignment leave no history (39.519763ms)
+  ✔ stale comments cannot overwrite a successful action (14.29143ms)
+  ✔ revoked assignee can be replaced atomically when reopening (55.767684ms)
+  ✔ failed history insertion rolls back incident and comment (14.82094ms)
+  ✔ DB refuses resolved incident without a resolution (3.635067ms)
+  ✔ failed comment insertion also rolls back the earlier activity insert (13.554397ms)
+  ✔ simultaneous HTTP actions yield one success and one stale conflict (22.087537ms)
+  ﹣ two native connections compete on the same revision (0.265701ms) # Requires native PostgreSQL connections
+✔ Phase 2 lifecycle, permission, rollback and concurrent-write acceptance (2756.848234ms)
+ℹ Backend pglite-socket; server_version 18.3
+ℹ tests 36
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 11064.592006

@@ -1,0 +1,16 @@
+{
+  "backend": "pglite-socket",
+  "seededRunbooks": 24,
+  "publishedNorth": 18,
+  "sorts": [
+    "title",
+    "newest"
+  ],
+  "pagination": "no duplicates across ties",
+  "readerDraft": "404",
+  "readerDraftSearch": "403",
+  "crossWorkspace": "404",
+  "withdrawnVersion": "404",
+  "auditMutations": "23514",
+  "nativeValidation": "pending"
+}

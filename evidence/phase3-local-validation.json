@@ -1,0 +1,34 @@
+{
+  "sourceCommit": "701bf77816f9e1e1e6b5c1beb6dfef8b0f035250",
+  "branch": "feat/knowledge-search-audit",
+  "scope": "Phase 3 only",
+  "lint": "passed",
+  "typecheck": "passed",
+  "build": "passed",
+  "unit": {
+    "passed": 8,
+    "failed": 0
+  },
+  "integration": {
+    "results": 36,
+    "passed": 35,
+    "failed": 0,
+    "skipped": 1,
+    "backend": "pglite-socket",
+    "serverVersion": "18.3"
+  },
+  "browser": {
+    "flowsPassed": 3,
+    "retries": 0,
+    "separateServerLifetimes": true,
+    "driver": "Playwright 1.64.0",
+    "executable": "Chromium Headless Shell 141.0.7390.37"
+  },
+  "startup": "passed",
+  "dependencyVulnerabilities": 0,
+  "secretReviewHits": 0,
+  "nativePostgres18_6": "pending",
+  "actualRemoteCI": "pending",
+  "phase4": "not started",
+  "releaseStatus": "Local acceptance verified; full completion gated"
+}
