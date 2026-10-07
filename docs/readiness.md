@@ -60,4 +60,6 @@ On a permitted host with PostgreSQL 18.6:
 5. Insert/read/rollback a disposable table via Drizzle/pg; verify constraints and close pools.
 6. Record server version, SQL migration hash, exact package lock and pass/fail logs. Clean up test DB.
 
+A runnable live-postgres.test.ts probe is included. Set PHASE0_TEST_DATABASE_URL to a disposable localhost database whose name begins phase0_, then run npm run test:live inside spike/. It verifies target server version, repeated migration application, sign-in cookie, session lookup, foreign-origin denial and logout/revocation. Without the variable it skips explicitly; a skip is not validation. Closed signup/concurrent rate limits and DB rollback/constraints still need the additional live checks above.
+
 No incident API/UI is built in this follow-up; it remains a compatibility probe.

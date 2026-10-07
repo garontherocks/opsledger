@@ -1,0 +1,34 @@
+[
+  {
+    "name": "typecheck",
+    "command": "npm run typecheck",
+    "start": "2026-10-07T22:18:09.750Z",
+    "end": "2026-10-07T22:18:10.427Z",
+    "exitCode": 1,
+    "output": "\n> opsledger-phase0-compatibility-spike@0.0.0 typecheck\n> tsc --noEmit\n\ncompatibility.test.ts(47,27): error TS2339: Property 'openapi' does not exist on type 'Document<{}>'.\n  Property 'openapi' does not exist on type 'Document<{}>'.\ncompatibility.test.ts(48,49): error TS2339: Property 'requestBody' does not exist on type '{ tags?: string[]; summary?: string; description?: string; externalDocs?: ExternalDocumentationObject; operationId?: string; parameters?: (ParameterObject | ReferenceObject)[]; ... 5 more ...; servers?: ServerObject[]; } | { ...; } | ({ ...; } & ... 1 more ... & { ...; })'.\n  Property 'requestBody' does not exist on type '{ tags?: string[]; summary?: string; description?: string; externalDocs?: ExternalDocumentationObject; operationId?: string; consumes?: MimeTypes; produces?: MimeTypes; ... 4 more ...; security?: SecurityRequirementObject[]; }'.\nnpm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+  },
+  {
+    "name": "test",
+    "command": "npm test",
+    "start": "2026-10-07T22:18:09.752Z",
+    "end": "2026-10-07T22:18:10.978Z",
+    "exitCode": 0,
+    "output": "\n> opsledger-phase0-compatibility-spike@0.0.0 test\n> node --experimental-strip-types --test compatibility.test.ts\n\n✔ Fastify validates Zod input and serializes valid output (81.936522ms)\n2026-10-07T22:18:10.946Z ERROR [Better Auth]: Drizzle schema mismatch\n\n  Missing tables\n    user, session, account, verification\n\n  help: Run `npx auth generate` to refresh the Drizzle schema, then apply it with your migration tool.\n✔ Invalid server output is rejected and OpenAPI is generated (9.494627ms)\n✔ Drizzle pg driver emits parameterized SQL without a server (9.692185ms)\n✔ PostgreSQL unavailable produces a bounded connection failure (5.17886ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 1014.629245\nnpm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+  },
+  {
+    "name": "build",
+    "command": "npm run build",
+    "start": "2026-10-07T22:18:09.753Z",
+    "end": "2026-10-07T22:18:10.316Z",
+    "exitCode": 0,
+    "output": "\n> opsledger-phase0-compatibility-spike@0.0.0 build\n> vite build\n\nvite v8.3.3 building client environment for production...\ntransforming...\n✓ 14 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/index.html                  0.28 kB │ gzip:  0.22 kB\ndist/assets/index-C9e2Olwy.js  219.64 kB │ gzip: 68.66 kB\n\n✓ built in 119ms\nnpm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+  },
+  {
+    "name": "audit",
+    "command": "npm audit --json",
+    "start": "2026-10-07T22:18:09.754Z",
+    "end": "2026-10-07T22:18:18.463Z",
+    "exitCode": 1,
+    "output": "via\": [\n        \"esbuild\"\n      ],\n      \"effects\": [\n        \"@esbuild-kit/esm-loader\"\n      ],\n      \"range\": \"*\",\n      \"nodes\": [\n        \"node_modules/@esbuild-kit/core-utils\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"drizzle-kit\",\n        \"version\": \"0.18.1\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"@esbuild-kit/esm-loader\": {\n      \"name\": \"@esbuild-kit/esm-loader\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        \"@esbuild-kit/core-utils\"\n      ],\n      \"effects\": [\n        \"drizzle-kit\"\n      ],\n      \"range\": \"*\",\n      \"nodes\": [\n        \"node_modules/@esbuild-kit/esm-loader\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"drizzle-kit\",\n        \"version\": \"0.18.1\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"drizzle-kit\": {\n      \"name\": \"drizzle-kit\",\n      \"severity\": \"moderate\",\n      \"isDirect\": true,\n      \"via\": [\n        \"@esbuild-kit/esm-loader\"\n      ],\n      \"effects\": [],\n      \"range\": \"0.19.0 - 1.0.0-beta.1-fd8bfcc\",\n      \"nodes\": [\n        \"node_modules/drizzle-kit\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"drizzle-kit\",\n        \"version\": \"0.18.1\",\n        \"isSemVerMajor\": true\n      }\n    },\n    \"esbuild\": {\n      \"name\": \"esbuild\",\n      \"severity\": \"moderate\",\n      \"isDirect\": false,\n      \"via\": [\n        {\n          \"source\": 1102341,\n          \"name\": \"esbuild\",\n          \"dependency\": \"esbuild\",\n          \"title\": \"esbuild enables any website to send any requests to the development server and read the response\",\n          \"url\": \"https://github.com/advisories/GHSA-67mh-4wv8-2f99\",\n          \"severity\": \"moderate\",\n          \"cwe\": [\n            \"CWE-346\"\n          ],\n          \"cvss\": {\n            \"score\": 5.3,\n            \"vectorString\": \"CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N\"\n          },\n          \"range\": \"<=0.24.2\"\n        }\n      ],\n      \"effects\": [\n        \"@esbuild-kit/core-utils\"\n      ],\n      \"range\": \"<=0.24.2\",\n      \"nodes\": [\n        \"node_modules/@esbuild-kit/core-utils/node_modules/esbuild\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"drizzle-kit\",\n        \"version\": \"0.18.1\",\n        \"isSemVerMajor\": true\n      }\n    }\n  },\n  \"metadata\": {\n    \"vulnerabilities\": {\n      \"info\": 0,\n      \"low\": 0,\n      \"moderate\": 4,\n      \"high\": 0,\n      \"critical\": 0,\n      \"total\": 4\n    },\n    \"dependencies\": {\n      \"prod\": 134,\n      \"dev\": 0,\n      \"optional\": 122,\n      \"peer\": 0,\n      \"peerOptional\": 0,\n      \"total\": 255\n    }\n  }\n}\nnpm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+  }
+]

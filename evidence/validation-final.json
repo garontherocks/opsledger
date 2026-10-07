@@ -1,0 +1,42 @@
+[
+  {
+    "name": "typecheck",
+    "command": "npm run typecheck",
+    "start": "2026-10-07T22:19:15.455Z",
+    "end": "2026-10-07T22:19:16.248Z",
+    "exitCode": 0,
+    "output": "\n> opsledger-phase0-compatibility-spike@0.0.0 typecheck\n> tsc --noEmit\n\nnpm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+  },
+  {
+    "name": "test",
+    "command": "npm test",
+    "start": "2026-10-07T22:19:15.458Z",
+    "end": "2026-10-07T22:19:16.746Z",
+    "exitCode": 0,
+    "output": "\n> opsledger-phase0-compatibility-spike@0.0.0 test\n> node --experimental-strip-types --test compatibility.test.ts\n\n✔ Fastify validates Zod input and serializes valid output (99.301021ms)\n✔ Invalid server output is rejected and OpenAPI is generated (10.093484ms)\n✔ Drizzle pg driver emits parameterized SQL without a server (9.375781ms)\n✔ PostgreSQL unavailable produces a bounded connection failure (4.588747ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 1066.183985\nnpm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+  },
+  {
+    "name": "build",
+    "command": "npm run build",
+    "start": "2026-10-07T22:19:15.459Z",
+    "end": "2026-10-07T22:19:16.069Z",
+    "exitCode": 0,
+    "output": "\n> opsledger-phase0-compatibility-spike@0.0.0 build\n> vite build\n\nvite v8.3.3 building client environment for production...\ntransforming...\n✓ 14 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/index.html                  0.28 kB │ gzip:  0.22 kB\ndist/assets/index-C9e2Olwy.js  219.64 kB │ gzip: 68.66 kB\n\n✓ built in 213ms\nnpm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+  },
+  {
+    "name": "migration",
+    "command": "npm run migration:generate",
+    "start": "2026-10-07T22:19:15.460Z",
+    "end": "2026-10-07T22:19:16.384Z",
+    "exitCode": 0,
+    "output": "\n> opsledger-phase0-compatibility-spike@0.0.0 migration:generate\n> drizzle-kit generate\n\nNo config path provided, using default 'drizzle.config.ts'\nReading config file '/workspace/scratch/560ad081e51c/phase0/spike/drizzle.config.ts'\n4 tables\naccount 13 columns 0 indexes 1 fks\nsession 8 columns 0 indexes 1 fks\nuser 7 columns 0 indexes 0 fks\nverification 6 columns 0 indexes 0 fks\n\n[✓] Your SQL migration file ➜ migrations/0000_thin_viper.sql 🚀\nnpm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+  },
+  {
+    "name": "audit",
+    "command": "npm audit --json",
+    "start": "2026-10-07T22:19:15.461Z",
+    "end": "2026-10-07T22:19:22.009Z",
+    "exitCode": 0,
+    "output": "{\n  \"auditReportVersion\": 2,\n  \"vulnerabilities\": {},\n  \"metadata\": {\n    \"vulnerabilities\": {\n      \"info\": 0,\n      \"low\": 0,\n      \"moderate\": 0,\n      \"high\": 0,\n      \"critical\": 0,\n      \"total\": 0\n    },\n    \"dependencies\": {\n      \"prod\": 134,\n      \"dev\": 0,\n      \"optional\": 126,\n      \"peer\": 0,\n      \"peerOptional\": 0,\n      \"total\": 259\n    }\n  }\n}\nnpm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+  }
+]
