@@ -1,5 +1,9 @@
-spike/node_modules/
-spike/dist/
+node_modules/
+dist/
+.local/
+.env
+test-results/
+playwright-report/
 *.log
 evidence/audit-full.json
 evidence/registry-metadata.json

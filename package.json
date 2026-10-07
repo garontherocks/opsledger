@@ -1,0 +1,60 @@
+{
+  "name": "opsledger",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/api",
+    "apps/web",
+    "packages/contracts"
+  ],
+  "engines": {
+    "node": ">=24.19.0 <25"
+  },
+  "scripts": {
+    "lint": "eslint apps packages tests scripts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json && vite build --config apps/web/vite.config.ts",
+    "start": "node --experimental-strip-types apps/api/src/server.ts",
+    "db:migrate": "node --experimental-strip-types scripts/migrate.ts",
+    "db:seed:lab": "node --experimental-strip-types scripts/seed.ts",
+    "test:unit": "node --experimental-strip-types --test tests/domain.test.ts",
+    "test:integration": "node --experimental-strip-types --test tests/integration.test.ts",
+    "test:e2e": "playwright test",
+    "db:lab": "node --experimental-strip-types scripts/lab-db.ts"
+  },
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "fastify": "5.12.5",
+    "zod": "4.6.5",
+    "fastify-type-provider-zod": "7.0.0",
+    "@fastify/swagger": "9.9.1",
+    "better-auth": "1.7.7",
+    "@better-auth/drizzle-adapter": "1.7.7",
+    "drizzle-orm": "0.45.3",
+    "pg": "8.23.1",
+    "@fastify/static": "10.1.5",
+    "@fastify/rate-limit": "11.2.0"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "vite": "8.3.3",
+    "@vitejs/plugin-react": "6.1.2",
+    "drizzle-kit": "0.31.11",
+    "@types/pg": "8.23.1",
+    "@types/node": "24.19.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@playwright/test": "1.64.0",
+    "eslint": "10.12.0",
+    "typescript-eslint": "8.71.1",
+    "@electric-sql/pglite": "0.5.8",
+    "@electric-sql/pglite-socket": "0.2.11"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.25.12"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+import{testDatabase}from'../tests/database.ts';
+import{seedLab}from'./seed.ts';
+import{config}from'../apps/api/src/config.ts';
+import{buildApp}from'../apps/api/src/app.ts';
+import{Store}from'../apps/api/src/store.ts';
+if(!process.env.E2E_PASSWORD)throw new Error('E2E_PASSWORD required');
+const database=await testDatabase(55433);await seedLab(database.pool,process.env.E2E_PASSWORD);
+const settings=config({DATABASE_URL:'postgresql://localhost/opsledger_test',AUTH_SECRET:crypto.randomUUID()+crypto.randomUUID(),BASE_URL:'http://localhost:3100',NODE_ENV:'test'});
+const app=await buildApp(new Store(database.pool,settings.AUTH_SECRET),settings,true);
+await app.listen({host:'127.0.0.1',port:3100});
+console.log('E2E backend: '+database.backend);
+for(const signal of ['SIGINT','SIGTERM'] as const)process.on(signal,()=>{void app.close().then(()=>database.close()).then(()=>process.exit(0));});
