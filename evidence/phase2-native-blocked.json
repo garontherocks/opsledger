@@ -1,0 +1,12 @@
+{
+  "nativeBinary": "PostgreSQL 18.4",
+  "binarySource": "@embedded-postgres/linux-x64@18.4.0-beta.17",
+  "target": "18.6",
+  "serverStarted": false,
+  "checksExecuted": false,
+  "systemPackageInstall": "blocked by network allowlist",
+  "identitySwitch": "chown Invalid argument; runuser cannot set groups: Operation not permitted",
+  "nativeTestStatus": "skipped",
+  "rootSafetyBypass": false,
+  "remoteCI": "not executed"
+}

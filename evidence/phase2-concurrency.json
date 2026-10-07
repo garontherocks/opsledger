@@ -1,0 +1,11 @@
+{
+  "backend": "pglite-socket",
+  "nativeConnections": false,
+  "statuses": [
+    200,
+    409
+  ],
+  "finalRevision": 2,
+  "activityCount": 1,
+  "limitation": "HTTP requests overlap; SQL transactions are serialized by a one-client test pool"
+}

@@ -1,0 +1,33 @@
+{
+  "source_sha": "810b783e30afc942889217154931f58664b79a95",
+  "branch": "feat/incident-state-machine",
+  "local": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "unit_tests": 6,
+    "domain_matrix_combinations": 175,
+    "integration_total": 24,
+    "integration_passed": 23,
+    "integration_failed": 0,
+    "integration_skipped": 1,
+    "e2e_passed": 2,
+    "startup_smoke": "passed",
+    "audit_vulnerabilities": 0
+  },
+  "database": {
+    "backend": "pglite-socket",
+    "reported_version": "18.3",
+    "SQLTransactions": "serialized",
+    "native_target": "18.6",
+    "native_validation": "pending"
+  },
+  "native_blocker": "Cannot change to non-root identity in this environment",
+  "ci": {
+    "configured": true,
+    "executed": false,
+    "run_url": null
+  },
+  "status": "Local acceptance verified; full phase completion pending native/CI evidence",
+  "phase3_started": false
+}

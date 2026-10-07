@@ -1,0 +1,41 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> opsledger@0.1.0 test:integration
+> node --experimental-strip-types scripts/integration-runner.ts
+
+▶ authenticated incident acceptance against PostgreSQL protocol
+  ✔ no session fails; safe identity contains no auth secrets (11.225929ms)
+  ✔ create persists expected server-controlled fields (19.885224ms)
+  ✔ cross-workspace IDs, membership and service spoof denied (20.514995ms)
+  ✔ revoked member rejected despite valid auth session (95.69412ms)
+  ✔ inactive and unknown service denied without inserting rows (13.439656ms)
+  ✔ invalid/spoofed body and oversized input rejected (5.411118ms)
+  ✔ pagination stable with ties; tampered/cross-user cursor rejected (41.190022ms)
+  ✔ foreign keys reject cross-workspace service at DB boundary (3.040339ms)
+  ✔ signup closed, hostile origin/Host cannot grant auth access (11.880292ms)
+  ✔ expired session rejected with cookie still present (7.374872ms)
+  ✔ revocation invalidates subsequent browser/API access (9.429684ms)
+  ✔ database outage returns 503 with safe correlated envelope (7.811751ms)
+✔ authenticated incident acceptance against PostgreSQL protocol (2386.60462ms)
+ℹ Backend pglite-socket; server_version 18.3
+▶ Phase 2 lifecycle, permission, rollback and concurrent-write acceptance
+  ✔ complete lifecycle, reassignment, comments and bounded history (80.901707ms)
+  ✔ reporter/editor/admin cannot triage; responders cannot resolve; scope checked (42.16934ms)
+  ✔ invalid transitions, assignees, resolution/reopen and mass assignment leave no history (32.46395ms)
+  ✔ stale comments cannot overwrite a successful action (17.118368ms)
+  ✔ revoked assignee can be replaced atomically when reopening (41.937359ms)
+  ✔ failed history insertion rolls back incident and comment (50.869813ms)
+  ✔ DB refuses resolved incident without a resolution (5.85321ms)
+  ✔ failed comment insertion also rolls back the earlier activity insert (11.666098ms)
+  ✔ simultaneous HTTP actions yield one success and one stale conflict (14.836454ms)
+  ﹣ two native connections compete on the same revision (0.21879ms) # Requires native PostgreSQL connections
+✔ Phase 2 lifecycle, permission, rollback and concurrent-write acceptance (2730.755312ms)
+ℹ Backend pglite-socket; server_version 18.3
+ℹ tests 24
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 6732.36256
