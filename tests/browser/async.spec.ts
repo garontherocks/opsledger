@@ -1,0 +1,17 @@
+import {test,expect} from '@playwright/test';
+test('worker delivers notifications, private export and bounded attachment cleanup',async({page})=>{
+ await page.goto('/');await page.getByLabel('Email',{exact:true}).fill('north-reporter@example.test');await page.getByLabel('Password',{exact:true}).fill(process.env.E2E_PASSWORD!);await page.getByRole('button',{name:'Sign in',exact:true}).click();
+ await page.getByLabel('Title',{exact:true}).fill('Async browser '+crypto.randomUUID());await page.getByLabel('Description',{exact:true}).fill('Synthetic worker timeout with private textual evidence');await page.getByRole('button',{name:'Create incident',exact:true}).click();await expect(page.getByRole('article',{name:'Incident detail'})).toBeVisible();
+ await page.getByRole('button',{name:'Open files',exact:true}).click();const files=page.getByRole('region',{name:'Incident files'}),op=page.getByRole('article',{name:'Async operation'});
+ await files.getByRole('button',{name:'Request incident export',exact:true}).click();
+ await expect.poll(async()=>{await op.getByRole('button',{name:'Refresh operation',exact:true}).click();return op.textContent();},{intervals:[500,1000],timeout:15000}).toContain('completed');
+ const exportLink=files.getByRole('link',{name:/Download incident-/});await expect(exportLink).toBeVisible();
+ const response=await page.request.get((await exportLink.getAttribute('href'))!);expect(response.status()).toBe(200);expect(response.headers()['content-disposition']).toContain('attachment;');expect((await response.json()).incident.revision).toBe(1);
+ await files.getByLabel('Text attachment',{exact:true}).setInputFiles({name:'worker-notes.txt',mimeType:'text/plain',buffer:Buffer.from('<script>window.bad=1</script>\nFictional evidence')});await files.getByRole('button',{name:'Upload text attachment',exact:true}).click();await expect(op).toContainText('attach');
+ await expect.poll(async()=>{await op.getByRole('button',{name:'Refresh operation',exact:true}).click();return op.textContent();},{intervals:[500,1000],timeout:15000}).toContain('completed');
+ const attachment=files.getByRole('link',{name:'Download worker-notes.txt',exact:true});const text=await page.request.get((await attachment.getAttribute('href'))!);expect(text.status()).toBe(200);expect(text.headers()['content-type']).toContain('text/plain');expect(await text.text()).toContain('<script>');expect(await page.evaluate(()=>('bad' in window))).toBe(false);
+ await files.getByRole('button',{name:'Remove worker-notes.txt',exact:true}).click();await expect(op).toContainText('cleanup');
+ await expect.poll(async()=>{await op.getByRole('button',{name:'Refresh operation',exact:true}).click();return op.textContent();},{intervals:[500,1000],timeout:15000}).toContain('completed');await expect(attachment).toHaveCount(0);
+ await page.screenshot({path:'evidence/phase4-files.png',fullPage:true});
+ await page.getByRole('button',{name:'Open notifications',exact:true}).click();await expect.poll(async()=>{await page.getByRole('button',{name:'Refresh notifications',exact:true}).click();return page.getByRole('region',{name:'Notifications'}).textContent();},{intervals:[500,1000],timeout:15000}).toContain('Revision 1');await page.getByRole('button',{name:'Mark read',exact:true}).first().click();await expect(page.getByRole('region',{name:'Notifications'})).toContainText('Read');await page.screenshot({path:'evidence/phase4-notifications.png',fullPage:true});
+});

@@ -33,5 +33,5 @@ test('editor publishes immutable versions, withdraws and inspects audit; Markdow
  await expect(page.getByText('No matching runbooks.',{exact:true})).toBeVisible();
  await page.getByRole('button',{name:'Show audit',exact:true}).click();
  const audit=page.getByRole('region',{name:'Workspace audit'});await expect(audit).toContainText('runbook.withdraw');
- await page.screenshot({path:'evidence/phase3-knowledge.png',fullPage:true});
+ await page.screenshot({path:'evidence/phase4-knowledge.png',fullPage:true});
 });

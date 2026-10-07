@@ -14,7 +14,10 @@ import {Action,HistoryQuery,Activity} from '../../../packages/contracts/src/life
 import {Knowledge} from './knowledge.ts';
 import {CreateRunbook,NewVersion,PublishAction,RunbookParams,VersionParams,Search,RunbookVersion,AuditQuery} from '../../../packages/contracts/src/knowledge.ts';
 
-export async function buildApp(store:Store,settings:Settings,serveWeb=false){
+import type {AsyncOps} from './async-ops.ts';
+import {ExportRequest,UploadRequest,FileParams,OperationParams,NotificationParams,BoundedPage,OperationList} from '../../../packages/contracts/src/async.ts';
+
+export async function buildApp(store:Store,settings:Settings,serveWeb=false,operations?:AsyncOps){
   const auth=createAuth(store.pool,settings);
   const knowledge=new Knowledge(store.pool,settings.AUTH_SECRET);
   const identities=new WeakMap<FastifyRequest,string>();
@@ -113,6 +116,38 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false){
   });
   app.get('/api/v1/workspaces/:workspaceId/audit',{schema:{params:Params,querystring:AuditQuery}},async request=>{
     const user=await identity(request);return knowledge.events(user.id,request.params.workspaceId,request.query.pageSize,request.query.before);
+  });
+  async function access(request:FastifyRequest,workspace:string){const user=await identity(request);await store.member(user.id,workspace);if(!operations)throw new HttpError(503,'async_unavailable','Async operations unavailable');return {user,ops:operations};}
+  app.post('/api/v1/workspaces/:workspaceId/incidents/:incidentId/exports',{schema:{params:DetailParams,body:ExportRequest}},async(request,reply)=>{
+    const {user,ops}=await access(request,request.params.workspaceId);return reply.code(202).send(await ops.request(user.id,request.params.workspaceId,request.params.incidentId,request.body,'export',request.id));
+  });
+  app.post('/api/v1/workspaces/:workspaceId/incidents/:incidentId/attachments',{schema:{params:DetailParams,body:UploadRequest}},async(request,reply)=>{
+    const {user,ops}=await access(request,request.params.workspaceId);return reply.code(202).send(await ops.request(user.id,request.params.workspaceId,request.params.incidentId,request.body,'attach',request.id));
+  });
+  app.get('/api/v1/workspaces/:workspaceId/incidents/:incidentId/files',{schema:{params:DetailParams}},async request=>{
+    const {user,ops}=await access(request,request.params.workspaceId);await store.detail(request.params.workspaceId,request.params.incidentId);return ops.files(user.id,request.params.workspaceId,request.params.incidentId);
+  });
+  app.get('/api/v1/workspaces/:workspaceId/operations',{schema:{params:Params,querystring:OperationList}},async request=>{
+    const {user,ops}=await access(request,request.params.workspaceId);return ops.list(user.id,request.params.workspaceId,request.query.pageSize,request.query.before,request.query.incidentId);
+  });
+  app.get('/api/v1/workspaces/:workspaceId/operations/:operationId',{schema:{params:OperationParams}},async request=>{
+    const {user,ops}=await access(request,request.params.workspaceId);return ops.operation(user.id,request.params.workspaceId,request.params.operationId);
+  });
+  app.post('/api/v1/workspaces/:workspaceId/operations/:operationId/retry',{schema:{params:OperationParams,body:z.strictObject({})}},async(request,reply)=>{
+    const {user,ops}=await access(request,request.params.workspaceId);return reply.code(202).send(await ops.retry(user.id,request.params.workspaceId,request.params.operationId,request.id));
+  });
+  app.get('/api/v1/workspaces/:workspaceId/files/:fileId',{schema:{params:FileParams}},async(request,reply)=>{
+    const {user,ops}=await access(request,request.params.workspaceId);const file=await ops.download(user.id,request.params.workspaceId,request.params.fileId);
+    return reply.header('cache-control','no-store').header('content-disposition','attachment; filename="'+file.filename+'"').type(file.mime).send(file.bytes);
+  });
+  app.delete('/api/v1/workspaces/:workspaceId/files/:fileId',{schema:{params:FileParams}},async(request,reply)=>{
+    const {user,ops}=await access(request,request.params.workspaceId);return reply.code(202).send(await ops.remove(user.id,request.params.workspaceId,request.params.fileId,request.id));
+  });
+  app.get('/api/v1/workspaces/:workspaceId/notifications',{schema:{params:Params,querystring:BoundedPage}},async request=>{
+    const {user,ops}=await access(request,request.params.workspaceId);return ops.notices(user.id,request.params.workspaceId,request.query.pageSize,request.query.before);
+  });
+  app.post('/api/v1/workspaces/:workspaceId/notifications/:notificationId/read',{schema:{params:NotificationParams,body:z.strictObject({})}},async request=>{
+    const {user,ops}=await access(request,request.params.workspaceId);return ops.markRead(user.id,request.params.workspaceId,request.params.notificationId);
   });
   if(serveWeb){
     await app.register(staticPlugin,{root:resolve('apps/web/dist'),prefix:'/'});

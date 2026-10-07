@@ -1,0 +1,10 @@
+import {Pool} from 'pg';
+import {config} from './config.ts';
+import {AsyncOps} from './async-ops.ts';
+const settings=config();
+const pool=new Pool({connectionString:process.env.JOB_DATABASE_URL??settings.DATABASE_URL,connectionTimeoutMillis:2000});
+const operations=await new AsyncOps(pool,settings.STORAGE_DIR,process.env.LAB_DB_BACKEND==='pglite'?'pglite':'postgres',true).start();
+await operations.work();
+console.log('Worker ready; queue opsledger-effects, bounded retries and private storage');
+const cleanup=setInterval(()=>{void operations.cleanupStorage().then(report=>console.log({removed:report.removed.length},'Private storage cleanup')).catch(()=>console.error('Private storage cleanup failed'));},3600000);
+for(const signal of ['SIGINT','SIGTERM'] as const)process.once(signal,()=>{clearInterval(cleanup);void operations.stop().then(()=>pool.end()).then(()=>process.exit(0));});

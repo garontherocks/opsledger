@@ -4,7 +4,7 @@ import {PGlite} from '@electric-sql/pglite';
 import {PGLiteSocketServer} from '@electric-sql/pglite-socket';
 const db=await PGlite.create();
 const socket=new PGLiteSocketServer({db,host:'127.0.0.1',port:55434});await socket.start();
-const env={...process.env,DATABASE_URL:'postgresql://postgres@127.0.0.1:55434/postgres',AUTH_SECRET:crypto.randomUUID()+crypto.randomUUID(),BASE_URL:'http://localhost:3101',PORT:'3101',NODE_ENV:'development',LAB_MODE:'true'};
+const env={...process.env,DATABASE_URL:'postgresql://postgres@127.0.0.1:55434/postgres',AUTH_SECRET:crypto.randomUUID()+crypto.randomUUID(),BASE_URL:'http://localhost:3101',PORT:'3101',NODE_ENV:'development',LAB_MODE:'true',LAB_DB_BACKEND:'pglite'};
 async function run(file:string){
   const child=spawn(process.execPath,['--experimental-strip-types',file],{env,stdio:'inherit'});
   await new Promise<void>((resolve,reject)=>child.on('error',reject).on('exit',code=>code===0?resolve():reject(new Error(file+' exited '+code))));

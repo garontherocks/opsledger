@@ -31,8 +31,9 @@ export class Store {
       SELECT $1,$2,$3,$4,$5,$6,$7 WHERE EXISTS(SELECT 1 FROM services WHERE id=$3 AND workspace_id=$2 AND active=true)
       AND EXISTS(SELECT 1 FROM memberships WHERE user_id=$4 AND workspace_id=$2 AND active=true) RETURNING *),
       logged AS (INSERT INTO audit_events(workspace_id,actor_id,action,object_type,object_id,revision,request_id)
-      SELECT workspace_id,reporter_id,'incident.create','incident',id,revision,$8 FROM made RETURNING object_id)
-      SELECT made.* FROM made JOIN logged ON logged.object_id=made.id`,
+      SELECT workspace_id,reporter_id,'incident.create','incident',id,revision,$8 FROM made RETURNING object_id),
+      outboxed AS (INSERT INTO domain_outbox(id,workspace_id,incident_id,revision,recipients,payload) SELECT gen_random_uuid(),workspace_id,id,revision,ARRAY[reporter_id],jsonb_build_object('state',state) FROM made RETURNING incident_id)
+      SELECT made.* FROM made JOIN logged ON logged.object_id=made.id JOIN outboxed ON outboxed.incident_id=made.id`,
       [crypto.randomUUID(),workspaceId,input.serviceId,userId,input.title,input.description,input.severity,requestId]);
     if(!r.rowCount)throw new HttpError(404,'not_found','Resource not found');
     return this.dto(r.rows[0]);
@@ -83,6 +84,7 @@ export class Store {
       await client.query('INSERT INTO incident_activity(id,incident_id,revision,actor_id,kind,from_state,to_state,note,assignee_id) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)',[activityId,id,updated.rows[0].revision,userId,input.action,current.state,state,note,assignee]);
       if(input.action==='comment')await client.query('INSERT INTO incident_comments(id,incident_id,activity_id,author_id,body) VALUES($1,$2,$3,$4,$5)',[crypto.randomUUID(),id,activityId,userId,input.body]);
       await audit(client,workspaceId,userId,'incident.'+input.action,'incident',id,updated.rows[0].revision,requestId);
+      await client.query("INSERT INTO domain_outbox(id,workspace_id,incident_id,revision,recipients,payload) VALUES($1,$2,$3,$4,$5,$6)",[crypto.randomUUID(),workspaceId,id,updated.rows[0].revision,[current.reporter_id,...(assignee?[assignee]:[])],{state}]);
       const result=this.dto(updated.rows[0]);await client.query('COMMIT');return result;
     }catch(error){await client.query('ROLLBACK');throw error;}finally{client.release();}
   }

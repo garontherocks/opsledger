@@ -18,7 +18,7 @@ test('pagination is bounded and unknown query fields fail',()=>{
     assert.equal(ListQuery.safeParse(input).success,false);
 });
 test('production cannot enable lab mode or plain HTTP',()=>{
-  const env={DATABASE_URL:'postgresql://localhost/lab',AUTH_SECRET:'x'.repeat(40),NODE_ENV:'production',BASE_URL:'https://example.test'};
+  const env={DATABASE_URL:'postgresql://localhost/lab',AUTH_SECRET:'x'.repeat(40),NODE_ENV:'production',STORAGE_DIR:'/var/lib/opsledger-files',BASE_URL:'https://example.test'};
   assert.throws(()=>config({...env,LAB_MODE:'true'}));
   assert.throws(()=>config({...env,BASE_URL:'http://example.test'}));
   assert.equal(config(env).LAB_MODE,'false');

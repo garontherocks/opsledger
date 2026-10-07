@@ -12,5 +12,36 @@ services:
       interval: 3s
       timeout: 3s
       retries: 20
+  api:
+    profiles: [runtime]
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+    command: ["node", "--experimental-strip-types", "apps/api/src/server.ts"]
+    env_file: ../.env
+    environment:
+      DATABASE_URL: postgresql://opsledger:${DB_PASSWORD:?Set DB_PASSWORD locally}@db:5432/opsledger
+      STORAGE_DIR: /var/lib/opsledger-files
+      BIND_HOST: 0.0.0.0
+    ports: ["127.0.0.1:3100:3100"]
+    volumes: ["private-files:/var/lib/opsledger-files"]
+    depends_on:
+      db:
+        condition: service_healthy
+  worker:
+    profiles: [runtime]
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+    command: ["node", "--experimental-strip-types", "apps/api/src/worker.ts"]
+    env_file: ../.env
+    environment:
+      DATABASE_URL: postgresql://opsledger:${DB_PASSWORD:?Set DB_PASSWORD locally}@db:5432/opsledger
+      STORAGE_DIR: /var/lib/opsledger-files
+    volumes: ["private-files:/var/lib/opsledger-files"]
+    depends_on:
+      db:
+        condition: service_healthy
 volumes:
+  private-files:
   db-data:

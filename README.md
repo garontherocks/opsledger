@@ -1,6 +1,6 @@
-# OpsLedger — Phase 3
+# OpsLedger — Phase 4
 
-Authenticated incident creation, lifecycle, assignment, comments and activity. Every action requires the current revision. No model dependency. Branch: feat/knowledge-search-audit. No merge or deployment.
+Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. No model dependency. Branch: feat/reliable-async-files. No merge or deployment.
 
 ## Native local startup
 
@@ -24,11 +24,11 @@ Integration and E2E default to separate transient PGlite test databases. Set TES
 
 Optional harness: `LAB_MODE=true npm run db:lab` hosts persistent PGlite on port 55432. Explicitly set DATABASE_URL to postgresql://postgres@127.0.0.1:55432/postgres, then migrate/seed/build/start. This is test tooling, not native PostgreSQL deployment. The application never silently selects it.
 
-Generate OpenAPI with `node --experimental-strip-types scripts/openapi.ts`. See docs/phase3-architecture.md, docs/phase3-report.md and evidence for actual results. Phase 0 probes and Phase 1 reports remain historical.
+Generate OpenAPI with `node --experimental-strip-types scripts/openapi.ts`. See docs/phase4-architecture.md, docs/phase4-report.md and evidence for actual results. Phase 0 probes and Phase 1 reports remain historical.
 
 To upgrade a Phase 1 database, run migrations and the synthetic seed again using the retained credentials; incident rows and previous migration checksums are preserved. For lifecycle UI use north-lead@example.test with that same local synthetic password. Reporters can comment, responders can triage/assign/investigate, and only leads can resolve/close/reopen. Admin/editor membership does not imply lead privileges. Refresh after a stale-revision conflict; actions are never silently retried.
 
-Remote CI/native PostgreSQL acceptance remains pending. The native test uses a controlled row lock and checks two waiting backend PIDs; the default PGlite run explicitly skips it. Phase 3 local knowledge/search/audit acceptance is recorded; Phase 4 has not started.
+Remote CI/native PostgreSQL acceptance remains pending. The native test uses a controlled row lock and checks two waiting backend PIDs; the default PGlite run explicitly skips it. Phase 3 local knowledge/search/audit acceptance is recorded; Phase 4 local async/file acceptance is recorded; Phase 5 has not started.
 
 ## Knowledge and audit
 
@@ -39,3 +39,21 @@ Sign in as north-editor@example.test (or north-admin@example.test) with the reta
 The synthetic corpus contains 24 runbooks across two workspaces, including repeated titles/timestamps, drafts, withdrawn versions and malicious Markdown strings. Keyword search uses PostgreSQL simple full-text search, with service/category filters, title/newest order and signed scoped keyset pagination. No AI, embeddings or attachment parsing. Admin/editor may inspect workspace audit metadata; other roles read published knowledge only. Knowledge editor privileges do not grant incident lead privileges.
 
 Browser acceptance runs three separate server lifetimes to avoid exhausting a shared production rate-limit bucket. The default harness creates a fresh PGlite database per flow; the native browser lane shares its fresh job database and generated password across flows. Production rate limits are unchanged.
+
+## Async operations and private files
+
+Upgrade a Phase 3 database by running migrations and the retained seed. Migration 0004 adds durable notification outbox, operations, private-file metadata and notifications without changing prior migration checksums. Starting the API installs/checks pg-boss schema version 45. API and worker share the same database and the exact same absolute STORAGE_DIR. Use a private mounted directory (mode 0700), outside the web root; files are 0600. Set JOB_DATABASE_URL for a separate worker credential where roles are configured; the local Compose lab uses its existing owner credential. No credential enters a job payload or the browser. Production additionally requires an explicit STORAGE_DIR and HTTPS.
+
+Start the API as before and, in a separate terminal with the same environment, run `node --env-file=.env --experimental-strip-types apps/api/src/worker.ts`. The worker delivers notification outbox rows, handles file effects and supervises queue expiry/retries. The API can continue creating/updating incidents while the worker is unavailable; notifications remain in the durable outbox. File requests return 202 and require worker processing. Graceful Ctrl+C stops polling before database shutdown.
+
+For the optional PGlite API harness set LAB_DB_BACKEND=pglite explicitly. A separate API/worker process attempt disconnected in this socket harness and is not supported by the local acceptance claim. The E2E harness runs API and worker callbacks in one server process using the same SQL pool. Native PostgreSQL 18.6 remains the deployment target; separate processes/roles require deployment acceptance.
+
+Open an incident → Open files → Request incident export. Export captures the requested revision and latest 50 activity rows as bounded JSON; stale revision returns 409. Only the requesting user can download an export. Other active workspace members can download attachments, but removal requires owner or workspace lead/admin. Upload accepts canonical base64 JSON for `.txt` UTF-8, 1–16 KiB, without NUL, path separators or reserved filenames. HTML strings stay text and downloads force attachment/nosniff/no-store. Rich files, parsing, antivirus and external object storage are deferred.
+
+Use Refresh operation / Refresh files, or inspect Recent operations after reload. Failed work exposes a safe error code and timeline. After repair, the owner may explicitly Retry failed operation, at most twice; each queue submission permits 2 retries (3 attempts). It never retries indefinitely or silently overwrites a request. Ready files and failed pending files can be removed asynchronously. Open notifications to refresh recipient-only messages and mark read.
+
+Limits: 20 pending user requests per requester, 100 per workspace, 20 live attachments per incident, 100 live files / 8 MiB per workspace; exports max 256 KiB. Deleted metadata remains but payloads are scrubbed. Queue jobs expire after 30 seconds active, remain eligible for 1 day and completed queue records retain 7 days. The worker sweeps unknown UUID blobs/temp files older than 24 hours hourly; known live/pending files are retained. Permanent operation/audit metadata retention is a documented limitation.
+
+Tests use real pg-boss jobs with the PGlite backend and no queue mock. Four browser flows each start a fresh server; their harness runs the real worker callback/poller in the server process. Controlled crash-point errors prove replay behavior; an actual killed worker/power loss and native multiworker behavior remain pending. See phase4-job-timeline.json and phase4-storage-cleanup.json. No Redis or AI dependency.
+
+Optional container runtime configuration (unexecuted here): after applying app migrations and seed to the native DB, run `docker compose -f infra/compose.yaml --profile runtime up --build`. API/worker share the private-files named volume with a non-root Node user; only API localhost:3100 is exposed. The default Compose command still provisions the database alone for host-based startup. The runtime image/volume/role acceptance is pending, and no image digest or successful container build is claimed.

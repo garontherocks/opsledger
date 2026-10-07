@@ -4,11 +4,12 @@ import type { IncidentDTO } from '../../../packages/contracts/src/incident.ts';
 import './style.css';
 import {api} from './api.ts';
 import {IncidentDetail} from './IncidentDetail.tsx';
+import {AsyncPanel,NotificationsPanel} from './AsyncPanel.tsx';
 import {KnowledgePanel} from './KnowledgePanel.tsx';
 type Identity={user:{name:string,email:string},workspaces:{id:string,name:string,role:string}[]};
 type Service={id:string,name:string};
 function App(){
-  const [view,setView]=useState('incidents');
+  const [view,setView]=useState('incidents');const [showFiles,setShowFiles]=useState(false);
   const [identity,setIdentity]=useState<Identity|null>(null),[workspace,setWorkspace]=useState('');
   const [items,setItems]=useState<IncidentDTO[]>([]),[services,setServices]=useState<Service[]>([]);
   const [detail,setDetail]=useState<IncidentDTO|null>(null),[cursor,setCursor]=useState<string|null>(null);
@@ -19,7 +20,7 @@ function App(){
   useEffect(()=>{void loadIdentity();},[]);
   useEffect(()=>{
     if(!workspace)return;
-    const abort=new AbortController();setBusy(true);setError('');setDetail(null);
+    const abort=new AbortController();setBusy(true);setError('');setDetail(null);setShowFiles(false);
     Promise.all([api<{items:IncidentDTO[],nextCursor:string|null}>('/api/v1/workspaces/'+workspace+'/incidents',{signal:abort.signal}),
       api<Service[]>('/api/v1/workspaces/'+workspace+'/services',{signal:abort.signal})])
       .then(([list,available])=>{setItems(list.items);setCursor(list.nextCursor);setServices(available);})
@@ -52,7 +53,7 @@ function App(){
       })}>Sign out</button></nav>
       {!identity.workspaces.length?<p>No active workspace access.</p>:<>
       <label htmlFor="workspace">Workspace</label><select id="workspace" disabled={busy} value={workspace} onChange={e=>setWorkspace(e.target.value)}>{identity.workspaces.map(w=><option key={w.id} value={w.id}>{w.name}</option>)}</select>
-      <nav><button onClick={()=>setView('incidents')}>Open incidents</button><button onClick={()=>setView('knowledge')}>Open knowledge</button></nav>
+      <nav><button onClick={()=>setView('incidents')}>Open incidents</button><button onClick={()=>setView('knowledge')}>Open knowledge</button><button onClick={()=>setView('notifications')}>Open notifications</button></nav>
       {view==='incidents'&&<div className="columns"><section><h2>Report incident</h2><form onSubmit={create}>
         <label>Title<input name="title" minLength={5} maxLength={120} required/></label>
         <label>Description<textarea name="description" minLength={10} maxLength={5000} required/></label>
@@ -66,10 +67,12 @@ function App(){
           setItems(old=>[...old,...page.items]);setCursor(page.nextCursor);
         })}>Load more</button>}
         {detail&&<IncidentDetail key={detail.id} incident={detail} workspace={workspace} role={identity.workspaces.find(w=>w.id===workspace)?.role??''} busy={busy} execute={action} onChange={value=>{setDetail(value);setItems(old=>old.map(i=>i.id===value.id?value:i));}}/>}
+        {detail&&<><button onClick={()=>setShowFiles(value=>!value)}>Open files</button>{showFiles&&<AsyncPanel key={detail.id} workspace={workspace} incident={detail.id} revision={detail.revision} role={identity.workspaces.find(w=>w.id===workspace)?.role??''}/>}</>}
         </section></div>}
+      {view==='notifications'&&<NotificationsPanel key={workspace} workspace={workspace}/>}
       {view==='knowledge'&&<KnowledgePanel key={workspace} workspace={workspace} role={identity.workspaces.find(w=>w.id===workspace)?.role??''} services={services}/>}
       </>}
       </>}
-      <footer>OpsLedger · Local lab · Phase 3</footer></main>;
+      <footer>OpsLedger · Local lab · Phase 4</footer></main>;
 }
 const element=document.getElementById('root');if(!element)throw new Error('Missing root');createRoot(element).render(<App/>);
