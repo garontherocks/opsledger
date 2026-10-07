@@ -27,4 +27,8 @@ try{
     if(!login.ok||!login.headers.getSetCookie().length)throw new Error('Seeded login failed');
     console.log('Startup smoke passed: repeat migrations/seed, real server, readiness, built SPA and seeded login; backend pglite-socket');
   }finally{server.kill('SIGTERM');await new Promise(resolve=>server.once('exit',resolve));}
-}finally{await socket.stop();await db.close();}
+}finally{
+  await socket.stop();
+  // The socket adapter defers detach to setImmediate; let it finish before WASM closes.
+  await new Promise<void>(resolve=>setImmediate(resolve));await db.close();
+}
