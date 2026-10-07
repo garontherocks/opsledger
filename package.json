@@ -18,9 +18,9 @@
     "start": "node --experimental-strip-types apps/api/src/server.ts",
     "db:migrate": "node --experimental-strip-types scripts/migrate.ts",
     "db:seed:lab": "node --experimental-strip-types scripts/seed.ts",
-    "test:unit": "node --experimental-strip-types --test tests/domain.test.ts tests/lifecycle.domain.test.ts",
+    "test:unit": "node --experimental-strip-types --test tests/domain.test.ts tests/lifecycle.domain.test.ts tests/knowledge.domain.test.ts",
     "test:integration": "node --experimental-strip-types scripts/integration-runner.ts",
-    "test:e2e": "playwright test",
+    "test:e2e": "node --experimental-strip-types scripts/browser-runner.ts",
     "db:lab": "node --experimental-strip-types scripts/lab-db.ts"
   },
   "dependencies": {
