@@ -1,0 +1,16 @@
+import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import {config} from '../apps/api/src/config.ts';
+import {OllamaProvider} from '../apps/api/src/local-model.ts';
+import {runAgent,hash,type Manifest} from '../apps/api/src/qa-agent.ts';
+const settings=config(process.env);
+if(!settings.AI_ENABLED||!settings.LAB_MODE||settings.NODE_ENV==='production')throw new Error('Owned nonproduction AI lab only');
+const data=JSON.parse(await readFile(new URL('../tests/fixtures/phase11-agent-v1.json',import.meta.url),'utf8')) as {manifest:Manifest};
+const manifest={...data.manifest,sources:data.manifest.sources.map(s=>({...s,sha256:hash(s.text)}))};
+if(!process.env.OLLAMA_EXPECTED_VERSION)throw new Error('Set the exact approved OLLAMA_EXPECTED_VERSION');
+const pinned=new OllamaProvider({...settings,AI_TIMEOUT_MS:60000});
+const provider={generate:async(...args:Parameters<typeof pinned.generate>)=>{const result=await pinned.generate(...args);if(result.runtime!==process.env.OLLAMA_EXPECTED_VERSION)throw new Error('Runtime changed');return result;}};
+const results=[];
+for(let repetition=1;repetition<=3;repetition++)results.push({repetition,...await runAgent(manifest,provider,{deadlineMs:60000})});
+await mkdir('evidence/desktop-private',{recursive:true});
+await writeFile('evidence/desktop-private/phase11-agent-live.json',JSON.stringify({at:new Date().toISOString(),source:'actual owned pinned provider',model:settings.OLLAMA_MODEL,digest:settings.OLLAMA_DIGEST,results,automaticQualityAcceptance:false,limitation:'fixed synthetic task; selection quality requires calibrated labels; not an operational agent'},null,2)+'\n');
+console.log('Private Phase 11 live evidence recorded; no automatic adoption.');

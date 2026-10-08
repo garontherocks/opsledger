@@ -103,3 +103,7 @@ Desktop bundle and consolidated learning/review completed on handoff 4e10225: 36
 ## Formal M2 acceptance — 2026-10-08
 
 The user explicitly agreed [Phase 9 / M2 quality policy](docs/m2-quality-acceptance-policy.md). All M2 gates are satisfied for the optional, explicitly unverified, human-reviewed-where-material, non-operational lab scope. Recall@5 1.0 / MRR 1.0 satisfy the agreed lab floors; no numerical semantic pass rate is inferred from the eight samples. Semantic defects and production/promotion debt remain recorded. The future >= 0.90 target requires fresh calibrated bilingual held-out data plus no critical unsupported operational claim. No product-value improvement, model/prompt promotion or M3 authorization is implied. Desktop and Teach-Back were not rerun. Phase 11 has not begun.
+
+## Phase 11 — direct read-only QA harness
+
+Authorized after M2 acceptance; isolated branch feat/bounded-qa-agent. Three transport-neutral snapshot readers, strict model proposals, controller-owned mandatory coverage/integrity checks, six-turn/deadline/character/token limits and complete synthetic traces. No product API, operational write, shell, MCP or suite execution is added. Run `npm run agent:eval`; actual pinned tool-selection quality remains for the integrated M3 desktop bundle. See [Phase 11 report](docs/phase11-report.md), [security](docs/phase11-security.md) and accumulated [learning](docs/phase11-learning.md). No production model/prompt promotion or later milestone authorization is implied.
