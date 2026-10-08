@@ -1,0 +1,183 @@
+{
+  "backend": "pglite-socket",
+  "library": "pg-boss 12.37.0",
+  "native": "pending",
+  "failureSimulation": "Controlled errors/omitted completion, not an actual OS process kill",
+  "scenarios": [
+    {
+      "scenario": "snapshot/idempotent enqueue",
+      "id": "de9bb812-1ad6-423b-a562-efd1d9b4179c",
+      "kind": "export",
+      "state": "completed",
+      "attempts": 1,
+      "fileId": "c3b7829c-355f-46ab-b935-ce2a5aa4cf48",
+      "lastError": null,
+      "createdAt": "2026-10-08T18:12:58.404Z",
+      "timeline": [
+        {
+          "seq": "3",
+          "event": "effect_committed",
+          "createdAt": "2026-10-08T18:12:58.475Z"
+        },
+        {
+          "seq": "2",
+          "event": "effect_started",
+          "createdAt": "2026-10-08T18:12:58.475Z"
+        },
+        {
+          "seq": "1",
+          "event": "enqueued",
+          "createdAt": "2026-10-08T18:12:58.404Z"
+        }
+      ]
+    },
+    {
+      "scenario": "filesystem effect before DB commit",
+      "id": "102c59d5-69dd-448b-a2b4-e6e539cdae24",
+      "kind": "attach",
+      "state": "completed",
+      "attempts": 2,
+      "fileId": "cdfc90f8-c6b7-4184-a41b-1919770f9b59",
+      "lastError": null,
+      "createdAt": "2026-10-08T18:12:58.706Z",
+      "timeline": [
+        {
+          "seq": "12",
+          "event": "effect_committed",
+          "createdAt": "2026-10-08T18:13:00.689Z"
+        },
+        {
+          "seq": "11",
+          "event": "effect_started",
+          "createdAt": "2026-10-08T18:13:00.689Z"
+        },
+        {
+          "seq": "10",
+          "event": "attempt_failed",
+          "createdAt": "2026-10-08T18:12:58.727Z"
+        },
+        {
+          "seq": "8",
+          "event": "enqueued",
+          "createdAt": "2026-10-08T18:12:58.706Z"
+        }
+      ]
+    },
+    {
+      "scenario": "committed effect before acknowledgement + duplicate delivery",
+      "id": "284216b7-89d9-47a4-9396-50d58c475ed8",
+      "kind": "export",
+      "state": "completed",
+      "attempts": 1,
+      "fileId": "aa6e06a4-2292-47fc-a7e6-446a42905320",
+      "lastError": null,
+      "createdAt": "2026-10-08T18:13:00.710Z",
+      "timeline": [
+        {
+          "seq": "15",
+          "event": "effect_committed",
+          "createdAt": "2026-10-08T18:13:00.725Z"
+        },
+        {
+          "seq": "14",
+          "event": "effect_started",
+          "createdAt": "2026-10-08T18:13:00.725Z"
+        },
+        {
+          "seq": "13",
+          "event": "enqueued",
+          "createdAt": "2026-10-08T18:13:00.710Z"
+        }
+      ]
+    },
+    {
+      "scenario": "retry exhaustion",
+      "id": "954d1155-4e21-40ec-ad4e-da029a41c338",
+      "kind": "attach",
+      "state": "failed",
+      "attempts": 3,
+      "fileId": "e7ed1779-e66b-4ea9-af1f-cd7cb205316e",
+      "lastError": "retry_exhausted",
+      "createdAt": "2026-10-08T18:13:02.092Z",
+      "timeline": [
+        {
+          "seq": "23",
+          "event": "retry_exhausted",
+          "createdAt": "2026-10-08T18:13:06.858Z"
+        },
+        {
+          "seq": "22",
+          "event": "attempt_failed",
+          "createdAt": "2026-10-08T18:13:06.851Z"
+        },
+        {
+          "seq": "20",
+          "event": "attempt_failed",
+          "createdAt": "2026-10-08T18:13:03.760Z"
+        },
+        {
+          "seq": "18",
+          "event": "attempt_failed",
+          "createdAt": "2026-10-08T18:13:02.110Z"
+        },
+        {
+          "seq": "16",
+          "event": "enqueued",
+          "createdAt": "2026-10-08T18:13:02.092Z"
+        }
+      ]
+    },
+    {
+      "scenario": "explicit owner retry after repair",
+      "id": "954d1155-4e21-40ec-ad4e-da029a41c338",
+      "kind": "attach",
+      "state": "completed",
+      "attempts": 4,
+      "fileId": "e7ed1779-e66b-4ea9-af1f-cd7cb205316e",
+      "lastError": null,
+      "createdAt": "2026-10-08T18:13:02.092Z",
+      "timeline": [
+        {
+          "seq": "26",
+          "event": "effect_committed",
+          "createdAt": "2026-10-08T18:13:06.889Z"
+        },
+        {
+          "seq": "25",
+          "event": "effect_started",
+          "createdAt": "2026-10-08T18:13:06.889Z"
+        },
+        {
+          "seq": "24",
+          "event": "enqueued",
+          "createdAt": "2026-10-08T18:13:06.877Z"
+        },
+        {
+          "seq": "23",
+          "event": "retry_exhausted",
+          "createdAt": "2026-10-08T18:13:06.858Z"
+        },
+        {
+          "seq": "22",
+          "event": "attempt_failed",
+          "createdAt": "2026-10-08T18:13:06.851Z"
+        },
+        {
+          "seq": "20",
+          "event": "attempt_failed",
+          "createdAt": "2026-10-08T18:13:03.760Z"
+        },
+        {
+          "seq": "18",
+          "event": "attempt_failed",
+          "createdAt": "2026-10-08T18:13:02.110Z"
+        },
+        {
+          "seq": "16",
+          "event": "enqueued",
+          "createdAt": "2026-10-08T18:13:02.092Z"
+        }
+      ]
+    }
+  ]
+}

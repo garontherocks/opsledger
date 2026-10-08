@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-08T18:00:46.021Z",
+  "providerVersion": "0.116.7",
+  "unexpectedDenials": 1,
+  "cause": "Pinned Promptfoo sends telemetry-disabled event despite opt-out; egress guard blocked it before network",
+  "denialStacks": [
+    "Error\n    at deny (file:///workspace/scratch/560ad081e51c/opsledger/scripts/eval-egress.mjs:9:53)\n    at globalThis.fetch (file:///workspace/scratch/560ad081e51c/opsledger/scripts/eval-egress.mjs:14:183)\n    at file:///workspace/scratch/560ad081e51c/opsledger/scripts/phase10-eval.ts:10:120",
+    "Error\n    at deny (file:///workspace/scratch/560ad081e51c/opsledger/scripts/eval-egress.mjs:9:53)\n    at check (file:///workspace/scratch/560ad081e51c/opsledger/scripts/eval-egress.mjs:10:71)\n    at globalThis.fetch (file:///workspace/scratch/560ad081e51c/opsledger/scripts/eval-egress.mjs:14:190)\n    at file:///workspace/scratch/560ad081e51c/opsledger/scripts/phase10-eval.ts:10:120",
+    "Error: \n    at deny (file:///workspace/scratch/560ad081e51c/opsledger/scripts/eval-egress.mjs:9:53)\n    at globalThis.fetch (file:///workspace/scratch/560ad081e51c/opsledger/scripts/eval-egress.mjs:14:183)\n    at Telemetry.sendEvent (/workspace/scratch/560ad081e51c/opsledger/node_modules/promptfoo/src/telemetry.ts:159:5)\n    at Telemetry.recordTelemetryDisabled (/workspace/scratch/560ad081e51c/opsledger/node_modules/promptfoo/src/telemetry.ts:109:12)\n    at Telemetry.record (/workspace/scratch/560ad081e51c/opsledger/node_modules/promptfoo/src/telemetry.ts:116:12)\n    at Evaluator._runEvaluation (/workspace/scratch/560ad081e51c/opsledger/node_modules/promptfoo/src/evaluator.ts:1593:15)\n    at Evaluator.evaluate (/workspace/scratch/560ad081e51c/opsledger/node_modules/promptfoo/src/evaluator.ts:1648:14)\n    at evaluate (/workspace/scratch/560ad081e51c/opsledger/node_modules/promptfoo/src/index.ts:108:15)\n    at file:///workspace/scratch/560ad081e51c/opsledger/scripts/phase10-eval.ts:19:13"
+  ],
+  "dataSent": false
+}

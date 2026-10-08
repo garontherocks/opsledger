@@ -4,6 +4,7 @@ import {writeFile,copyFile,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 test('v1 accessibility, mobile, recoverable failure, visual stability and demo',async({browser,page})=>{
  test.setTimeout(120000);
+
  const evidence:{screen:string,violations:unknown[]}[]=[];
  async function check(screen:string){const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();evidence.push({screen,violations:result.violations});expect(result.violations,screen).toEqual([]);}
  await page.goto('/');await expect(page.getByRole('heading',{name:'Sign in',exact:true})).toBeVisible();await check('login');

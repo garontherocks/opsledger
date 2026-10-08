@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-08T18:13:10.133Z",
+  "passed": true,
+  "checks": [
+    "issued signed receipt",
+    "caller/workspace scope",
+    "tamper denial",
+    "duplicate denial",
+    "append-only",
+    "revocation denial",
+    "no incident mutation"
+  ],
+  "stored": "decision/reason/version/hashes only; no model text or credentials"
+}

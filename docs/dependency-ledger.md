@@ -41,3 +41,9 @@ See phase6-report.md, phase6-security.md and phase6-sources.md for the local run
 ## Phase 8 additions
 
 Exact dev dependency @electric-sql/pglite-pgvector 0.0.9 (Apache-2.0), compatible peer PGlite 0.5.8, lock integrity retained. Embedded extension reports 0.8.1; native build uses pgvector 0.8.7 with verified archive SHA-256 and postgres:18.6 base. Native image build/digest verification remains pending because Docker is unavailable in Work. No separate vector database or ANN dependency. Temporary browser tooling is ignored under .local and is not a product dependency.
+
+## Phase 10 local evaluation profile
+
+Promptfoo 0.124.1 was rejected: its jks-js → node-forge dependency had a high-severity advisory with no patched published node-forge release. The reviewed local JavaScript evaluation API instead uses exact Promptfoo 0.116.7, with scoped patched csv-parse 7.0.2, fast-xml-parser 5.7.0, mathjs 15.2.0, sharp 0.35.5, tmp 0.2.7 and uuid 11.1.1. Global basic-ftp 6.2.2 fixes its advisory; global drizzle-orm references the existing direct 0.45.3 pin. npm ci --ignore-scripts and the used eval/product paths are validated; npm audit reports zero known findings. Other Promptfoo cloud, image, XML, certificate and provider adapters are not supported or exercised by this profile. Maintain these overrides rather than silently upgrading; review/removal requires renewed audit and compatibility checks.
+
+Pinned Promptfoo's telemetry opt-out still tried to send a telemetry-disabled event. The reviewed local adapter explicitly suppresses sendEvent and an independent process egress guard denies remote network APIs. Evidence retains the initial denial. This is not an OS sandbox and does not grant authority to untrusted executable providers/graders. Only reviewed code and handwritten text cases execute.

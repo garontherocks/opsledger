@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-08T18:14:06.055787+00:00",
+  "failures": [
+    {
+      "case": "negative SQL constraint followed by API read",
+      "cause": "PGlite-socket pooled connection termination after asserted constraint error",
+      "fix": "retain explicit client; assert exact SQLSTATE; no security behavior changed"
+    },
+    {
+      "case": "login desktop visual golden",
+      "browser": "temporary Chromium 143.0.7499.0",
+      "pixelsDifferent": 2699,
+      "focusState": {
+        "focused": true,
+        "focus": true,
+        "visible": true,
+        "outline": "rgb(255, 201, 105) solid 3px",
+        "windowFocused": true
+      },
+      "status": "not waived; compatible CI browser validation required",
+      "baselineChanged": false
+    }
+  ]
+}

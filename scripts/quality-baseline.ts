@@ -1,3 +1,6 @@
+import {Retrieval} from '../apps/api/src/retrieval.ts';
+import {Knowledge} from '../apps/api/src/knowledge.ts';
+import {Feedback} from '../apps/api/src/feedback.ts';
 import {vector} from '@electric-sql/pglite-pgvector';
 import assert from 'node:assert/strict';
 import {mkdtemp,rm,cp,readFile,writeFile,readdir,lstat} from 'node:fs/promises';
@@ -20,7 +23,7 @@ const root=await mkdtemp(join(tmpdir(),'opsledger-restore-'));
 const source=await testDatabase(55441);const password=crypto.randomUUID()+'-Pass9!';
 const settings=config({NODE_ENV:'test',DATABASE_URL:'postgresql://localhost/opsledger_test',AUTH_SECRET:crypto.randomUUID()+crypto.randomUUID()});
 let ops:AsyncOps|undefined;let restored:PGlite|undefined;let socket:PGLiteSocketServer|undefined;let pool:Pool|undefined;let closed=false;
-const tables=['app_migrations','incidents','incident_activity','incident_comments','runbooks','runbook_versions','audit_events','domain_outbox','async_operations','operation_timeline','private_files','notifications','memberships'];
+const tables=['app_migrations','incidents','incident_activity','incident_comments','runbooks','runbook_versions','knowledge_chunks','ai_feedback','audit_events','domain_outbox','async_operations','operation_timeline','private_files','notifications','memberships'];
 async function fingerprints(db:Pool){const result:Record<string,{rows:number,sha256:string}>={};for(const table of tables){const rows=(await db.query(`SELECT row_to_json(t) AS data FROM ${table} t`)).rows.map(row=>JSON.stringify(row.data)).sort();result[table]={rows:rows.length,sha256:digest(JSON.stringify(rows))};}return result;}
 try{
  await seedLab(source.pool,password);const store=new Store(source.pool,settings.AUTH_SECRET);
@@ -33,6 +36,9 @@ try{
  assert.equal((await ops.operation('north-reporter',NORTH,operation.id)).state,'completed');
  const file=(await source.pool.query('SELECT id,sha256 FROM private_files WHERE id=$1',[operation.fileId])).rows[0];assert.equal(digest(await ops.storage.read(file.id)),file.sha256);
  await ops.stop();ops=undefined;
+ const published=await new Knowledge(source.pool,settings.AUTH_SECRET).version('north-editor',NORTH,'aaaaaaaa-aaaa-4aaa-8aaa-000000000001',1);
+ await new Retrieval(source.pool,settings.AUTH_SECRET,{model:'restore-fixture',digest:'sha256:'+'a'.repeat(64),embed:async inputs=>inputs.map(()=>Array.from({length:768},(_,i)=>i===0?1:0))}).index('north-editor',NORTH,published.id,published.revision);
+ const feedback=new Feedback(source.pool,settings.AUTH_SECRET);await feedback.record('north-reporter',NORTH,{token:feedback.issue('north-reporter',NORTH,{runId:crypto.randomUUID(),promptVersion:'restore-fixture',contextHash:'a'.repeat(64),digest:'sha256:'+'b'.repeat(64)}),decision:'rejected',reason:'other'});
  const before=await fingerprints(source.pool);const started=performance.now();
  const backup=await source.dump!();await cp(join(root,'live'),join(root,'backup'),{recursive:true});
  await source.close();closed=true;
