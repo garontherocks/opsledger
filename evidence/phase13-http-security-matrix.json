@@ -1,0 +1,67 @@
+{
+  "syntheticOnly": true,
+  "localListener": "127.0.0.1 ephemeral port",
+  "tokensRecorded": false,
+  "results": [
+    {
+      "case": "missing token",
+      "status": 401
+    },
+    {
+      "case": "invalid token",
+      "status": 401
+    },
+    {
+      "case": "expired token",
+      "status": 401
+    },
+    {
+      "case": "wrong audience",
+      "status": 401
+    },
+    {
+      "case": "missing scope",
+      "status": 403
+    },
+    {
+      "case": "malicious Origin",
+      "status": 403
+    },
+    {
+      "case": "null Origin",
+      "status": 403
+    },
+    {
+      "case": "foreign Host",
+      "status": 403
+    },
+    {
+      "case": "missing request ID",
+      "status": 400
+    },
+    {
+      "case": "first request",
+      "status": 200
+    },
+    {
+      "case": "same request replay",
+      "status": 409
+    },
+    {
+      "case": "malformed RPC body",
+      "status": 400
+    },
+    {
+      "case": "oversized body",
+      "status": 413
+    },
+    {
+      "case": "revoked grant",
+      "status": 401
+    }
+  ],
+  "limitations": [
+    "bearer is reusable until expiry/revocation; nonce rejects exact request-ID replay, not stolen-token fresh-nonce reuse",
+    "not an OAuth authorization server or production transport"
+  ]
+}

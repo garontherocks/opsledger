@@ -1142,3 +1142,8 @@ No missing answer blocks this planning recommendation. Main product, local-first
 | Technical interviewer | Require explanations and failure demonstrations; specialist rejection and inconclusive findings are valuable evidence |
 
 The final target is intentionally ambitious, but each adoption has a dependency and an exit test. A working deterministic v1, a measured RAG feature and a safe single QA agent are already a credible portfolio milestone; later phases deepen understanding rather than retroactively justify unused technology.
+
+
+## M3 current execution state — 2026-10-08
+
+Phases 11/12 were completed and explicitly merged through PR #3/#4, with their scope, tests/evals and separate reports preserved. Phase 13 is authorized and implemented on feat/m3-skills-http; its final engineering acceptance depends on the exact branch CI receipt. Accumulated learning, one M3 Teach-Back, selected material review and one desktop bundle are in docs/m3-engineering-report.md, docs/m3-teach-back.md and docs/m3-desktop-validation.md. Actual human/desktop outcomes are pending, so M3 is not formally accepted. No M4/Phase 14 authorization or implementation. This status annotation changes no phase scope or milestone governance.

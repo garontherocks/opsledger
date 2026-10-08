@@ -31,6 +31,8 @@ jobs:
       - run: npm run test:unit
       - run: npm audit --audit-level=moderate
       - if: matrix.lane == 'api'
+        run: npm run m3:test
+      - if: matrix.lane == 'api'
         run: npm run mcp:test
       - if: matrix.lane == 'api'
         run: npm run agent:eval
@@ -51,6 +53,8 @@ jobs:
         with:
           name: phase10-${{ matrix.lane }}-${{ github.sha }}
           path: |
+            evidence/phase13-*
+            evidence/m3-*
             evidence/phase12-*
             evidence/phase11-*
             evidence/phase10-*
