@@ -1,0 +1,13 @@
+Migrations applied
+Migrations applied
+Synthetic users seeded. Credentials: .local/credentials.json
+Synthetic users seeded. Credentials: .local/credentials.json
+Queue unavailable; inspect operation status and database health
+{"level":30,"time":1791417529638,"pid":749,"hostname":"13cbd3a3ab03","msg":"Server listening at http://127.0.0.1:3101"}
+{"level":30,"time":1791417529677,"pid":749,"hostname":"13cbd3a3ab03","reqId":"ec94ed36-17e7-45bf-9605-464c5d4c7036","req":{"method":"GET","path":"/health/ready"},"msg":"incoming request"}
+{"level":30,"time":1791417529682,"pid":749,"hostname":"13cbd3a3ab03","reqId":"ec94ed36-17e7-45bf-9605-464c5d4c7036","res":{"statusCode":200},"responseTime":5.388202999999976,"msg":"request completed"}
+{"level":30,"time":1791417529689,"pid":749,"hostname":"13cbd3a3ab03","reqId":"d8065e2b-4840-41ea-b1a1-8984366f32a1","req":{"method":"GET","path":"/"},"msg":"incoming request"}
+{"level":30,"time":1791417529694,"pid":749,"hostname":"13cbd3a3ab03","reqId":"d8065e2b-4840-41ea-b1a1-8984366f32a1","res":{"statusCode":200},"responseTime":5.10895000000005,"msg":"request completed"}
+{"level":30,"time":1791417529702,"pid":749,"hostname":"13cbd3a3ab03","reqId":"6a251e12-6866-4624-b74c-df88c87dfe8f","req":{"method":"POST","path":"/api/auth/sign-in/email"},"msg":"incoming request"}
+{"level":30,"time":1791417529806,"pid":749,"hostname":"13cbd3a3ab03","reqId":"6a251e12-6866-4624-b74c-df88c87dfe8f","res":{"statusCode":200},"responseTime":104.39530300000001,"msg":"request completed"}
+Startup smoke passed: repeat migrations/seed, real server, readiness, built SPA and seeded login; backend pglite-socket

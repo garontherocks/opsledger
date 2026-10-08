@@ -1,0 +1,13 @@
+{
+  "attempt": "Separate API and worker Node processes against the PGlite socket harness",
+  "result": "blocked",
+  "observedError": "Connection terminated unexpectedly during worker queue startup",
+  "localValidation": "Real pg-boss worker callback/poller in one server process and explicit fetch/fail/retry tests passed",
+  "nativeMultiProcess": "pending PostgreSQL 18.6 deployment acceptance",
+  "notProven": [
+    "Actual process kill/power loss",
+    "Native multiworker row locking",
+    "Separate least-privilege job credentials",
+    "Container image/private named volume runtime"
+  ]
+}

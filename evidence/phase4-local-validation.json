@@ -1,0 +1,45 @@
+{
+  "sourceCommit": "d215196986a1186a21ee88f2b4fddece7565ee24",
+  "branch": "feat/reliable-async-files",
+  "scope": "Phase 4 only",
+  "cleanInstall": "passed",
+  "lint": "passed",
+  "typecheck": "passed",
+  "build": "passed",
+  "unit": {
+    "passed": 9,
+    "failed": 0
+  },
+  "integration": {
+    "results": 49,
+    "passed": 48,
+    "failed": 0,
+    "skipped": 1,
+    "backend": "pglite-socket",
+    "serverVersion": "18.3"
+  },
+  "queue": {
+    "library": "pg-boss 12.37.0",
+    "schema": 45,
+    "mock": false,
+    "retryLimit": 2,
+    "manualResubmissionsMax": 2
+  },
+  "browser": {
+    "flowsPassed": 4,
+    "retries": 0,
+    "worker": "Real callback/poller in API test process",
+    "driver": "Playwright 1.64.0",
+    "executable": "Chromium Headless Shell 141.0.7390.37"
+  },
+  "startup": "API repeat migration/seed/readiness/build/login passed",
+  "dependencyVulnerabilities": 0,
+  "secretReviewHits": 0,
+  "separateWorkerProcessSmoke": "blocked in PGlite socket harness",
+  "nativePostgres18_6": "pending",
+  "nativeWorkerVolumeRoles": "pending",
+  "actualProcessKillAndPowerLoss": "not executed",
+  "actualRemoteCI": "pending",
+  "phase5": "not started",
+  "releaseStatus": "Local acceptance verified; full completion gated"
+}

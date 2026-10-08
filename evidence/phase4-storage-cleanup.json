@@ -1,0 +1,8 @@
+{
+  "backend": "pglite-socket",
+  "removedStaleUnknown": 3,
+  "knownFilesRetained": 24,
+  "deletedAttachmentAbsent": true,
+  "outsideSymlinkTargetUnchanged": true,
+  "privateRootMode": 448
+}
