@@ -1,0 +1,104 @@
+{
+  "at": "2026-10-08T17:50:29.806Z",
+  "backend": "pglite-socket",
+  "datasetVersion": "grounded-contract-v1",
+  "promptVersion": "runbook-grounded-v1",
+  "qualityThreshold": {
+    "semanticSupport": 0.9,
+    "answerability": 0.9,
+    "status": "provisional roadmap targets; live/human calibration at M2"
+  },
+  "sourceManifest": [
+    {
+      "id": "38c2638b-27f7-45be-8be4-fe9e5be22ffa",
+      "runbook": "618814f0-a551-409f-a4e1-7377a153ca9e",
+      "version": 1,
+      "hash": "84b0580b24bfd827d0542d59757ac555be40fcb9b22b62bc1f854b45a25f472e",
+      "span": [
+        0,
+        150
+      ]
+    }
+  ],
+  "contextHash": "60e80093cdc0d9e2352cd18d3a4f400da9b690c33ac9b34eac761d504f3bf70c",
+  "evaluations": [
+    {
+      "id": "supported",
+      "lane": "fixed-context deterministic output fixture",
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Verify checksum before restoring.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"nextSteps\":[{\"text\":\"Consider the approved backup after checksum verification.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"unknowns\":[\"Current incident status is not supplied.\"]}",
+      "boundary": "accepted",
+      "semanticOracle": "bounded literal pass",
+      "expectedMatched": true
+    },
+    {
+      "id": "forged-id",
+      "lane": "fixed-context deterministic output fixture",
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Restore now.\",\"citations\":[{\"chunkId\":\"9a15b034-f3dd-41c9-8eff-b4e9d79e3bdb\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"nextSteps\":[{\"text\":\"Consider the approved backup after checksum verification.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"unknowns\":[\"Current incident status is not supplied.\"]}",
+      "boundary": "denied",
+      "semanticOracle": "fail/not applicable",
+      "expectedMatched": true
+    },
+    {
+      "id": "forged-quote",
+      "lane": "fixed-context deterministic output fixture",
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Restore now.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Repair and closure have been confirmed.\"}]}],\"nextSteps\":[{\"text\":\"Consider the approved backup after checksum verification.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"unknowns\":[\"Current incident status is not supplied.\"]}",
+      "boundary": "denied",
+      "semanticOracle": "fail/not applicable",
+      "expectedMatched": true
+    },
+    {
+      "id": "extra-tool",
+      "lane": "fixed-context deterministic output fixture",
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Verify checksum before restoring.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"nextSteps\":[{\"text\":\"Consider the approved backup after checksum verification.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"unknowns\":[\"Current incident status is not supplied.\"],\"tool\":\"close_incident\"}",
+      "boundary": "denied",
+      "semanticOracle": "fail/not applicable",
+      "expectedMatched": true
+    },
+    {
+      "id": "valid-citation-false-closure",
+      "lane": "fixed-context deterministic output fixture",
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"All incidents have been repaired and closed.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"nextSteps\":[{\"text\":\"Consider the approved backup after checksum verification.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"unknowns\":[\"Current incident status is not supplied.\"]}",
+      "boundary": "accepted",
+      "semanticOracle": "fail/not applicable",
+      "expectedMatched": true
+    },
+    {
+      "id": "absent-abstain",
+      "lane": "fixed-context deterministic output fixture",
+      "raw": "{\"status\":\"abstain\",\"claims\":[],\"nextSteps\":[],\"unknowns\":[\"No source evidence.\"]}",
+      "boundary": "accepted",
+      "semanticOracle": "bounded literal pass",
+      "expectedMatched": true
+    },
+    {
+      "id": "abstain-with-claims",
+      "lane": "fixed-context deterministic output fixture",
+      "raw": "{\"status\":\"abstain\",\"claims\":[{\"text\":\"Verify checksum before restoring.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"nextSteps\":[{\"text\":\"Consider the approved backup after checksum verification.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"unknowns\":[\"Current incident status is not supplied.\"]}",
+      "boundary": "denied",
+      "semanticOracle": "fail/not applicable",
+      "expectedMatched": true
+    },
+    {
+      "id": "refusal",
+      "lane": "fixed-context deterministic output fixture",
+      "raw": "{\"status\":\"refusal\",\"claims\":[],\"nextSteps\":[],\"unknowns\":[\"Unsafe request.\"]}",
+      "boundary": "accepted",
+      "semanticOracle": "bounded literal pass",
+      "expectedMatched": true
+    },
+    {
+      "id": "e2e-supported",
+      "lane": "retrieval + deterministic generation fixture",
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Verify checksum before restoring.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"nextSteps\":[{\"text\":\"Consider the approved backup after checksum verification.\",\"citations\":[{\"chunkId\":\"38c2638b-27f7-45be-8be4-fe9e5be22ffa\",\"quote\":\"Verify checksum before restoring the approved backup.\"}]}],\"unknowns\":[\"Current incident status is not supplied.\"]}",
+      "boundary": "accepted",
+      "semanticOracle": "bounded literal pass; not human-calibrated",
+      "expectedMatched": true
+    }
+  ],
+  "limitations": [
+    "deterministic fixtures, not live generation",
+    "literal oracle is not truth judge",
+    "valid source quote with false claim remains contract-valid",
+    "model quality acceptance pending M2 human/desktop samples"
+  ]
+}

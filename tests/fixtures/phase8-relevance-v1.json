@@ -1,0 +1,15 @@
+{
+ "version":"bilingual-retrieval-v1",
+ "labels":"synthetic scenario labels, uncalibrated for production",
+ "cases":[
+  {"id":"backup-en","split":"development","query":"restore backup","relevant":0},
+  {"id":"backup-es","split":"development","query":"restaurar respaldo","relevant":0},
+  {"id":"backup-checksum","split":"development","query":"backup checksum verification","relevant":0},
+  {"id":"latency-en","split":"development","query":"timeout latency worker","relevant":1},
+  {"id":"latency-es","split":"development","query":"diagnosticar lentitud","relevant":1},
+  {"id":"latency-retry","split":"development","query":"latency before retry","relevant":1},
+  {"id":"credentials-en","split":"held-out","query":"rotate credential","relevant":2},
+  {"id":"credentials-es","split":"held-out","query":"rotar clave","relevant":2},
+  {"id":"password-request","split":"held-out","query":"password requesting identity","relevant":2}
+ ]
+}

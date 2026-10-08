@@ -1,0 +1,10 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {evaluateCase,type EvalCase} from '../apps/api/src/assistance-eval.ts';
+const bytes=await readFile('tests/fixtures/phase7-eval-v1.json'),dataset=JSON.parse(bytes.toString()) as {datasetVersion:string,oracleVersion:string,cases:EvalCase[]};
+const records=dataset.cases.map(evaluateCase);
+const baseline=JSON.parse(await readFile('evidence/phase6-desktop-pilot.json','utf8')) as {records:{model:string,caseId:string,repetition:number,text:string,truncated:boolean}[]};
+const baselineRecords=baseline.records.filter(item=>item.caseId.startsWith('timeline-')).map(item=>evaluateCase({id:item.model+':'+item.caseId+':'+item.repetition,split:'historical-baseline',surface:'summary',context:{state:item.caseId==='timeline-known'?'investigating':'reported',eventIds:[]},raw:item.text,truncated:item.truncated,expectedBoundary:'model_invalid_json',oracle:{required:[],forbidden:[]}}));
+await writeFile('evidence/phase7-eval-report.json',JSON.stringify({at:new Date().toISOString(),datasetVersion:dataset.datasetVersion,oracleVersion:dataset.oracleVersion,datasetSha256:createHash('sha256').update(bytes).digest('hex'),source:'deterministic contract/adversarial fixtures; baseline replays actual Phase 6 outputs, no new live inference',records,baselineRecords,counts:{cases:records.length,boundaryExpectationsMet:records.filter(r=>r.boundaryExpectationMet).length,acceptedContracts:records.filter(r=>r.validated).length,acceptedButLiteralOracleFails:records.filter(r=>r.literalOracle&&!r.literalOracle.passes).length,baselineTimelineResponses:baselineRecords.length},humanReviewComplete:false,automaticQualityAcceptance:false},null,2)+'\n');
+if(records.some(r=>!r.boundaryExpectationMet))process.exitCode=1;
+console.log('Phase 7 eval:',records.length,'cases; accepted semantic falsehoods:',records.filter(r=>r.literalOracle&&!r.literalOracle.passes).length,'(expected demonstration, not quality acceptance)');

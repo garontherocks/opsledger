@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-08T17:44:52.695675+00:00",
+  "lint": "passed",
+  "types": "passed",
+  "build": "passed",
+  "unit": {
+    "passed": 36
+  },
+  "integration": {
+    "total": 74,
+    "passed": 73,
+    "skipped": 1,
+    "reason": "native row-lock test"
+  },
+  "browser": {
+    "passed": 1,
+    "retries": 0,
+    "runtime": "Chromium 143.0.7499.0 temporary ignored runtime"
+  },
+  "auditKnownFindings": 0,
+  "restore": "quiesced embedded fixture passed",
+  "nativeDockerCI": "not observed; Docker unavailable",
+  "liveEmbeddings": "M2 desktop bundle; no quality acceptance",
+  "phase9Started": false
+}

@@ -2,11 +2,11 @@ import {z} from 'zod';
 import type {Settings} from './config.ts';
 import {HttpError} from './errors.ts';
 export type Generation={text:string,model:string,digest:string,runtime:string,promptTokens:number|null,outputTokens:number|null,latencyMs:number,truncated:boolean};
-export interface TextProvider{generate(prompt:string):Promise<Generation>}
+export interface TextProvider{generate(prompt:string,format?:Record<string,unknown>):Promise<Generation>}
 export class OllamaProvider implements TextProvider{
  private settings:Settings;
  constructor(settings:Settings){this.settings=settings;}
- async generate(prompt:string):Promise<Generation>{
+ async generate(prompt:string,format?:Record<string,unknown>):Promise<Generation>{
   if(prompt.length>12000)throw new HttpError(413,'ai_input_budget','Summary input budget exceeded');
   const started=performance.now(),signal=AbortSignal.timeout(this.settings.AI_TIMEOUT_MS);
   const request=async(path:string,body?:unknown)=>{
@@ -25,7 +25,7 @@ export class OllamaProvider implements TextProvider{
    if(model&&!model.digest.startsWith('sha256:'))model.digest='sha256:'+model.digest;
    if(!model||model.digest!==this.settings.OLLAMA_DIGEST||model.details.format!=='gguf')throw new HttpError(503,'model_manifest_mismatch','Pinned local model unavailable');
    const output=z.object({model:z.string(),response:z.string().trim().min(1).max(8000),done:z.literal(true),done_reason:z.string().optional(),prompt_eval_count:z.number().int().nonnegative().optional(),eval_count:z.number().int().nonnegative().optional()}).parse(await request('/api/generate',{
-    model:this.settings.OLLAMA_MODEL,prompt,stream:false,think:false,keep_alive:0,options:{temperature:0,seed:42,num_ctx:4096,num_predict:256},
+    model:this.settings.OLLAMA_MODEL,prompt,...(format?{format}:{}),stream:false,think:false,keep_alive:0,options:{temperature:0,seed:42,num_ctx:4096,num_predict:format?768:256},
    }));
    if(output.model!==this.settings.OLLAMA_MODEL)throw new HttpError(503,'model_manifest_mismatch','Local model identity changed');
    return {text:output.response,model:model.name,digest:model.digest,runtime:version.version,promptTokens:output.prompt_eval_count??null,outputTokens:output.eval_count??null,latencyMs:performance.now()-started,truncated:output.done_reason==='length'};

@@ -1,5 +1,8 @@
-name: Local assistance and v1 acceptance
+name: M2 deterministic product and AI boundaries
 on: [push, pull_request]
+defaults:
+  run:
+    shell: bash
 permissions:
   contents: read
 jobs:
@@ -9,17 +12,6 @@ jobs:
       fail-fast: false
       matrix:
         lane: [api, browser]
-    services:
-      postgres:
-        image: postgres:18.6
-        env:
-          POSTGRES_USER: opsledger
-          POSTGRES_PASSWORD: disposable-ci-only
-          POSTGRES_DB: opsledger_test
-        ports: [5432:5432]
-        options: >-
-          --health-cmd "pg_isready -U opsledger -d opsledger_test"
-          --health-interval 5s --health-timeout 5s --health-retries 20
     env:
       TEST_DATABASE_URL: postgresql://opsledger:disposable-ci-only@127.0.0.1:5432/opsledger_test
     steps:
@@ -28,23 +20,38 @@ jobs:
         with:
           node-version: 24.19.0
           cache: npm
+      - name: Build pinned PostgreSQL 18.6 with pgvector 0.8.7
+        run: |
+          docker build -f infra/Dockerfile.db -t opsledger-ci-db .
+          docker run -d --name opsledger-ci-db -p 127.0.0.1:5432:5432 -e POSTGRES_USER=opsledger -e POSTGRES_PASSWORD=disposable-ci-only -e POSTGRES_DB=opsledger_test opsledger-ci-db
+          for attempt in $(seq 1 30); do docker exec opsledger-ci-db pg_isready -h 127.0.0.1 -U opsledger -d opsledger_test && break; sleep 1; done
+          docker exec opsledger-ci-db pg_isready -h 127.0.0.1 -U opsledger -d opsledger_test
       - run: npm ci --ignore-scripts
       - run: npm run lint && npm run typecheck && npm run build
       - run: npm run test:unit
       - run: npm audit --audit-level=moderate
       - if: matrix.lane == 'api'
-        run: npm run test:integration | tee evidence/phase6-ci-integration.log
+        run: npm run ai:regression
       - if: matrix.lane == 'api'
-        run: env -u TEST_DATABASE_URL npm run quality:baseline | tee evidence/phase6-ci-baseline.log
+        run: env -u TEST_DATABASE_URL M2_BUNDLE_FIXTURE=true npm run ai:m2-harness
+      - if: matrix.lane == 'api'
+        run: npm run test:integration | tee evidence/phase10-ci-integration.log
+      - if: matrix.lane == 'api'
+        run: env -u TEST_DATABASE_URL npm run quality:baseline | tee evidence/phase10-ci-baseline.log
       - if: matrix.lane == 'browser'
         run: npx playwright install --with-deps chromium
       - if: matrix.lane == 'browser'
-        run: npm run test:e2e | tee evidence/phase6-ci-e2e.log
+        run: npm run test:e2e | tee evidence/phase10-ci-e2e.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
-          name: phase6-${{ matrix.lane }}-${{ github.sha }}
+          name: phase10-${{ matrix.lane }}-${{ github.sha }}
           path: |
+            evidence/phase10-*
+            evidence/phase9-*
+            evidence/m2-*
+            evidence/phase8-*
+            evidence/phase7-*
             evidence/phase6-*
             evidence/phase5-*
             evidence/phase4-*

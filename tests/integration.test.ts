@@ -87,8 +87,8 @@ test('authenticated incident acceptance against PostgreSQL protocol',async t=>{
       assert.equal(preciseIds.length,5);assert.equal(new Set(preciseIds).size,5);
     });
     await t.test('foreign keys reject cross-workspace service at DB boundary',async()=>{
-      await assert.rejects(database.pool.query('INSERT INTO incidents(id,workspace_id,service_id,reporter_id,title,description,severity) VALUES($1,$2,$3,$4,$5,$6,$7)',
-        [crypto.randomUUID(),NORTH,SOUTH_SERVICE,'north-reporter','Valid title','Valid long description','high']));
+      const client=await database.pool.connect();try{await assert.rejects(client.query('INSERT INTO incidents(id,workspace_id,service_id,reporter_id,title,description,severity) VALUES($1,$2,$3,$4,$5,$6,$7)',
+        [crypto.randomUUID(),NORTH,SOUTH_SERVICE,'north-reporter','Valid title','Valid long description','high']),{code:'23503'});}finally{client.release();}
     });
     await t.test('signup closed, hostile origin/Host cannot grant auth access',async()=>{
       assert.equal((await app.inject({method:'POST',url:'/api/auth/sign-up/email',headers:{origin:settings.BASE_URL},payload:{name:'Bad',email:'bad@example.test',password}})).statusCode,400);

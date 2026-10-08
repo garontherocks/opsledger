@@ -1,3 +1,4 @@
+import type {EmbeddingProvider} from '../apps/api/src/embeddings.ts';
 import{testDatabase}from'../tests/database.ts';
 import{seedLab}from'./seed.ts';
 import{config}from'../apps/api/src/config.ts';
@@ -9,10 +10,11 @@ import {join} from 'node:path';
 import{Store}from'../apps/api/src/store.ts';
 if(!process.env.E2E_PASSWORD)throw new Error('E2E_PASSWORD required');
 const database=await testDatabase(55433);await seedLab(database.pool,process.env.E2E_PASSWORD);
-const settings=config({DATABASE_URL:'postgresql://localhost/opsledger_test',AUTH_SECRET:crypto.randomUUID()+crypto.randomUUID(),BASE_URL:'http://localhost:3100',NODE_ENV:'test',LAB_MODE:'true',AI_ENABLED:process.env.E2E_AI_FIXTURE==='true'?'true':'false',OLLAMA_DIGEST:'sha256:'+'a'.repeat(64),READ_ONLY:process.env.READ_ONLY,KNOWLEDGE_ENABLED:process.env.KNOWLEDGE_ENABLED,ASYNC_ENABLED:process.env.ASYNC_ENABLED});
+const settings=config({DATABASE_URL:'postgresql://localhost/opsledger_test',AUTH_SECRET:crypto.randomUUID()+crypto.randomUUID(),BASE_URL:'http://localhost:3100',NODE_ENV:'test',LAB_MODE:'true',AI_ENABLED:process.env.E2E_AI_FIXTURE==='true'?'true':'false',EMBEDDINGS_ENABLED:process.env.E2E_EMBEDDING_FIXTURE==='true'?'true':'false',EMBEDDING_DIGEST:'sha256:'+'c'.repeat(64),OLLAMA_DIGEST:'sha256:'+'a'.repeat(64),READ_ONLY:process.env.READ_ONLY,KNOWLEDGE_ENABLED:process.env.KNOWLEDGE_ENABLED,ASYNC_ENABLED:process.env.ASYNC_ENABLED});
 const root=await mkdtemp(join(tmpdir(),'opsledger-e2e-'));
 const operations=settings.ASYNC_ENABLED==='true'?await new AsyncOps(database.pool,root,database.backend==='pglite-socket'?'pglite':'postgres',true).start():undefined;await operations?.work();
-const app=await buildApp(new Store(database.pool,settings.AUTH_SECRET),settings,true,operations,process.env.E2E_AI_FIXTURE==='true'?{generate:async()=>({text:'Fixture-only <script>window.aiExecuted=true</script> · Cause unknown. Check activity.',model:'deterministic-test-fixture',digest:'sha256:'+'a'.repeat(64),runtime:'test-double',promptTokens:20,outputTokens:10,latencyMs:1,truncated:false})}:undefined);
+const embedding:EmbeddingProvider={model:'synthetic-e2e-v1',digest:'sha256:'+'c'.repeat(64),embed:async inputs=>inputs.map(()=>Array.from({length:768},(_,i)=>i===0?1:0))};
+const app=await buildApp(new Store(database.pool,settings.AUTH_SECRET),settings,true,operations,process.env.E2E_AI_FIXTURE==='true'?{generate:async(prompt:string)=>({text:JSON.stringify(prompt.includes('\nSOURCES\n')?(()=>{const data=JSON.parse(prompt.split('\nSOURCES\n')[1]!) as {sources:{chunkId:string,text:string}[]};return {status:'draft',claims:[{text:'Fixture source guidance; human review required.',citations:[{chunkId:data.sources[0]!.chunkId,quote:data.sources[0]!.text.slice(0,100)}]}],nextSteps:[],unknowns:['Fixture-only generation.']};})():{status:'draft',state:'reported',summary:'Fixture-only draft. Cause unknown. Check activity.',timeline:[],unknowns:['Cause']}),model:'deterministic-test-fixture',digest:'sha256:'+'a'.repeat(64),runtime:'test-double',promptTokens:20,outputTokens:10,latencyMs:1,truncated:false})}:undefined,embedding);
 await app.listen({host:'127.0.0.1',port:3100});
 console.log('E2E backend: '+database.backend);
 for(const signal of ['SIGINT','SIGTERM'] as const)process.on(signal,()=>{void app.close().then(()=>operations?.stop()).then(()=>database.close()).then(()=>rm(root,{recursive:true,force:true})).then(()=>process.exit(0));});

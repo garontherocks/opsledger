@@ -1,3 +1,10 @@
+import {Feedback} from './feedback.ts';
+import {QualityFeedback} from '../../../packages/contracts/src/feedback.ts';
+import {Rag} from './rag.ts';
+import {RagRequest,RagDraft} from '../../../packages/contracts/src/rag.ts';
+import {Retrieval} from './retrieval.ts';
+import {OllamaEmbeddings,type EmbeddingProvider} from './embeddings.ts';
+import {SemanticQuery,SemanticResult,IndexRequest} from '../../../packages/contracts/src/retrieval.ts';
 import Fastify, { type FastifyRequest } from 'fastify';
 import swagger from '@fastify/swagger';
 import staticPlugin from '@fastify/static';
@@ -20,7 +27,10 @@ import {OllamaProvider,type TextProvider} from './local-model.ts';
 import type {AsyncOps} from './async-ops.ts';
 import {ExportRequest,UploadRequest,FileParams,OperationParams,NotificationParams,BoundedPage,OperationList} from '../../../packages/contracts/src/async.ts';
 
-export async function buildApp(store:Store,settings:Settings,serveWeb=false,operations?:AsyncOps,provider?:TextProvider){
+export async function buildApp(store:Store,settings:Settings,serveWeb=false,operations?:AsyncOps,provider?:TextProvider,embeddingProvider?:EmbeddingProvider){
+  const retrieval=new Retrieval(store.pool,settings.AUTH_SECRET,embeddingProvider??new OllamaEmbeddings(settings));
+  const feedback=new Feedback(store.pool,settings.AUTH_SECRET);
+  const rag=new Rag(retrieval,settings,provider??new OllamaProvider(settings));
   const assistance=new Assistance(store.pool,settings,provider??new OllamaProvider(settings));
   const auth=createAuth(store.pool,settings);
   const knowledge=new Knowledge(store.pool,settings.AUTH_SECRET);
@@ -80,8 +90,9 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false,oper
     const session=await auth.api.getSession({headers:fromNodeHeaders(request.headers)});
     if(!session)throw new HttpError(401,'unauthenticated','Sign in required');identities.set(request,session.user.id);return session.user;
   }
-  app.get('/api/v1/me',{schema:{response:{200:z.object({user:z.object({id:z.string(),name:z.string(),email:z.string()}),workspaces:z.array(z.object({id:z.uuid(),name:z.string(),role:z.string()})),features:z.object({readOnly:z.boolean(),knowledge:z.boolean(),async:z.boolean(),ai:z.boolean()})})}}},async request=>{const user=await identity(request);return {user:{id:user.id,name:user.name,email:user.email},workspaces:await store.me(user.id),features:{readOnly:settings.READ_ONLY==='true',knowledge:settings.KNOWLEDGE_ENABLED==='true',async:settings.ASYNC_ENABLED==='true',ai:settings.AI_ENABLED==='true'}};});
+  app.get('/api/v1/me',{schema:{response:{200:z.object({user:z.object({id:z.string(),name:z.string(),email:z.string()}),workspaces:z.array(z.object({id:z.uuid(),name:z.string(),role:z.string()})),features:z.object({readOnly:z.boolean(),knowledge:z.boolean(),async:z.boolean(),ai:z.boolean(),embeddings:z.boolean()})})}}},async request=>{const user=await identity(request);return {user:{id:user.id,name:user.name,email:user.email},workspaces:await store.me(user.id),features:{readOnly:settings.READ_ONLY==='true',knowledge:settings.KNOWLEDGE_ENABLED==='true',async:settings.ASYNC_ENABLED==='true',ai:settings.AI_ENABLED==='true',embeddings:settings.EMBEDDINGS_ENABLED==='true'}};});
   app.post('/api/v1/workspaces/:workspaceId/incidents/:incidentId/summary',{config:{rateLimit:{max:3,timeWindow:'1 minute'}},schema:{params:DetailParams,body:SummaryRequest,response:{200:SummaryDraft}}},async request=>{const user=await identity(request);await store.member(user.id,request.params.workspaceId);const result=await assistance.summarize(user.id,request.params.workspaceId,request.params.incidentId,request.body.expectedRevision,request.id);request.log.info({runId:result.runId,requestId:request.id,revision:result.revision,model:result.model,digest:result.digest,promptVersion:result.promptVersion,contextHash:result.contextHash,promptHash:result.promptHash,latencyMs:result.latencyMs,promptTokens:result.promptTokens,outputTokens:result.outputTokens,truncated:result.truncated},'AI draft generated; human review required');return result;});
+  app.post('/api/v1/workspaces/:workspaceId/ai-feedback',{schema:{params:Params,body:QualityFeedback}},async request=>{const user=await identity(request);return feedback.record(user.id,request.params.workspaceId,request.body);});
   app.get('/api/v1/workspaces/:workspaceId/services',{schema:{params:Params}},async request=>{
     const user=await identity(request);await store.member(user.id,request.params.workspaceId);return store.services(request.params.workspaceId);
   });
@@ -125,6 +136,11 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false,oper
   app.get('/api/v1/workspaces/:workspaceId/runbooks',{schema:{params:Params,querystring:Search,response:{200:z.object({items:z.array(RunbookVersion),nextCursor:z.string().nullable()})}}},async request=>{
     const user=await identity(request);return knowledge.search(user.id,request.params.workspaceId,request.query);
   });
+  function embeddingsEnabled(){if(settings.EMBEDDINGS_ENABLED!=='true')throw new HttpError(503,'feature_disabled','Semantic retrieval disabled');}
+  app.post('/api/v1/workspaces/:workspaceId/runbooks/answer',{config:{rateLimit:{max:3,timeWindow:'1 minute'}},schema:{params:Params,body:RagRequest,response:{200:RagDraft}}},async request=>{embeddingsEnabled();const user=await identity(request);const answer=await rag.answer(user.id,request.params.workspaceId,request.body,request.id);return {...answer,feedbackToken:feedback.issue(user.id,request.params.workspaceId,answer)};});
+  app.get('/api/v1/workspaces/:workspaceId/runbooks/semantic',{config:{rateLimit:{max:10,timeWindow:'1 minute'}},schema:{params:Params,querystring:SemanticQuery,response:{200:SemanticResult}}},async request=>{embeddingsEnabled();const user=await identity(request);return {items:await retrieval.search(user.id,request.params.workspaceId,request.query),mode:'exact-cosine' as const,qualityVerified:false as const};});
+  app.post('/api/v1/workspaces/:workspaceId/runbooks/:runbookId/index',{schema:{params:RunbookParams,body:IndexRequest}},async request=>{embeddingsEnabled();const user=await identity(request);return retrieval.index(user.id,request.params.workspaceId,request.params.runbookId,request.body.expectedRevision);});
+  app.post('/api/v1/workspaces/:workspaceId/runbooks/:runbookId/index/purge',{schema:{params:RunbookParams,body:IndexRequest}},async request=>{embeddingsEnabled();const user=await identity(request);return retrieval.purge(user.id,request.params.workspaceId,request.params.runbookId,request.body.expectedRevision);});
   app.get('/api/v1/workspaces/:workspaceId/audit',{schema:{params:Params,querystring:AuditQuery}},async request=>{
     const user=await identity(request);return knowledge.events(user.id,request.params.workspaceId,request.query.pageSize,request.query.before);
   });

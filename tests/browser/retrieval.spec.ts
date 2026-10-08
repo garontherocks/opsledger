@@ -1,0 +1,11 @@
+import {test,expect} from '@playwright/test';
+import {writeFile} from 'node:fs/promises';
+test('semantic search displays ranked literal sources and purge leaves keyword fallback',async({page})=>{
+ await page.request.post('/api/auth/sign-in/email',{data:{email:'north-editor@example.test',password:process.env.E2E_PASSWORD}});
+ const base='/api/v1/workspaces/11111111-1111-4111-8111-111111111111/runbooks';
+ const create=await page.request.post(base,{data:{title:'Synthetic semantic source',body:'Measure worker timeout before retry. <script>window.poisoned=true</script>',category:'recovery'}});expect(create.status()).toBe(201);const v=await create.json();
+ const published=await page.request.post(base+'/'+v.id+'/versions/1/actions',{data:{action:'publish',expectedRevision:v.revision}});expect(published.status()).toBe(200);const current=await published.json();
+ expect((await page.request.post(base+'/'+v.id+'/index',{data:{expectedRevision:current.revision}})).status()).toBe(200);
+ await page.goto('/');await page.getByRole('button',{name:'Open knowledge',exact:true}).click();const region=page.getByRole('region',{name:'Semantic runbook search'});await region.getByLabel('Semantic question').fill('worker timeout');await region.getByRole('button',{name:'Search semantically',exact:true}).click();await expect(region).toContainText('Synthetic semantic source');await expect(region).toContainText('window.poisoned=true');expect(await page.evaluate(()=>('poisoned' in window))).toBe(false);await expect(region.locator('script')).toHaveCount(0);
+ expect((await page.request.post(base+'/'+v.id+'/index/purge',{data:{expectedRevision:current.revision}})).status()).toBe(200);await region.getByRole('button',{name:'Search semantically',exact:true}).click();await expect(region).not.toContainText('Synthetic semantic source');await page.getByLabel('Keywords',{exact:true}).fill('semantic');await page.getByRole('button',{name:'Search runbooks',exact:true}).click();await expect(page.getByRole('button',{name:'Synthetic semantic source · v1',exact:true})).toBeVisible();await writeFile('evidence/phase8-browser.json',JSON.stringify({at:new Date().toISOString(),passed:true,provider:'synthetic fixture',checks:['ranked source','literal rendering','purge','keyword fallback']},null,2));
+});

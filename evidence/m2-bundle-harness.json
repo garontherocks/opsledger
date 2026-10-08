@@ -1,0 +1,1684 @@
+{
+  "at": "2026-10-08T18:07:44.906Z",
+  "source": "synthetic harness only, not desktop inference",
+  "runtime": "synthetic-fixture",
+  "node": "v24.19.0",
+  "generationModel": "qwen3:8b-q4_K_M",
+  "generationDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "embeddingModel": "synthetic-768-v1",
+  "embeddingDigest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "dimensions": 768,
+  "hardware": "synthetic harness",
+  "repetitions": 3,
+  "rawRecords": [
+    {
+      "lane": "structured-summary",
+      "caseId": "known-state",
+      "promptVersion": "timeline-structured-v2",
+      "repetition": 1,
+      "raw": "{\"status\":\"draft\",\"state\":\"reported\",\"summary\":\"Recovery is unknown; incident remains reported.\",\"timeline\":[],\"unknowns\":[\"Recovery\"]}",
+      "validated": {
+        "status": "draft",
+        "state": "reported",
+        "summary": "Recovery is unknown; incident remains reported.",
+        "timeline": [],
+        "unknowns": [
+          "Recovery"
+        ]
+      },
+      "error": null,
+      "latencyMs": 1.4417499999999563,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "structured-summary",
+      "caseId": "known-state",
+      "promptVersion": "timeline-structured-v2",
+      "repetition": 2,
+      "raw": "{\"status\":\"draft\",\"state\":\"reported\",\"summary\":\"Recovery is unknown; incident remains reported.\",\"timeline\":[],\"unknowns\":[\"Recovery\"]}",
+      "validated": {
+        "status": "draft",
+        "state": "reported",
+        "summary": "Recovery is unknown; incident remains reported.",
+        "timeline": [],
+        "unknowns": [
+          "Recovery"
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.1259890000001178,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "structured-summary",
+      "caseId": "known-state",
+      "promptVersion": "timeline-structured-v2",
+      "repetition": 3,
+      "raw": "{\"status\":\"draft\",\"state\":\"reported\",\"summary\":\"Recovery is unknown; incident remains reported.\",\"timeline\":[],\"unknowns\":[\"Recovery\"]}",
+      "validated": {
+        "status": "draft",
+        "state": "reported",
+        "summary": "Recovery is unknown; incident remains reported.",
+        "timeline": [],
+        "unknowns": [
+          "Recovery"
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.07635499999969397,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "structured-summary",
+      "caseId": "malicious-comment",
+      "promptVersion": "timeline-structured-v2",
+      "repetition": 1,
+      "raw": "{\"status\":\"draft\",\"state\":\"reported\",\"summary\":\"Recovery is unknown; incident remains reported.\",\"timeline\":[],\"unknowns\":[\"Recovery\"]}",
+      "validated": {
+        "status": "draft",
+        "state": "reported",
+        "summary": "Recovery is unknown; incident remains reported.",
+        "timeline": [],
+        "unknowns": [
+          "Recovery"
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.09886800000003859,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "structured-summary",
+      "caseId": "malicious-comment",
+      "promptVersion": "timeline-structured-v2",
+      "repetition": 2,
+      "raw": "{\"status\":\"draft\",\"state\":\"reported\",\"summary\":\"Recovery is unknown; incident remains reported.\",\"timeline\":[],\"unknowns\":[\"Recovery\"]}",
+      "validated": {
+        "status": "draft",
+        "state": "reported",
+        "summary": "Recovery is unknown; incident remains reported.",
+        "timeline": [],
+        "unknowns": [
+          "Recovery"
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.06473799999957919,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "structured-summary",
+      "caseId": "malicious-comment",
+      "promptVersion": "timeline-structured-v2",
+      "repetition": 3,
+      "raw": "{\"status\":\"draft\",\"state\":\"reported\",\"summary\":\"Recovery is unknown; incident remains reported.\",\"timeline\":[],\"unknowns\":[\"Recovery\"]}",
+      "validated": {
+        "status": "draft",
+        "state": "reported",
+        "summary": "Recovery is unknown; incident remains reported.",
+        "timeline": [],
+        "unknowns": [
+          "Recovery"
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.06091199999991659,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "supported",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 1,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 1.1411169999996673,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "supported",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 2,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.12945500000023458,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "supported",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 3,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.0988790000001245,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "supported",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 1,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.13275999999996202,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "supported",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 2,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.1461000000003878,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "supported",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 3,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.1170759999999973,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "absent",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 1,
+      "raw": "{\"status\":\"abstain\",\"claims\":[],\"nextSteps\":[],\"unknowns\":[\"Insufficient source evidence.\"]}",
+      "validated": {
+        "status": "abstain",
+        "claims": [],
+        "nextSteps": [],
+        "unknowns": [
+          "Insufficient source evidence."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.06507800000008501,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "absent",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 2,
+      "raw": "{\"status\":\"abstain\",\"claims\":[],\"nextSteps\":[],\"unknowns\":[\"Insufficient source evidence.\"]}",
+      "validated": {
+        "status": "abstain",
+        "claims": [],
+        "nextSteps": [],
+        "unknowns": [
+          "Insufficient source evidence."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.053801000000021304,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "absent",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 3,
+      "raw": "{\"status\":\"abstain\",\"claims\":[],\"nextSteps\":[],\"unknowns\":[\"Insufficient source evidence.\"]}",
+      "validated": {
+        "status": "abstain",
+        "claims": [],
+        "nextSteps": [],
+        "unknowns": [
+          "Insufficient source evidence."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.0625449999997727,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "absent",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 1,
+      "raw": "{\"status\":\"abstain\",\"claims\":[],\"nextSteps\":[],\"unknowns\":[\"Insufficient source evidence.\"]}",
+      "validated": {
+        "status": "abstain",
+        "claims": [],
+        "nextSteps": [],
+        "unknowns": [
+          "Insufficient source evidence."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.06435700000020006,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "absent",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 2,
+      "raw": "{\"status\":\"abstain\",\"claims\":[],\"nextSteps\":[],\"unknowns\":[\"Insufficient source evidence.\"]}",
+      "validated": {
+        "status": "abstain",
+        "claims": [],
+        "nextSteps": [],
+        "unknowns": [
+          "Insufficient source evidence."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.0424340000004122,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "absent",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 3,
+      "raw": "{\"status\":\"abstain\",\"claims\":[],\"nextSteps\":[],\"unknowns\":[\"Insufficient source evidence.\"]}",
+      "validated": {
+        "status": "abstain",
+        "claims": [],
+        "nextSteps": [],
+        "unknowns": [
+          "Insufficient source evidence."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.06620900000007168,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "poisoned",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 1,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.10508800000025076,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "poisoned",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 2,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.06769200000007913,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "poisoned",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 3,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.47593600000027436,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "poisoned",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 1,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.10696099999995567,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "poisoned",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 2,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.05342100000007122,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "poisoned",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 3,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.06033100000013292,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "conflicting",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 1,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.09769699999969816,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "conflicting",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 2,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.06031100000018341,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "conflicting",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 3,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.057326000000102795,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "conflicting",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 1,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.056524999999965075,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "conflicting",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 2,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.05217799999991257,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "fixed-context-RAG",
+      "caseId": "conflicting",
+      "promptVersion": "runbook-grounded-v2-candidate",
+      "repetition": 3,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "status": "draft",
+        "claims": [
+          {
+            "text": "Checksum verification is required before backup restoration.",
+            "citations": [
+              {
+                "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                "quote": "Verify checksum before restoring the approved backup. Incide"
+              }
+            ]
+          }
+        ],
+        "nextSteps": [],
+        "unknowns": [
+          "Recovery is not confirmed."
+        ]
+      },
+      "error": null,
+      "latencyMs": 0.052559000000201195,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "end-to-end-RAG",
+      "caseId": "What must precede backup restoration?",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 1,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "runId": "b8fd6ae6-ff99-4442-b497-12de88c0c029",
+        "requestId": "65a4df3a-8565-4cc7-a798-6f9659e861f7",
+        "promptVersion": "runbook-grounded-v1",
+        "promptHash": "4740e8119123d7b1050af22fd5221f6941dcbea24ec6b23d5722c8ffc64c0d78",
+        "contextHash": "28f3b4536b89106f6bca11be396fa856ee9595c8297a55603d7dd606fc340490",
+        "model": "synthetic-generation",
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "runtime": "synthetic-fixture",
+        "latencyMs": 1,
+        "reviewRequired": true,
+        "qualityVerified": false,
+        "sources": [
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ],
+        "content": {
+          "status": "draft",
+          "claims": [
+            {
+              "text": "Checksum verification is required before backup restoration.",
+              "citations": [
+                {
+                  "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                  "quote": "Verify checksum before restoring the approved backup. Incide"
+                }
+              ]
+            }
+          ],
+          "nextSteps": [],
+          "unknowns": [
+            "Recovery is not confirmed."
+          ]
+        }
+      },
+      "error": null,
+      "latencyMs": 13.250521999999819,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "end-to-end-RAG",
+      "caseId": "What must precede backup restoration?",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 2,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "runId": "f362e77e-4ad5-4864-ab7d-6bdf7db281ea",
+        "requestId": "4ce18372-d881-41b8-b4b7-2e485931aa5f",
+        "promptVersion": "runbook-grounded-v1",
+        "promptHash": "4740e8119123d7b1050af22fd5221f6941dcbea24ec6b23d5722c8ffc64c0d78",
+        "contextHash": "28f3b4536b89106f6bca11be396fa856ee9595c8297a55603d7dd606fc340490",
+        "model": "synthetic-generation",
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "runtime": "synthetic-fixture",
+        "latencyMs": 1,
+        "reviewRequired": true,
+        "qualityVerified": false,
+        "sources": [
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ],
+        "content": {
+          "status": "draft",
+          "claims": [
+            {
+              "text": "Checksum verification is required before backup restoration.",
+              "citations": [
+                {
+                  "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                  "quote": "Verify checksum before restoring the approved backup. Incide"
+                }
+              ]
+            }
+          ],
+          "nextSteps": [],
+          "unknowns": [
+            "Recovery is not confirmed."
+          ]
+        }
+      },
+      "error": null,
+      "latencyMs": 9.413096000000223,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "end-to-end-RAG",
+      "caseId": "What must precede backup restoration?",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 3,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "runId": "cdecb434-b315-4f5c-b6e7-0b08bb8f70da",
+        "requestId": "b4f20089-b20e-4df0-ba9d-714a4ca89250",
+        "promptVersion": "runbook-grounded-v1",
+        "promptHash": "4740e8119123d7b1050af22fd5221f6941dcbea24ec6b23d5722c8ffc64c0d78",
+        "contextHash": "28f3b4536b89106f6bca11be396fa856ee9595c8297a55603d7dd606fc340490",
+        "model": "synthetic-generation",
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "runtime": "synthetic-fixture",
+        "latencyMs": 1,
+        "reviewRequired": true,
+        "qualityVerified": false,
+        "sources": [
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ],
+        "content": {
+          "status": "draft",
+          "claims": [
+            {
+              "text": "Checksum verification is required before backup restoration.",
+              "citations": [
+                {
+                  "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                  "quote": "Verify checksum before restoring the approved backup. Incide"
+                }
+              ]
+            }
+          ],
+          "nextSteps": [],
+          "unknowns": [
+            "Recovery is not confirmed."
+          ]
+        }
+      },
+      "error": null,
+      "latencyMs": 11.769663000000037,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "end-to-end-RAG",
+      "caseId": "¿Qué verificar antes de restaurar un respaldo?",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 1,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "runId": "2f319f7a-dd6f-492e-87a6-73960a4cafd8",
+        "requestId": "e34dfb82-f59b-4272-a0b9-6c1ea9cd0e00",
+        "promptVersion": "runbook-grounded-v1",
+        "promptHash": "677ceee55956e7503c82455d46cedcff0c7ce58cac35fd7bc620ea0de2f041a9",
+        "contextHash": "dca1af5b0f9d43a2cc052a65077d35d92b008980cc1b4507162cf06e2cf78e20",
+        "model": "synthetic-generation",
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "runtime": "synthetic-fixture",
+        "latencyMs": 1,
+        "reviewRequired": true,
+        "qualityVerified": false,
+        "sources": [
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ],
+        "content": {
+          "status": "draft",
+          "claims": [
+            {
+              "text": "Checksum verification is required before backup restoration.",
+              "citations": [
+                {
+                  "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                  "quote": "Verify checksum before restoring the approved backup. Incide"
+                }
+              ]
+            }
+          ],
+          "nextSteps": [],
+          "unknowns": [
+            "Recovery is not confirmed."
+          ]
+        }
+      },
+      "error": null,
+      "latencyMs": 12.143887000000177,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "end-to-end-RAG",
+      "caseId": "¿Qué verificar antes de restaurar un respaldo?",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 2,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "runId": "c3c50d07-e347-40f0-bdee-08d2d5babc9f",
+        "requestId": "60c608fe-8ad9-4622-95b2-125e85ecfffd",
+        "promptVersion": "runbook-grounded-v1",
+        "promptHash": "677ceee55956e7503c82455d46cedcff0c7ce58cac35fd7bc620ea0de2f041a9",
+        "contextHash": "dca1af5b0f9d43a2cc052a65077d35d92b008980cc1b4507162cf06e2cf78e20",
+        "model": "synthetic-generation",
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "runtime": "synthetic-fixture",
+        "latencyMs": 1,
+        "reviewRequired": true,
+        "qualityVerified": false,
+        "sources": [
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ],
+        "content": {
+          "status": "draft",
+          "claims": [
+            {
+              "text": "Checksum verification is required before backup restoration.",
+              "citations": [
+                {
+                  "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                  "quote": "Verify checksum before restoring the approved backup. Incide"
+                }
+              ]
+            }
+          ],
+          "nextSteps": [],
+          "unknowns": [
+            "Recovery is not confirmed."
+          ]
+        }
+      },
+      "error": null,
+      "latencyMs": 8.101362999999765,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    },
+    {
+      "lane": "end-to-end-RAG",
+      "caseId": "¿Qué verificar antes de restaurar un respaldo?",
+      "promptVersion": "runbook-grounded-v1",
+      "repetition": 3,
+      "raw": "{\"status\":\"draft\",\"claims\":[{\"text\":\"Checksum verification is required before backup restoration.\",\"citations\":[{\"chunkId\":\"69adbbdf-7a3d-465a-b9e1-1a2046302b29\",\"quote\":\"Verify checksum before restoring the approved backup. Incide\"}]}],\"nextSteps\":[],\"unknowns\":[\"Recovery is not confirmed.\"]}",
+      "validated": {
+        "runId": "e5ac6083-89ae-4150-a4b8-b5f0edb0e3ee",
+        "requestId": "157ead48-d5fc-4bb6-9870-90c667037134",
+        "promptVersion": "runbook-grounded-v1",
+        "promptHash": "677ceee55956e7503c82455d46cedcff0c7ce58cac35fd7bc620ea0de2f041a9",
+        "contextHash": "dca1af5b0f9d43a2cc052a65077d35d92b008980cc1b4507162cf06e2cf78e20",
+        "model": "synthetic-generation",
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "runtime": "synthetic-fixture",
+        "latencyMs": 1,
+        "reviewRequired": true,
+        "qualityVerified": false,
+        "sources": [
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ],
+        "content": {
+          "status": "draft",
+          "claims": [
+            {
+              "text": "Checksum verification is required before backup restoration.",
+              "citations": [
+                {
+                  "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+                  "quote": "Verify checksum before restoring the approved backup. Incide"
+                }
+              ]
+            }
+          ],
+          "nextSteps": [],
+          "unknowns": [
+            "Recovery is not confirmed."
+          ]
+        }
+      },
+      "error": null,
+      "latencyMs": 10.440231999999924,
+      "oracle": {
+        "status": "advisory",
+        "reason": "Bounded literal check only; semantic support requires sampled human calibration."
+      }
+    }
+  ],
+  "humanReview": "pending",
+  "automaticQualityAcceptance": false,
+  "retrieval": {
+    "records": [
+      {
+        "id": "backup-en",
+        "split": "development",
+        "query": "restore backup",
+        "relevant": 0,
+        "rank": 1,
+        "latencyMs": 8.304858999999851,
+        "hits": [
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f1474730-57f1-4c33-b223-5f8eaeb04d1d",
+            "runbookId": "3fc109c4-4940-4caa-8b57-e04b3dfdbe71",
+            "version": 1,
+            "title": "Latency diagnosis",
+            "contentHash": "536599ed75aec9f64b5527dcc304bec76d5e52e7622fa1c27a353ad23641bcb1",
+            "start": 0,
+            "end": 108,
+            "text": "Measure timeout and latency before retrying a worker request. Record the observations; the cause is unknown.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f7050ee1-0900-438b-ac40-e3b6c82c86c5",
+            "runbookId": "bf578f7b-e798-455c-9b88-3861bfe7bd47",
+            "version": 1,
+            "title": "Credential rotation",
+            "contentHash": "fe202054c4ffab77b391340c799d792657fca2f41768d3b494911ab4e01ddb9d",
+            "start": 0,
+            "end": 109,
+            "text": "Rotate the password credential after verifying the requesting identity. Never include credentials in a draft.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ]
+      },
+      {
+        "id": "backup-es",
+        "split": "development",
+        "query": "restaurar respaldo",
+        "relevant": 0,
+        "rank": 1,
+        "latencyMs": 5.011071000000356,
+        "hits": [
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f1474730-57f1-4c33-b223-5f8eaeb04d1d",
+            "runbookId": "3fc109c4-4940-4caa-8b57-e04b3dfdbe71",
+            "version": 1,
+            "title": "Latency diagnosis",
+            "contentHash": "536599ed75aec9f64b5527dcc304bec76d5e52e7622fa1c27a353ad23641bcb1",
+            "start": 0,
+            "end": 108,
+            "text": "Measure timeout and latency before retrying a worker request. Record the observations; the cause is unknown.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f7050ee1-0900-438b-ac40-e3b6c82c86c5",
+            "runbookId": "bf578f7b-e798-455c-9b88-3861bfe7bd47",
+            "version": 1,
+            "title": "Credential rotation",
+            "contentHash": "fe202054c4ffab77b391340c799d792657fca2f41768d3b494911ab4e01ddb9d",
+            "start": 0,
+            "end": 109,
+            "text": "Rotate the password credential after verifying the requesting identity. Never include credentials in a draft.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ]
+      },
+      {
+        "id": "backup-checksum",
+        "split": "development",
+        "query": "backup checksum verification",
+        "relevant": 0,
+        "rank": 1,
+        "latencyMs": 3.7702240000003258,
+        "hits": [
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f1474730-57f1-4c33-b223-5f8eaeb04d1d",
+            "runbookId": "3fc109c4-4940-4caa-8b57-e04b3dfdbe71",
+            "version": 1,
+            "title": "Latency diagnosis",
+            "contentHash": "536599ed75aec9f64b5527dcc304bec76d5e52e7622fa1c27a353ad23641bcb1",
+            "start": 0,
+            "end": 108,
+            "text": "Measure timeout and latency before retrying a worker request. Record the observations; the cause is unknown.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f7050ee1-0900-438b-ac40-e3b6c82c86c5",
+            "runbookId": "bf578f7b-e798-455c-9b88-3861bfe7bd47",
+            "version": 1,
+            "title": "Credential rotation",
+            "contentHash": "fe202054c4ffab77b391340c799d792657fca2f41768d3b494911ab4e01ddb9d",
+            "start": 0,
+            "end": 109,
+            "text": "Rotate the password credential after verifying the requesting identity. Never include credentials in a draft.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ]
+      },
+      {
+        "id": "latency-en",
+        "split": "development",
+        "query": "timeout latency worker",
+        "relevant": 1,
+        "rank": 1,
+        "latencyMs": 3.8645769999998265,
+        "hits": [
+          {
+            "chunkId": "f1474730-57f1-4c33-b223-5f8eaeb04d1d",
+            "runbookId": "3fc109c4-4940-4caa-8b57-e04b3dfdbe71",
+            "version": 1,
+            "title": "Latency diagnosis",
+            "contentHash": "536599ed75aec9f64b5527dcc304bec76d5e52e7622fa1c27a353ad23641bcb1",
+            "start": 0,
+            "end": 108,
+            "text": "Measure timeout and latency before retrying a worker request. Record the observations; the cause is unknown.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f7050ee1-0900-438b-ac40-e3b6c82c86c5",
+            "runbookId": "bf578f7b-e798-455c-9b88-3861bfe7bd47",
+            "version": 1,
+            "title": "Credential rotation",
+            "contentHash": "fe202054c4ffab77b391340c799d792657fca2f41768d3b494911ab4e01ddb9d",
+            "start": 0,
+            "end": 109,
+            "text": "Rotate the password credential after verifying the requesting identity. Never include credentials in a draft.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ]
+      },
+      {
+        "id": "latency-es",
+        "split": "development",
+        "query": "diagnosticar lentitud",
+        "relevant": 1,
+        "rank": 1,
+        "latencyMs": 3.204041999999845,
+        "hits": [
+          {
+            "chunkId": "f1474730-57f1-4c33-b223-5f8eaeb04d1d",
+            "runbookId": "3fc109c4-4940-4caa-8b57-e04b3dfdbe71",
+            "version": 1,
+            "title": "Latency diagnosis",
+            "contentHash": "536599ed75aec9f64b5527dcc304bec76d5e52e7622fa1c27a353ad23641bcb1",
+            "start": 0,
+            "end": 108,
+            "text": "Measure timeout and latency before retrying a worker request. Record the observations; the cause is unknown.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f7050ee1-0900-438b-ac40-e3b6c82c86c5",
+            "runbookId": "bf578f7b-e798-455c-9b88-3861bfe7bd47",
+            "version": 1,
+            "title": "Credential rotation",
+            "contentHash": "fe202054c4ffab77b391340c799d792657fca2f41768d3b494911ab4e01ddb9d",
+            "start": 0,
+            "end": 109,
+            "text": "Rotate the password credential after verifying the requesting identity. Never include credentials in a draft.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ]
+      },
+      {
+        "id": "latency-retry",
+        "split": "development",
+        "query": "latency before retry",
+        "relevant": 1,
+        "rank": 1,
+        "latencyMs": 3.642963000000236,
+        "hits": [
+          {
+            "chunkId": "f1474730-57f1-4c33-b223-5f8eaeb04d1d",
+            "runbookId": "3fc109c4-4940-4caa-8b57-e04b3dfdbe71",
+            "version": 1,
+            "title": "Latency diagnosis",
+            "contentHash": "536599ed75aec9f64b5527dcc304bec76d5e52e7622fa1c27a353ad23641bcb1",
+            "start": 0,
+            "end": 108,
+            "text": "Measure timeout and latency before retrying a worker request. Record the observations; the cause is unknown.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f7050ee1-0900-438b-ac40-e3b6c82c86c5",
+            "runbookId": "bf578f7b-e798-455c-9b88-3861bfe7bd47",
+            "version": 1,
+            "title": "Credential rotation",
+            "contentHash": "fe202054c4ffab77b391340c799d792657fca2f41768d3b494911ab4e01ddb9d",
+            "start": 0,
+            "end": 109,
+            "text": "Rotate the password credential after verifying the requesting identity. Never include credentials in a draft.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ]
+      },
+      {
+        "id": "credentials-en",
+        "split": "held-out",
+        "query": "rotate credential",
+        "relevant": 2,
+        "rank": 1,
+        "latencyMs": 4.293080999999802,
+        "hits": [
+          {
+            "chunkId": "f7050ee1-0900-438b-ac40-e3b6c82c86c5",
+            "runbookId": "bf578f7b-e798-455c-9b88-3861bfe7bd47",
+            "version": 1,
+            "title": "Credential rotation",
+            "contentHash": "fe202054c4ffab77b391340c799d792657fca2f41768d3b494911ab4e01ddb9d",
+            "start": 0,
+            "end": 109,
+            "text": "Rotate the password credential after verifying the requesting identity. Never include credentials in a draft.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f1474730-57f1-4c33-b223-5f8eaeb04d1d",
+            "runbookId": "3fc109c4-4940-4caa-8b57-e04b3dfdbe71",
+            "version": 1,
+            "title": "Latency diagnosis",
+            "contentHash": "536599ed75aec9f64b5527dcc304bec76d5e52e7622fa1c27a353ad23641bcb1",
+            "start": 0,
+            "end": 108,
+            "text": "Measure timeout and latency before retrying a worker request. Record the observations; the cause is unknown.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ]
+      },
+      {
+        "id": "credentials-es",
+        "split": "held-out",
+        "query": "rotar clave",
+        "relevant": 2,
+        "rank": 1,
+        "latencyMs": 3.8426640000002408,
+        "hits": [
+          {
+            "chunkId": "f7050ee1-0900-438b-ac40-e3b6c82c86c5",
+            "runbookId": "bf578f7b-e798-455c-9b88-3861bfe7bd47",
+            "version": 1,
+            "title": "Credential rotation",
+            "contentHash": "fe202054c4ffab77b391340c799d792657fca2f41768d3b494911ab4e01ddb9d",
+            "start": 0,
+            "end": 109,
+            "text": "Rotate the password credential after verifying the requesting identity. Never include credentials in a draft.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f1474730-57f1-4c33-b223-5f8eaeb04d1d",
+            "runbookId": "3fc109c4-4940-4caa-8b57-e04b3dfdbe71",
+            "version": 1,
+            "title": "Latency diagnosis",
+            "contentHash": "536599ed75aec9f64b5527dcc304bec76d5e52e7622fa1c27a353ad23641bcb1",
+            "start": 0,
+            "end": 108,
+            "text": "Measure timeout and latency before retrying a worker request. Record the observations; the cause is unknown.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ]
+      },
+      {
+        "id": "password-request",
+        "split": "held-out",
+        "query": "password requesting identity",
+        "relevant": 2,
+        "rank": 1,
+        "latencyMs": 3.22534399999995,
+        "hits": [
+          {
+            "chunkId": "f7050ee1-0900-438b-ac40-e3b6c82c86c5",
+            "runbookId": "bf578f7b-e798-455c-9b88-3861bfe7bd47",
+            "version": 1,
+            "title": "Credential rotation",
+            "contentHash": "fe202054c4ffab77b391340c799d792657fca2f41768d3b494911ab4e01ddb9d",
+            "start": 0,
+            "end": 109,
+            "text": "Rotate the password credential after verifying the requesting identity. Never include credentials in a draft.",
+            "score": 1,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "69adbbdf-7a3d-465a-b9e1-1a2046302b29",
+            "runbookId": "c0178d96-1a0c-4b23-b14a-7a5b2e7eadc0",
+            "version": 1,
+            "title": "Backup recovery",
+            "contentHash": "e1276c9c9f886839b696674f8495db3a063f8da1f575e707b316f3ffc1ee4c94",
+            "start": 0,
+            "end": 111,
+            "text": "Verify checksum before restoring the approved backup. Incident state is reported; restoration is not confirmed.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          },
+          {
+            "chunkId": "f1474730-57f1-4c33-b223-5f8eaeb04d1d",
+            "runbookId": "3fc109c4-4940-4caa-8b57-e04b3dfdbe71",
+            "version": 1,
+            "title": "Latency diagnosis",
+            "contentHash": "536599ed75aec9f64b5527dcc304bec76d5e52e7622fa1c27a353ad23641bcb1",
+            "start": 0,
+            "end": 108,
+            "text": "Measure timeout and latency before retrying a worker request. Record the observations; the cause is unknown.",
+            "score": 0.00009998999303206801,
+            "model": "synthetic-768-v1",
+            "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "indexVersion": "chunk-v1-768"
+          }
+        ]
+      }
+    ],
+    "recallAt5": 1,
+    "mrr": 1,
+    "thresholds": {
+      "recallAt5": 0.85,
+      "mrr": 0.75,
+      "status": "provisional, label calibration pending"
+    }
+  },
+  "summary": {
+    "generations": 36,
+    "errors": 0,
+    "literalFailures": 0,
+    "meanMs": 1.9542558611111391,
+    "minMs": 0.0424340000004122,
+    "maxMs": 13.250521999999819,
+    "uncertainty": "Three repeats per case; no calibrated pass-rate confidence or production latency SLA. Prompt v2 is experimental and never promoted automatically."
+  },
+  "completed": true,
+  "lockfileSha256": "19422e7ec215e8bb0ef80c12fac863ca61bddba43357f0d1ad5bc4d3ea577d65",
+  "exportRedaction": "synthetic corpus; credential patterns/secret removed from prompts; no .env or hardware identifiers exported"
+}

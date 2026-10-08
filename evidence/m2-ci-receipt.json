@@ -1,0 +1,99 @@
+{
+  "at": "2026-10-08T18:44:15.542Z",
+  "codeCommit": "c5c7a84078c41555c2c9ae5e13e5559949a9ba02",
+  "runId": 37826088294,
+  "url": "https://github.com/garontherocks/opsledger/actions/runs/37826088294",
+  "inspection": "actual decoded job logs reviewed; no raw logs or tokens versioned",
+  "api": {
+    "jobId": 113479208638,
+    "conclusion": "success",
+    "nativeBackend": "PostgreSQL 18.6",
+    "vectorBuild": "0.8.7",
+    "unit": {
+      "total": 36,
+      "pass": 36,
+      "fail": 0,
+      "skip": 0
+    },
+    "integration": {
+      "total": 82,
+      "pass": 82,
+      "fail": 0,
+      "skip": 0
+    },
+    "controlledNativeRowLock": "passed",
+    "promptfoo": {
+      "total": 114,
+      "success": 114,
+      "failure": 0,
+      "unexpectedEgress": 0,
+      "target": "deterministic local fixture, not live model"
+    },
+    "auditKnownFindings": 0,
+    "bundle": "synthetic harness passed, no live-model acceptance",
+    "restore": "embedded quiesced drill passed; native live-backup not proven"
+  },
+  "browser": {
+    "jobId": 113479207634,
+    "conclusion": "success",
+    "flows": 9,
+    "passed": 9,
+    "failed": 0,
+    "names": [
+      "incident",
+      "knowledge",
+      "lifecycle",
+      "async",
+      "quality",
+      "flags",
+      "structured assistance",
+      "semantic retrieval",
+      "grounded answers/feedback"
+    ],
+    "golden": "existing visual baseline unchanged; compatible CI browser passed"
+  },
+  "correctiveHistory": [
+    {
+      "commit": "b7519d65bbd3d3afffc2c9d2d1ced4d4a5a7ef93",
+      "result": "API pipeline masked 14 failures; not a pass"
+    },
+    {
+      "commit": "82d8f6fb7ee4429df04bee5da25de3508ffc2d32",
+      "result": "functional checks passed; forced fixture cleanup caused two parent errors"
+    },
+    {
+      "commit": "ea2ead48414841b4c6d51fab7162a8ec23738cc9",
+      "result": "API initial readiness race, no integration proof from that lane"
+    },
+    {
+      "commit": "c5c7a84078c41555c2c9ae5e13e5559949a9ba02",
+      "result": "both lanes verified from logs"
+    }
+  ],
+  "acceptance": {
+    "phase6": "human-reviewed closed",
+    "M2": "formally accepted for agreed optional unverified non-operational lab scope; human/desktop/Teach-Back completed",
+    "M3": "not authorized",
+    "phase11Started": false,
+    "humanEvidence": "m2-human-desktop-validation.json"
+  },
+  "qualityPolicy": {
+    "document": "docs/m2-quality-acceptance-policy.md",
+    "agreedDate": "2026-10-08",
+    "hardSafetyGates": true,
+    "retrievalFloor": {
+      "recallAt5": 0.85,
+      "mrr": 0.75,
+      "satisfied": true
+    },
+    "numericSemanticPassRate": null,
+    "futurePromotion": {
+      "semanticSupportAnswerabilityTarget": 0.9,
+      "freshCalibratedBilingualHeldOutRequired": true,
+      "noCriticalUnsupportedOperationalClaimRequired": true
+    },
+    "productionQualityEstablished": false,
+    "productValueImprovementEstablished": false,
+    "automaticPromotion": false
+  }
+}

@@ -1,6 +1,6 @@
-# OpsLedger — Local assistance / Phase 6
+# OpsLedger — M2 AI Product
 
-Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. No model dependency. Branch: feat/local-ai-assistance. No merge or deployment.
+Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. Optional pinned local structured assistance, semantic retrieval and grounded runbook answers. Branch: feat/m2-ai-regression. No merge or deployment. M2 desktop/quality/understanding acceptance is pending; no Phase 11.
 
 ## Native local startup
 
@@ -8,7 +8,7 @@ Requires Node 24.19.x, npm 11 and Docker Compose with PostgreSQL 18.6. From the 
 
 1. Run `npm ci --ignore-scripts`.
 2. Copy .env.example to .env. Generate a database password and a separate random auth secret (at least 32 characters); replace placeholders. Never commit .env.
-3. Set DB_PASSWORD in your shell to that database password. Run `docker compose -f infra/compose.yaml up -d`. The database listens on localhost and persists a volume. Changing the environment password does not update an existing database.
+3. Set DB_PASSWORD in your shell to that database password. Run `docker compose -f infra/compose.yaml up --build -d`. The database listens on localhost and persists a volume. Changing the environment password does not update an existing database.
 4. Run `node --env-file=.env --experimental-strip-types scripts/migrate.ts` twice.
 5. Run `node --env-file=.env --experimental-strip-types scripts/seed.ts`. Use the generated .local/credentials.json to sign in. This file has restricted permissions. Retain it; repeat seeding never replaces existing passwords or memberships. LAB_MODE must be true and NODE_ENV must not be production.
 6. Run `npm run build`, then `node --env-file=.env --experimental-strip-types apps/api/src/server.ts`. Open http://localhost:3100 and create an incident for InvoiceWorker.
@@ -72,8 +72,34 @@ AI_ENABLED defaults false. In the nonproduction synthetic lab, enable it only wi
 
 Open incident detail and choose Draft timeline summary. Review against activity; the draft does not mutate or save incident content. State/revision or membership changes during inference suppress stale/unauthorized output. Errors preserve incident operations and knowledge search. Runtime identity, prompt/context hashes, event IDs, token counts and latency accompany the draft; successful production-style server logs include metadata without raw prompts/output.
 
-Original CPU evidence preserves 24 generations. The completed desktop batch adds 36 generations over 0.6B/1.7B/8B, plus actual API failure/recovery, learner human review and the completed six-part Phase 6 learning checkpoint. Quality failures remain: unsupported claims, invalid IDs and truncation. Víctor prefers direct reading for brief timelines and AI only as optional human-reviewed assistance. See [desktop closure](docs/phase6-desktop-closure.md). Inherited release/M1 and remote CI gates remain open; Phase 7 remains stopped.
+Original CPU evidence preserves 24 generations. The completed desktop batch adds 36 generations over 0.6B/1.7B/8B, plus actual API failure/recovery, learner human review and the completed six-part Phase 6 learning checkpoint. Quality failures remain: unsupported claims, invalid IDs and truncation. Víctor prefers direct reading for brief timelines and AI only as optional human-reviewed assistance. See [desktop closure](docs/phase6-desktop-closure.md). Inherited release/M1 and remote CI gates remain open. Phase 7 was subsequently authorized; see its section below.
 
 ## Phase 6 desktop handoff
 
-Clone https://github.com/garontherocks/opsledger.git and checkout `feat/local-ai-assistance`. Original validated source/evidence commit: `e917d798346b6653d810d0c4bdb17eec97f5090a` (implementation: `aa2320a2327b083bbb07ce653146b39986e13802`). The later handoff commit changes documentation and ignore rules only; product code is unchanged. See [desktop instructions](docs/phase6-desktop-handoff.md). Desktop validation and grouped human review are recorded in [desktop closure](docs/phase6-desktop-closure.md), with explicit checkpoint coverage and inherited release limits. Phase 7 is not authorized.
+Clone https://github.com/garontherocks/opsledger.git and checkout `feat/local-ai-assistance`. Original validated source/evidence commit: `e917d798346b6653d810d0c4bdb17eec97f5090a` (implementation: `aa2320a2327b083bbb07ce653146b39986e13802`). The later handoff commit changes documentation and ignore rules only; product code is unchanged. See [desktop instructions](docs/phase6-desktop-handoff.md). Desktop validation and grouped human review are recorded in [desktop closure](docs/phase6-desktop-closure.md), with explicit checkpoint coverage and inherited release limits. Phase 7 was subsequently authorized after the completed learning checkpoint; see below.
+
+## Phase 7 — structured drafts and evaluation
+
+Authorized after the Phase 6 closure. The incident endpoint now consumes a strict schema-constrained JSON model response with deterministic state/citation checks; unknown fields, unsafe markup, incomplete output and malformed JSON fail safely. Human accept/edit/reject decisions remain local and never change the incident. Contracts do not establish factual truth.
+
+Run `npm run ai:eval` for the versioned fixture/oracle report. See [Phase 7 report](docs/phase7-report.md) and accumulated [learning](docs/phase7-learning.md). Structured browser behavior is verified in the consolidated CI receipt. Actual inference quality and understanding are reviewed once at M2. Historical Phase 6 evidence is preserved.
+
+## M2 milestone handoff
+
+See [engineering report](docs/m2-engineering-report.md), [architecture](docs/m2-architecture.md), [security/evals](docs/m2-security-evals.md), [one desktop bundle](docs/m2-desktop-validation.md), [selected review samples](docs/m2-human-review-samples.md), and [consolidated Teach-Back](docs/m2-teach-back.md). Governance permits autonomous consecutive phases only within an explicitly authorized milestone; stop after Phase 10. Individual phase reports and evidence remain intact.
+
+AI/embeddings default off independently. Local inference is read-only and untrusted; optional signed feedback only records metadata. Native test fixtures require a disposable localhost `_test` connection and CREATEDB test role; the harness creates and normally drops only its generated databases, leaving the supplied database intact. Production least privilege remains a separate gate.
+
+## Phases 8–10
+
+Phase 8 adds bounded Markdown chunks, editor index/purge, pinned 768-dimensional embeddings and publication/workspace-scoped exact semantic search. Phase 9 adds quoted source-grounded answers with current-source revalidation and explicit abstention. Phase 10 adds optional signed append-only metadata feedback and local deterministic adversarial regression. See each phase report and evidence; fixture scores do not establish factual model quality.
+
+For a new lab, configure EMBEDDINGS_ENABLED, EMBEDDING_MODEL and full EMBEDDING_DIGEST separately from the generation model. AI_ENABLED and embeddings remain off by default. Existing labs follow the single M2 desktop bundle instead of repeating seeding or CI tests.
+
+## Actual M2 human checkpoint — 2026-10-08
+
+Desktop bundle and consolidated learning/review completed on handoff 4e10225: 36 generations, zero execution errors, three literal failures, small-corpus Recall@5/MRR 1.0, mean latency approximately 3.79 s. See [actual judgments and answers](docs/m2-human-checkpoint.md) and [formal acceptance assessment](docs/m2-acceptance-check.md). These supersede earlier pending-human notices. AI remains optional/unverified and direct reading remains the short-timeline baseline. Formal M2 acceptance is recorded under the explicitly agreed limited-lab policy, without another desktop/checkpoint loop. M3 is not authorized.
+
+## Formal M2 acceptance — 2026-10-08
+
+The user explicitly agreed [Phase 9 / M2 quality policy](docs/m2-quality-acceptance-policy.md). All M2 gates are satisfied for the optional, explicitly unverified, human-reviewed-where-material, non-operational lab scope. Recall@5 1.0 / MRR 1.0 satisfy the agreed lab floors; no numerical semantic pass rate is inferred from the eight samples. Semantic defects and production/promotion debt remain recorded. The future >= 0.90 target requires fresh calibrated bilingual held-out data plus no critical unsupported operational claim. No product-value improvement, model/prompt promotion or M3 authorization is implied. Desktop and Teach-Back were not rerun. Phase 11 has not begun.

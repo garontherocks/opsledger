@@ -35,3 +35,8 @@ test('remote origins, cloud model tags and enabled unpinned production AI are re
  assert.throws(()=>config({...base,OLLAMA_MODEL:'qwen3:cloud'}));assert.throws(()=>config({...base,AI_ENABLED:'true'}));
 });
 test('selected credentials are redacted from synthetic free text',()=>{const text=redactText('password=hunter2 api_key=private sk-12345678901234567890 the-runtime-secret','the-runtime-secret');assert.ok(!text.includes('hunter2')&&!text.includes('private')&&!text.includes('123456')&&!text.includes('runtime-secret'));});
+
+test('structured generation sends provider JSON schema with a bounded larger output budget',async()=>{
+ let body:Record<string,unknown>|undefined;const runtime=await fixture((req,res)=>{if(metadata(req,res))return;let data='';req.on('data',chunk=>data+=chunk);req.on('end',()=>{body=JSON.parse(data);res.end(JSON.stringify({model,response:'{"status":"refusal"}',done:true}));});});
+ const format={type:'object',additionalProperties:false};try{await new OllamaProvider(runtime.settings).generate('Structured prompt',format);assert.deepEqual(body?.format,format);assert.deepEqual(body?.options,{temperature:0,seed:42,num_ctx:4096,num_predict:768});}finally{await runtime.close();}
+});

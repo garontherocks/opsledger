@@ -1,0 +1,36 @@
+{
+  "at": "2026-10-08T17:36:20.051009+00:00",
+  "lint": "passed",
+  "typecheck": "passed",
+  "build": "passed",
+  "unit": {
+    "total": 35,
+    "passed": 35
+  },
+  "integration": {
+    "total": 64,
+    "passed": 63,
+    "skipped": 1,
+    "skipReason": "existing native PostgreSQL row-lock test; PGlite backend"
+  },
+  "browser": {
+    "status": "passed",
+    "tests": 1,
+    "retries": 0,
+    "runtime": "Chromium 143.0.7499.0; temporary @sparticuz/chromium 143.0.4 under ignored .local, default Playwright CDN archive unavailable",
+    "configuration": "same test, temporary executable/single-process launch configuration; application security controls unchanged",
+    "acceptanceClaim": true
+  },
+  "liveStructuredInference": {
+    "status": "deferred to M2 Desktop Validation Bundle",
+    "command": "npm run ai:structured-pilot"
+  },
+  "newDependencies": false,
+  "sourceDefaults": {
+    "aiEnabled": false,
+    "timeoutMs": 30000,
+    "structuredOutputTokens": 768,
+    "legacyPilotOutputTokens": 256
+  },
+  "phase8Started": false
+}

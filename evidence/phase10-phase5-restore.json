@@ -1,0 +1,85 @@
+{
+  "backend": "PGlite 0.5.8 / embedded PostgreSQL 18.3",
+  "scope": "quiesced synthetic DB dump plus private files, same version",
+  "backupBytes": 43039232,
+  "backupSha256": "bb1c11ceecf9f3b1194d3ebdd40a0a5fccc25b038da8cd64c668a2b144e8b2db",
+  "tables": {
+    "app_migrations": {
+      "rows": 7,
+      "sha256": "23c108ec23464b7965c185e04cb5e4e9b2f2cddfaba33a51db4f9111dce17de6"
+    },
+    "incidents": {
+      "rows": 1,
+      "sha256": "3fb17a1b2f37861edd965cd611672a99822e3f20bd1796cf13616a207e96376b"
+    },
+    "incident_activity": {
+      "rows": 1,
+      "sha256": "d9d415baff258a1efe7aff6f8d1d1922b1071deb1fbd68a2e0ef7c24ffa7e942"
+    },
+    "incident_comments": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "runbooks": {
+      "rows": 24,
+      "sha256": "42ea6a16fd6e159f0e3f44493623ba6a47d695904424f84860fa7285d7e17061"
+    },
+    "runbook_versions": {
+      "rows": 25,
+      "sha256": "cd3208a355684d919f6dacab234ccf60fe66b77a1b9d4575ec52b12b8e0cf723"
+    },
+    "knowledge_chunks": {
+      "rows": 1,
+      "sha256": "abfce2fae87c076e9d8fd6a97c08992c14c19dcde4475643b0056ddd77f5efc8"
+    },
+    "ai_feedback": {
+      "rows": 1,
+      "sha256": "408a145f88b750e6b48ce671332e551a427570c0a4b5d89fe1cfcfc4cd48182e"
+    },
+    "audit_events": {
+      "rows": 31,
+      "sha256": "190c0679c35d360d7d862d23a2ca472cd6e2f9c26b6cd93a9a2a7e3d35d92a97"
+    },
+    "domain_outbox": {
+      "rows": 2,
+      "sha256": "5a1e3052c98c762b02905b32fdbb215d1d46ea52614f2ad005730be1083c1858"
+    },
+    "async_operations": {
+      "rows": 4,
+      "sha256": "665310b9504e6b7b2a939ab6bd342d53bfb802e2b7640ef93627124d88b91699"
+    },
+    "operation_timeline": {
+      "rows": 12,
+      "sha256": "01c0a66a6fc25cbbfad7c710466ea3e5af6227dd2581472a25d31c5ddb1a5cd5"
+    },
+    "private_files": {
+      "rows": 1,
+      "sha256": "0aeecea4c8350cadc60ed8caaa08e921ac9def730c8fc33fa8c2f36ab2d8a6fd"
+    },
+    "notifications": {
+      "rows": 3,
+      "sha256": "940c8d1961da797646443492388a2969da051e0c5c51787cbc24031c1a60a7d8"
+    },
+    "memberships": {
+      "rows": 10,
+      "sha256": "a840c3672513c5a6e547f191216a7391335d6bc2ff160041843715f365c9ba94"
+    }
+  },
+  "privateFileHash": "ac52e320613a592fb1465aee5824dc96de6d779d49b9de556142273586a0cc2f",
+  "privateFiles": 1,
+  "restoreMs": 709.4680780000003,
+  "totalDrillMs": 1040.386931,
+  "checks": [
+    "exact table fingerprints",
+    "migration checksums unchanged",
+    "queue job references and notifications retained",
+    "0700 restored root",
+    "revision 2 export hash",
+    "0600 file permissions",
+    "retained credential sign-in",
+    "cross-workspace 404"
+  ],
+  "nativeRestore": false,
+  "liveBackup": false,
+  "temporaryBackupRetained": false
+}
