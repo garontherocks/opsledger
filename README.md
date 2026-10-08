@@ -82,10 +82,16 @@ Clone https://github.com/garontherocks/opsledger.git and checkout `feat/local-ai
 
 Authorized after the Phase 6 closure. The incident endpoint now consumes a strict schema-constrained JSON model response with deterministic state/citation checks; unknown fields, unsafe markup, incomplete output and malformed JSON fail safely. Human accept/edit/reject decisions remain local and never change the incident. Contracts do not establish factual truth.
 
-Run `npm run ai:eval` for the versioned fixture/oracle report. See [Phase 7 report](docs/phase7-report.md), [desktop batch](docs/phase7-desktop-validation.md) and [learner checkpoint](docs/phase7-learning.md). Engineering checks passed except browser execution blocked by unavailable Chromium; actual structured inference and the new human/learner acceptance remain pending. Phase 8 is not started. Historical Phase 6 source/learning evidence is preserved.
+Run `npm run ai:eval` for the versioned fixture/oracle report. See [Phase 7 report](docs/phase7-report.md) and accumulated [learning](docs/phase7-learning.md). Structured browser behavior is verified in the consolidated CI receipt. Actual inference quality and understanding are reviewed once at M2. Historical Phase 6 evidence is preserved.
 
 ## M2 milestone handoff
 
 See [engineering report](docs/m2-engineering-report.md), [architecture](docs/m2-architecture.md), [security/evals](docs/m2-security-evals.md), [one desktop bundle](docs/m2-desktop-validation.md), [selected review samples](docs/m2-human-review-samples.md), and [consolidated Teach-Back](docs/m2-teach-back.md). Governance permits autonomous consecutive phases only within an explicitly authorized milestone; stop after Phase 10. Individual phase reports and evidence remain intact.
 
 AI/embeddings default off independently. Local inference is read-only and untrusted; optional signed feedback only records metadata. Native test fixtures require a disposable localhost `_test` connection and CREATEDB test role; the harness creates and normally drops only its generated databases, leaving the supplied database intact. Production least privilege remains a separate gate.
+
+## Phases 8–10
+
+Phase 8 adds bounded Markdown chunks, editor index/purge, pinned 768-dimensional embeddings and publication/workspace-scoped exact semantic search. Phase 9 adds quoted source-grounded answers with current-source revalidation and explicit abstention. Phase 10 adds optional signed append-only metadata feedback and local deterministic adversarial regression. See each phase report and evidence; fixture scores do not establish factual model quality.
+
+For a new lab, configure EMBEDDINGS_ENABLED, EMBEDDING_MODEL and full EMBEDDING_DIGEST separately from the generation model. AI_ENABLED and embeddings remain off by default. Existing labs follow the single M2 desktop bundle instead of repeating seeding or CI tests.
