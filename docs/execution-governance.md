@@ -11,3 +11,7 @@ Stop earlier for a failed required deterministic gate, serious security issue, h
 ## Authorization update — 2026-10-08 after M2 closure
 
 M2 is formally accepted under docs/m2-quality-acceptance-policy.md and merged to main. The user requested the next phase, authorizing Phase 11, the first Agent Foundations phase. The earlier M2-only authorization statement is historical and superseded for Phase 11. This assignment implements Phase 11 only; do not silently add Phase 12/13 implementation. Keep learning/desktop checks accumulated rather than requiring a new phase-level human checkpoint. No M4/Phase 14 transition is authorized.
+
+## Authorization update — 2026-10-08 Phase 12
+
+The user explicitly ordered PR #3 merge and Phase 12 start. PR #3 merged with both current-head CI lanes successful, using a merge commit (no squash/rebase or branch deletion), at b0b785a922288a831fe28266c4d2bb27462b6e5a. This assignment implements Phase 12 only, preserving its individual DoD and accumulated M3 learning/desktop validation. No Phase 13 implementation or M4 transition is included. Main protection remains unavailable under the recorded private-plan limitation; actual checks are still required before integration.

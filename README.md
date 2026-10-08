@@ -107,3 +107,11 @@ The user explicitly agreed [Phase 9 / M2 quality policy](docs/m2-quality-accepta
 ## Phase 11 — direct read-only QA harness
 
 Authorized after M2 acceptance; isolated branch feat/bounded-qa-agent. Three transport-neutral snapshot readers, strict model proposals, controller-owned mandatory coverage/integrity checks, six-turn/deadline/character/token limits and complete synthetic traces. No product API, operational write, shell, MCP or suite execution is added. Run `npm run agent:eval`; actual pinned tool-selection quality remains for the integrated M3 desktop bundle. See [Phase 11 report](docs/phase11-report.md), [security](docs/phase11-security.md) and accumulated [learning](docs/phase11-learning.md). No production model/prompt promotion or later milestone authorization is implied.
+
+## Phase 12 — MCP stdio lab
+
+Phase 11 was merged through PR #3 at `b0b785a922288a831fe28266c4d2bb27462b6e5a`. Phase 12 exposes its same three approved synthetic snapshot readers and versioned resources using pinned official SDK server/client 2.3.1. No private incident data or operational authority is added.
+
+Run `npm ci --ignore-scripts`, then `npm run mcp:test`. The test host launches the fixed server itself; do not start a second process. `npm run mcp:server` is the stdio entry for a reviewed compatible host: stdout is protocol only and diagnostics use stderr. For manual host configuration, use the absolute Node executable and fixed `scripts/qa-mcp-server.ts` path, with `--import` pointing to the absolute `scripts/mcp-egress.mjs` path and `--experimental-strip-types`; do not use model-selected commands or download-on-connect launchers. The owned host defaults to pinned 2026-07-28; legacy 2025-11-25 is separately tested. No `.env`, Ollama or DB setup is needed for these synthetic protocol checks.
+
+See [report](docs/phase12-report.md), [security and compatibility](docs/phase12-security.md), [learning](docs/phase12-learning.md) and [actual annotated wire transcript](evidence/phase12-protocol-transcript.json). Per-phase desktop/Teach-Back is not requested; accumulated M3 validation remains at its milestone boundary. Phase 13 is not implemented.
