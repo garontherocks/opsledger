@@ -18,7 +18,7 @@
     "start": "node --experimental-strip-types apps/api/src/server.ts",
     "db:migrate": "node --experimental-strip-types scripts/migrate.ts",
     "db:seed:lab": "node --experimental-strip-types scripts/seed.ts",
-    "test:unit": "node --experimental-strip-types --test tests/domain.test.ts tests/lifecycle.domain.test.ts tests/knowledge.domain.test.ts tests/async.domain.test.ts tests/client.unit.test.ts tests/local-model.unit.test.ts tests/structured-output.unit.test.ts tests/embeddings.unit.test.ts",
+    "test:unit": "node --experimental-strip-types --test tests/domain.test.ts tests/lifecycle.domain.test.ts tests/knowledge.domain.test.ts tests/async.domain.test.ts tests/client.unit.test.ts tests/local-model.unit.test.ts tests/structured-output.unit.test.ts tests/embeddings.unit.test.ts tests/qa-agent.unit.test.ts",
     "test:integration": "node --experimental-strip-types scripts/integration-runner.ts",
     "test:e2e": "node --experimental-strip-types scripts/browser-runner.ts",
     "db:lab": "node --experimental-strip-types scripts/lab-db.ts",
@@ -30,7 +30,9 @@
     "ai:structured-pilot": "node --env-file=.env --experimental-strip-types scripts/phase7-live-pilot.ts",
     "ai:regression": "node --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/phase10-eval.ts",
     "ai:m2-desktop": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/m2-desktop.ts",
-    "ai:m2-harness": "node --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/m2-desktop.ts"
+    "ai:m2-harness": "node --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/m2-desktop.ts",
+    "agent:eval": "node --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/phase11-eval.ts",
+    "agent:live": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/phase11-live.ts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.7",
