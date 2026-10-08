@@ -40,6 +40,25 @@
     "runId": 37826088294,
     "logsReviewed": true
   },
-  "milestoneAcceptance": "pending agreed Phase 9 quality threshold/policy",
-  "humanEvidence": "m2-human-desktop-validation.json"
+  "milestoneAcceptance": "accepted under explicit Phase 9 / M2 quality policy",
+  "humanEvidence": "m2-human-desktop-validation.json",
+  "qualityPolicy": {
+    "document": "docs/m2-quality-acceptance-policy.md",
+    "agreedDate": "2026-10-08",
+    "hardSafetyGates": true,
+    "retrievalFloor": {
+      "recallAt5": 0.85,
+      "mrr": 0.75,
+      "satisfied": true
+    },
+    "numericSemanticPassRate": null,
+    "futurePromotion": {
+      "semanticSupportAnswerabilityTarget": 0.9,
+      "freshCalibratedBilingualHeldOutRequired": true,
+      "noCriticalUnsupportedOperationalClaimRequired": true
+    },
+    "productionQualityEstablished": false,
+    "productValueImprovementEstablished": false,
+    "automaticPromotion": false
+  }
 }

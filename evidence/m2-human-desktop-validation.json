@@ -95,8 +95,28 @@
   },
   "milestone": {
     "humanCheckpoint": "completed",
-    "formalAcceptance": "pending agreed Phase 9 quality threshold/policy",
+    "formalAcceptance": "accepted for explicitly agreed optional unverified non-operational M2 lab scope",
     "M3Authorized": false,
-    "phase11Started": false
+    "phase11Started": false,
+    "acceptanceDate": "2026-10-08"
+  },
+  "qualityPolicy": {
+    "document": "docs/m2-quality-acceptance-policy.md",
+    "agreedDate": "2026-10-08",
+    "hardSafetyGates": true,
+    "retrievalFloor": {
+      "recallAt5": 0.85,
+      "mrr": 0.75,
+      "satisfied": true
+    },
+    "numericSemanticPassRate": null,
+    "futurePromotion": {
+      "semanticSupportAnswerabilityTarget": 0.9,
+      "freshCalibratedBilingualHeldOutRequired": true,
+      "noCriticalUnsupportedOperationalClaimRequired": true
+    },
+    "productionQualityEstablished": false,
+    "productValueImprovementEstablished": false,
+    "automaticPromotion": false
   }
 }
