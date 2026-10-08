@@ -72,7 +72,7 @@ AI_ENABLED defaults false. In the nonproduction synthetic lab, enable it only wi
 
 Open incident detail and choose Draft timeline summary. Review against activity; the draft does not mutate or save incident content. State/revision or membership changes during inference suppress stale/unauthorized output. Errors preserve incident operations and knowledge search. Runtime identity, prompt/context hashes, event IDs, token counts and latency accompany the draft; successful production-style server logs include metadata without raw prompts/output.
 
-Original CPU evidence preserves 24 generations. The completed desktop batch adds 36 generations over 0.6B/1.7B/8B, plus actual API failure/recovery and learner human review. Quality failures remain: unsupported claims, invalid IDs and truncation. Víctor prefers direct reading for brief timelines and AI only as optional human-reviewed assistance. See [desktop closure](docs/phase6-desktop-closure.md). Inherited release/M1 and remote CI gates remain open; Phase 7 remains stopped.
+Original CPU evidence preserves 24 generations. The completed desktop batch adds 36 generations over 0.6B/1.7B/8B, plus actual API failure/recovery, learner human review and the completed six-part Phase 6 learning checkpoint. Quality failures remain: unsupported claims, invalid IDs and truncation. Víctor prefers direct reading for brief timelines and AI only as optional human-reviewed assistance. See [desktop closure](docs/phase6-desktop-closure.md). Inherited release/M1 and remote CI gates remain open; Phase 7 remains stopped.
 
 ## Phase 6 desktop handoff
 

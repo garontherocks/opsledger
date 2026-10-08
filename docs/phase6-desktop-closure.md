@@ -1,6 +1,6 @@
 # Phase 6 desktop closure record — 2026-10-08
 
-Desktop validation and grouped human semantic review are completed with limitations. Phase 7 remains stopped and unauthorized. This record supplements the original engineering evidence; it does not assert production readiness or clear inherited release/M1 gates.
+Phase 6 learning checkpoint, desktop validation and grouped human semantic review are completed with limitations. Phase 7 remains stopped and unauthorized. This record supplements the original engineering evidence; it does not assert production readiness or clear inherited release/M1 gates.
 
 ## Demonstrated by Víctor
 
@@ -28,8 +28,8 @@ Víctor rejected 0.6B's repair/closure claims while the fixture remained reporte
 
 Assistant inspection additionally found 1.7B conflating event and incident IDs and treating proposed checks as verified guarantees; 8B separated observation and hypothesis better on the 403 case but labeled unreviewed QA text Human-Reviewed, added next steps beyond the summary instruction and truncated all three risk analyses. No model is approved for automatic draft acceptance or operational action.
 
-Review was grouped by relevant failure class plus one live simple example, not 36 individual acceptances. Raw pilot humanReview fields intentionally remain pending; separate evidence/phase6-desktop-review.json records the actual learner decisions without fabricating per-run approvals. Security understanding is supported by the learner's conceptual/architecture answers and rejection of injected claims; no separate interview role-play or additional unperformed boundary test is claimed.
+Review was grouped by relevant failure class plus one live simple example, not 36 individual acceptances. Raw pilot humanReview fields intentionally remain pending; separate evidence/phase6-desktop-review.json records the actual learner decisions without fabricating per-run approvals. Security understanding is supported by the learner's conceptual/architecture answers and rejection of injected claims. The final interview scenario was answered by Víctor on 2026-10-08: a valid ID does not make a malicious comment true; tool-free draft generation limits impact; another model must be compared with matched fixtures/repetitions and factual/evidence/omission/latency/resource metrics while deterministic controls remain intact. The answer was assessed as correct; its verbatim text is in evidence/phase6-desktop-review.json. No additional unperformed boundary test is claimed.
 
 ## Remaining limits and scope
 
-No further reruns are required for these completed desktop cases. Historical engineering reports remain evidence of their original session, supplemented by this record. Inherited native least-privilege, multiworker/crash/restore and remote CI/release gates remain open. This desktop closure does not silently clear them or certify every roadmap checkpoint item. No Phase 7 implementation, model acceptance automation, merge to main, squash or history rewrite is authorized by this record.
+No further reruns are required for these completed desktop cases. Historical engineering reports remain evidence of their original session, supplemented by this record. Inherited native least-privilege, multiworker/crash/restore and remote CI/release gates remain open. The six Phase 6 learning checkpoint items are now covered by learner answers, the desktop demonstration and recorded evidence; this closure does not clear inherited release gates. No Phase 7 implementation, model acceptance automation, merge to main, squash or history rewrite is authorized by this record.

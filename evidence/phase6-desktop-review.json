@@ -76,7 +76,21 @@
   "limitations": [
     "Small synthetic dataset, not production SLA or generalized quality acceptance",
     "Per-model GPU offload not recorded in pilot JSON; live 8B log showed 37/37 layers on CUDA",
-    "Inherited native/remote release gates remain open",
-    "No new standalone interview role-play is claimed"
-  ]
+    "Inherited native/remote release gates remain open"
+  ],
+  "teachBackCheckpoint": {
+    "status": "completed for Phase 6 learning and desktop scope",
+    "date": "2026-10-08",
+    "interviewAnswerVerbatim": "Esa cita no demuestra que el incidente haya sido reparado, porque el ID puede ser válido pero la fuente sigue siendo un comentario malicioso y el estado determinista del incidente continúa en `reported`. En OpsLedger el impacto queda limitado porque el modelo solo genera un borrador: no tiene tools ni permisos para cambiar el estado, modificar datos o ejecutar acciones, y el resultado sigue sujeto a validaciones de la aplicación y revisión humana. Si quisiera probar otro modelo, lo compararía contra los mismos fixtures y con varias repeticiones, evaluando calidad factual, uso correcto de evidencia, omisiones, latencia y recursos. Cambiaría el modelo solo si mejora esas métricas, sin modificar los controles deterministas de autorización, estado, revisión ni los gates de seguridad.",
+    "assessment": "Correct: valid source ID does not establish claim truth; tool-free read-only architecture limits impact; matched repeated evaluation preserves deterministic authorization/state/revision/security gates.",
+    "coverage": [
+      "Five conceptual questions supplied by learner",
+      "Architecture explained by learner",
+      "Controlled failure and recovery demonstrated on desktop",
+      "Security boundary explained in answers and final scenario",
+      "Interview scenario answered by learner",
+      "Concrete desktop evidence and grouped human review recorded"
+    ],
+    "releaseGates": "Inherited native/remote release gates remain open; Phase 7 remains unauthorized"
+  }
 }

@@ -1,6 +1,6 @@
 # Phase 6 mandatory teach-back checkpoint
 
-> **2026-10-08 update:** Desktop validation and grouped human review have now been performed. See [desktop closure](phase6-desktop-closure.md) and the separate desktop evidence. Earlier pending statements below describe the original session; inherited release gates remain open and Phase 7 remains stopped. No unperformed learner exercise or per-run approval is implied.
+> **2026-10-08 update:** The six Phase 6 teach-back items, desktop validation and grouped human review are now covered by actual learner responses and demonstration, including the final interview answer on 2026-10-08. See [desktop closure](phase6-desktop-closure.md) and the separate desktop evidence. Earlier pending statements below describe the original session; inherited release gates remain open and Phase 7 remains stopped. No unperformed learner exercise or per-run approval is implied.
 
 Engineering evidence is available; checkpoint materials are ready. Human semantic review and Víctor's learner demonstration are **pending**. Do not infer understanding from generated code or assistant analysis. This phase stops here; Phase 7 is named only.
 
