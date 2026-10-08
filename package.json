@@ -32,13 +32,17 @@
     "ai:m2-desktop": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/m2-desktop.ts",
     "ai:m2-harness": "node --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/m2-desktop.ts",
     "agent:eval": "node --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/phase11-eval.ts",
-    "agent:live": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/phase11-live.ts"
+    "agent:live": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/phase11-live.ts",
+    "mcp:server": "node --import ./scripts/mcp-egress.mjs --experimental-strip-types scripts/qa-mcp-server.ts",
+    "mcp:test": "node --import ./scripts/mcp-egress.mjs --experimental-strip-types --test tests/qa-mcp.integration.test.ts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.7",
     "@fastify/rate-limit": "11.2.0",
     "@fastify/static": "10.1.5",
     "@fastify/swagger": "9.9.1",
+    "@modelcontextprotocol/client": "2.3.1",
+    "@modelcontextprotocol/server": "2.3.1",
     "better-auth": "1.7.7",
     "drizzle-orm": "0.45.3",
     "fastify": "5.12.5",
