@@ -2,7 +2,7 @@
 
 Purpose: run the integrated M3 agent against the actual pinned local provider once, covering direct/stdio/authenticated local HTTP without manually repeating CI-proven deterministic tests. This is the M3 milestone gate; no Phase 14 work is authorized.
 
-Handoff branch: feat/m3-skills-http. Exact code SHA will be filled from the final CI receipt. Clone/checkout that branch or pull it once. Verify git status is clean and git rev-parse HEAD matches the supplied handoff SHA. Run npm ci --ignore-scripts once after this pull because the official Node adapter is a new locked dependency.
+Handoff branch: feat/m3-skills-http. Validated code SHA: 4510690a9f10da7b094641c5cc0c52c398094f25. The later documentation/evidence-only closure SHA is supplied in the handoff response/PR; see evidence/phase13-ci-receipt.json for the exact tested code. Clone/checkout that branch or pull it once. Verify git status is clean and git rev-parse HEAD matches the supplied handoff SHA. Run npm ci --ignore-scripts once after this pull because the official Node adapter is a new locked dependency.
 
 Use the existing private .env with nonproduction LAB_MODE=true, AI_ENABLED=true and the previously approved full OLLAMA_DIGEST/model pin. Preserve the exact Ollama runtime version used for the experiment; set OLLAMA_EXPECTED_VERSION in .env if it is not already set. Do not change the model or digest for convenience. Node remains 24.19.0. Record actual GPU/hardware yourself; no hardware is assumed from older conversations.
 
@@ -14,7 +14,7 @@ In PowerShell from the repo root:
 npm run ai:m3-desktop
 ```
 
-The bundle rotates direct/stdio/HTTP order over three repetitions: nine agent runs, each bounded to six turns and 120 s, with 60 s provider requests, existing token/character gates and exactly the same reviewed synthetic context. The generation-call count varies with actual model decisions. A JSON console result states completed, drafts, blocked and generations. The private evidence file is evidence/desktop-private/m3-validation.json and is ignored by Git. Runtime/model/digest mismatches fail rather than silently changing the system.
+The bundle rotates direct/stdio/HTTP order over three repetitions: nine agent runs, each bounded to six turns and 120 s, with 60 s provider requests, existing token/character gates and exactly the same reviewed synthetic context. The generation-call count varies with actual model decisions. A JSON console result states completed, drafts, blocked, providerErrors and providerCalls (attempts, not proof of successful generation). The private evidence file is evidence/desktop-private/m3-validation.json and is ignored by Git. Runtime/model/digest mismatches fail closed rather than silently changing the system. The file labels configured pins/expected runtime separately; successful generation metadata is in proposal traces.
 
 completed=true means the experiment ran, NOT that AI quality passed. Inspect blocked reasons honestly: malformed proposal, unknown tool/ID, missing mandatory reads, timeout, token/output limits or provider/runtime failures remain evidence. Do not rerun until green or weaken gates. Three repeats on one known task do not establish generalization, statistical significance, production quality or product value.
 

@@ -1,0 +1,73 @@
+{
+  "phase": 13,
+  "milestone": "M3 Agent Foundations",
+  "date": "2026-10-08",
+  "testedCodeSha": "4510690a9f10da7b094641c5cc0c52c398094f25",
+  "baseMerge": "95caf7486c0380a22bebe5c2c55a24419fcdf239",
+  "runId": 37859889444,
+  "url": "https://github.com/garontherocks/opsledger/actions/runs/37859889444",
+  "jobs": [
+    {
+      "id": 113592832827,
+      "name": "acceptance (api)",
+      "conclusion": "success"
+    },
+    {
+      "id": 113592832949,
+      "name": "acceptance (browser)",
+      "conclusion": "success"
+    }
+  ],
+  "observed": {
+    "lint": "pass",
+    "typecheck": "pass",
+    "build": "pass",
+    "auditModerate": "pass",
+    "unit": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0
+    },
+    "m3Integration": {
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "httpSecurityCases": 14
+    },
+    "mcpIntegration": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    "agentPolicyFixtures": {
+      "passed": 8,
+      "failed": 0
+    },
+    "priorAiRegression": {
+      "passed": 114,
+      "unexpectedEgress": 0
+    },
+    "nativeIntegration": {
+      "passed": 82,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browserFlows": {
+      "passed": 9
+    },
+    "localRestoreAndPreAiBenchmark": "pass"
+  },
+  "actualHumanDesktopValidation": "pending; not run in Work; no learner answers/judgments invented",
+  "formalM3Acceptance": false,
+  "nextMilestoneAuthorized": false,
+  "limits": [
+    "synthetic offline sources; no private product-data authorization claim",
+    "fixed proposal fixtures do not establish live tool-selection quality",
+    "JS guards are not OS/native/child sandboxes",
+    "bearer fresh-nonce reuse is not prevented by request-ID replay cache",
+    "local HTTP profile is not production OAuth/TLS",
+    "no production quality or product-value claim",
+    "main protection unavailable under current private plan"
+  ],
+  "closure": "Documentation/evidence-only successor; attestation refers to testedCodeSha."
+}
