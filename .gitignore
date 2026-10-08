@@ -8,3 +8,27 @@ playwright-report/
 evidence/audit-full.json
 evidence/registry-metadata.json
 evidence/node24-types.json
+
+# Desktop lab secrets and heavyweight/private state (Phase 6 handoff)
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.gguf
+*.safetensors
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.backup
+backups/
+private-storage/
+.ollama/
+models/
+runtimes/
+browser-binaries/
+credentials*.json
+evidence/private/
+evidence/desktop-private/
