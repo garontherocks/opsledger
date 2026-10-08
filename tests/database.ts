@@ -16,7 +16,17 @@ export async function testDatabase(port=55432){
     await admin.query(`CREATE DATABASE "${name}"`);
     url.pathname=`/${name}`;
     const pool=new Pool({connectionString:url.toString(),max:4,connectionTimeoutMillis:2000});
-    const close=async()=>{await pool.end();try{await admin.query(`DROP DATABASE "${name}" WITH (FORCE)`);}finally{await admin.end();}};
+    const close=async()=>{
+      await pool.end();
+      try{
+        // Pool.end resolves before PostgreSQL necessarily observes socket termination.
+        // Never force-terminate clients: their late error events can escape the test.
+        for(let attempt=0;;attempt++){
+          try{await admin.query(`DROP DATABASE "${name}"`);break;}
+          catch(error){if((error as {code?:string}).code!=='55006'||attempt>=99)throw error;await new Promise(resolve=>setTimeout(resolve,20));}
+        }
+      }finally{await admin.end();}
+    };
     try{await migrate(pool);}catch(error){await close();throw error;}
     return {pool,backend:'postgresql-server',dump:undefined,close};
   }
