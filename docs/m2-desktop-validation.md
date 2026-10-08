@@ -1,4 +1,6 @@
-# One M2 Desktop Validation Bundle
+# One M2 Desktop Validation Bundle — completed historical procedure
+
+Completed at handoff 4e10225; do not rerun to close M2. Current baseline is main after PR #1. Commands below intentionally preserve the procedure used for the recorded desktop run.
 
 Use feat/m2-ai-regression at the exact final handoff commit. Preserve existing private .env, password and database volume. Stop old API/worker terminals.
 
@@ -47,4 +49,4 @@ Share only synthetic report and relevant startup results, never .env, credential
 
 ## Actual milestone outcome — 2026-10-08
 
-The desktop and human checkpoint is completed at handoff 4e10225. See [actual human record](m2-human-checkpoint.md) and [acceptance check](m2-acceptance-check.md). Original procedure/evidence limitations above remain historical; do not rerun the bundle or invent judgments. Three literal failures and all eight Accept/Edit/Reject judgments remain recorded. Threshold agreement is still provisional; no prompt/model is automatically promoted and M3 remains unauthorized.
+The desktop and human checkpoint is completed at handoff 4e10225. See [actual human record](m2-human-checkpoint.md) and [acceptance check](m2-acceptance-check.md). Original procedure/evidence limitations above remain historical; do not rerun the bundle or invent judgments. Three literal failures and all eight Accept/Edit/Reject judgments remain recorded. The user explicitly agreed [quality acceptance policy](m2-quality-acceptance-policy.md); bounded M2 is formally accepted. No prompt/model is automatically promoted and M3 remains unauthorized.
