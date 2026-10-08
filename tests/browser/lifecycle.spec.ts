@@ -29,6 +29,10 @@ test('lead moves incident through lifecycle; stale second tab must refresh',asyn
  await page.getByLabel('Resolution summary',{exact:true}).fill('Restarted worker and confirmed stable processing');
  await page.getByRole('button',{name:'Resolve',exact:true}).click();
  await page.getByRole('button',{name:'Close incident',exact:true}).click();
+ // Reopen is already rendered for resolved incidents. Wait for close to commit
+ // before filling that form so a pending mutation cannot consume/reset its input.
+ await expect(detail.locator('dl dd').first()).toHaveText('closed');
+ await expect(detail.locator('dl dd').nth(2)).toHaveText('6');
  await page.getByLabel('Reopen reason',{exact:true}).fill('The timeout returned after the initial recovery');
  await page.getByRole('button',{name:'Reopen',exact:true}).click();
  await expect(page.getByLabel('Resolution summary',{exact:true})).toBeVisible();
@@ -37,3 +41,4 @@ test('lead moves incident through lifecycle; stale second tab must refresh',asyn
  await expect(page.getByRole('article',{name:'Incident detail'})).toContainText('The timeout returned');
  await page.screenshot({path:'evidence/phase4-lifecycle.png',fullPage:true});
 });
+
