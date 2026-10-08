@@ -1,5 +1,7 @@
 # Phase 6 human review worksheet
 
+> **2026-10-08 update:** Desktop validation and grouped human review have now been performed. See [desktop closure](phase6-desktop-closure.md) and the separate desktop evidence. Earlier pending statements below describe the original session; inherited release gates remain open and Phase 7 remains stopped. No unperformed learner exercise or per-run approval is implied.
+
 Status: unfilled; human reviewer pending. This is a review aid, not evidence of completed review.
 
 For each of the four cases in tests/fixtures/phase6-pilot.json, inspect all three outputs from both models in evidence/phase6-live-pilot.json. Use expectedReviewPoints as labels, never the model's self-description as an oracle.

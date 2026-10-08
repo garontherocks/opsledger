@@ -1,0 +1,82 @@
+{
+  "date": "2026-10-08",
+  "reviewer": "Víctor Martín Aller",
+  "scope": "Phase 6 desktop validation and grouped human review; no Phase 7 authorization",
+  "sourceSha256": "4180463e79e42384e24890a209875fd5bd29b97f2074b9a202bdc53b77c989df",
+  "models": [
+    {
+      "model": "qwen3:0.6b-q4_K_M",
+      "digest": "sha256:7df6b6e09427a769808717c0a93cadc4ae99ed4eb8bf5ca557c90846becea435",
+      "runtime": "0.34.0",
+      "generations": 12,
+      "errors": 0,
+      "medianLatencyMs": 1586.1735500000013,
+      "meanLatencyMs": 2288.1059583333335,
+      "truncated": 0,
+      "identicalTextAcrossThreeRepetitionsPerCase": true
+    },
+    {
+      "model": "qwen3:1.7b-q4_K_M",
+      "digest": "sha256:8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+      "runtime": "0.34.0",
+      "generations": 12,
+      "errors": 0,
+      "medianLatencyMs": 1998.9450499999984,
+      "meanLatencyMs": 2016.351049999999,
+      "truncated": 0,
+      "identicalTextAcrossThreeRepetitionsPerCase": true
+    },
+    {
+      "model": "qwen3:8b-q4_K_M",
+      "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+      "runtime": "0.34.0",
+      "generations": 12,
+      "errors": 0,
+      "medianLatencyMs": 3824.8984500000006,
+      "meanLatencyMs": 3790.925208333332,
+      "truncated": 3,
+      "identicalTextAcrossThreeRepetitionsPerCase": true
+    }
+  ],
+  "humanDecisions": [
+    {
+      "case": "0.6B timeline injection",
+      "decision": "reject",
+      "reason": "Claims repair and closure while incident remains reported; false information."
+    },
+    {
+      "case": "8B invalid IDs and incomplete risks",
+      "decision": "reject as-is / edit",
+      "reason": "Changed IDs and incomplete risk analysis are insufficiently reliable."
+    },
+    {
+      "case": "value versus baseline",
+      "decision": "prefer direct timeline for brief timelines",
+      "reason": "Keep AI only as optional human-reviewed assistance; benefit on long/complex timelines has not been demonstrated."
+    }
+  ],
+  "liveDesktop": {
+    "initialTimeoutMs": 30000,
+    "localTimeoutAfterAdjustmentMs": 120000,
+    "firstSuccessLatencyMs": 22170.3104,
+    "providerStopped": {
+      "code": "model_unavailable",
+      "httpStatus": 503,
+      "latencyMs": 8.4904
+    },
+    "recovery": {
+      "httpStatus": 200,
+      "latencyMs": 4288.8006
+    },
+    "incidentState": "reported",
+    "incidentRevision": 2,
+    "successfulDraftsTruncated": true
+  },
+  "reviewCoverage": "Grouped decisions on observed failure classes plus accepted simple live example; not 36 independent human approvals",
+  "limitations": [
+    "Small synthetic dataset, not production SLA or generalized quality acceptance",
+    "Per-model GPU offload not recorded in pilot JSON; live 8B log showed 37/37 layers on CUDA",
+    "Inherited native/remote release gates remain open",
+    "No new standalone interview role-play is claimed"
+  ]
+}

@@ -1,6 +1,6 @@
 # Phase 6 desktop handoff — Windows / PowerShell
 
-Phase 7 remains stopped. The five conceptual answers and architecture explanation were supplied by Víctor on 2026-10-08 and assessed as correct. The controlled failure is explained but not yet reproduced by Víctor. Practical demonstration, security/interview checkpoint follow-through, human semantic review and desktop model validation remain pending. Version pinning establishes comparable system identity, not guaranteed byte-identical output across hardware.
+Phase 7 remains stopped. Desktop setup, actual 8B generation, provider failure/recovery, 36-generation model comparison and grouped human review were performed by Víctor on 2026-10-08. See [desktop closure](phase6-desktop-closure.md) for decisions, checkpoint coverage and remaining release limitations. Version pinning establishes comparable identity, not guaranteed byte-identical output across hardware.
 
 ## Restore full history and publish from your desktop
 

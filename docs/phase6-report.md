@@ -1,5 +1,7 @@
 # OpsLedger — Phase 6 execution report
 
+> **2026-10-08 update:** Desktop validation and grouped human review have now been performed. See [desktop closure](phase6-desktop-closure.md) and the separate desktop evidence. Earlier pending statements below describe the original session; inherited release gates remain open and Phase 7 remains stopped. No unperformed learner exercise or per-run approval is implied.
+
 2026-10-08. Branch: feat/local-ai-assistance. Validated implementation commit: aa2320a2327b083bbb07ce653146b39986e13802. Prior delivery: 2e208fece2d5cd9d423ff4993df0724e7ed8b6c9.
 
 Engineering implementation and local checks are available. Full Phase 6 completion is pending human semantic review, learner demonstration and the documented desktop model validation. Inherited native/remote release gates remain open. Phase 7 has not begun.
