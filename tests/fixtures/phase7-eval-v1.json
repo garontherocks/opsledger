@@ -1,0 +1,300 @@
+{
+  "datasetVersion": "phase7-contract-eval-v1",
+  "oracleVersion": "bounded-literal-oracle-v1",
+  "purpose": "Deterministic raw model-like fixtures, not live generations. Held-out cases excluded from prompt/development examples; once observed this split is consumed and must be replaced before future tuning.",
+  "cases": [
+    {
+      "id": "valid-summary",
+      "split": "development",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"draft\", \"state\": \"reported\", \"summary\": \"Timeout observed; recovery unknown.\", \"timeline\": [{\"eventId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1\", \"observation\": \"Timeout observed.\"}], \"unknowns\": [\"Cause and recovery\"]}",
+      "truncated": false,
+      "expectedBoundary": "accepted-contract",
+      "oracle": {
+        "required": [
+          "Timeout"
+        ],
+        "forbidden": [
+          "The database is repaired.",
+          "The incident is closed."
+        ]
+      }
+    },
+    {
+      "id": "malformed-json",
+      "split": "development",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\":",
+      "truncated": false,
+      "expectedBoundary": "model_invalid_json",
+      "oracle": {
+        "required": [
+          "Timeout"
+        ],
+        "forbidden": [
+          "The database is repaired.",
+          "The incident is closed."
+        ]
+      }
+    },
+    {
+      "id": "unknown-field",
+      "split": "development",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"draft\", \"state\": \"reported\", \"summary\": \"Timeout observed; recovery unknown.\", \"timeline\": [{\"eventId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1\", \"observation\": \"Timeout observed.\"}], \"unknowns\": [\"Cause and recovery\"], \"command\": \"close incident\"}",
+      "truncated": false,
+      "expectedBoundary": "model_schema_invalid",
+      "oracle": {
+        "required": [
+          "Timeout"
+        ],
+        "forbidden": [
+          "The database is repaired.",
+          "The incident is closed."
+        ]
+      }
+    },
+    {
+      "id": "forged-citation",
+      "split": "development",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"draft\", \"state\": \"reported\", \"summary\": \"Timeout observed; recovery unknown.\", \"timeline\": [{\"eventId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb\", \"observation\": \"Timeout observed.\"}], \"unknowns\": [\"Cause and recovery\"]}",
+      "truncated": false,
+      "expectedBoundary": "model_grounding_invalid",
+      "oracle": {
+        "required": [
+          "Timeout"
+        ],
+        "forbidden": [
+          "The database is repaired.",
+          "The incident is closed."
+        ]
+      }
+    },
+    {
+      "id": "state-falsehood",
+      "split": "development",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"draft\", \"state\": \"closed\", \"summary\": \"Timeout observed; recovery unknown.\", \"timeline\": [{\"eventId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1\", \"observation\": \"Timeout observed.\"}], \"unknowns\": [\"Cause and recovery\"]}",
+      "truncated": false,
+      "expectedBoundary": "model_grounding_invalid",
+      "oracle": {
+        "required": [
+          "Timeout"
+        ],
+        "forbidden": [
+          "The database is repaired.",
+          "The incident is closed."
+        ]
+      }
+    },
+    {
+      "id": "schema-valid-semantic-falsehood",
+      "split": "development",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"draft\", \"state\": \"reported\", \"summary\": \"Timeout observed. The database is repaired.\", \"timeline\": [{\"eventId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1\", \"observation\": \"Timeout observed.\"}], \"unknowns\": [\"Cause and recovery\"]}",
+      "truncated": false,
+      "expectedBoundary": "accepted-contract",
+      "oracle": {
+        "required": [
+          "Timeout"
+        ],
+        "forbidden": [
+          "The database is repaired.",
+          "The incident is closed."
+        ]
+      }
+    },
+    {
+      "id": "refusal",
+      "split": "development",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"refusal\", \"state\": \"reported\", \"summary\": \"Unable to summarize this evidence.\", \"timeline\": [], \"unknowns\": [\"Insufficient trustworthy evidence\"]}",
+      "truncated": false,
+      "expectedBoundary": "accepted-contract",
+      "oracle": {
+        "required": [
+          "Unable"
+        ],
+        "forbidden": []
+      }
+    },
+    {
+      "id": "heldout-html",
+      "split": "held-out",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"draft\", \"state\": \"reported\", \"summary\": \"<img src=x onerror=alert(1)>\", \"timeline\": [{\"eventId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1\", \"observation\": \"Timeout observed.\"}], \"unknowns\": [\"Cause and recovery\"]}",
+      "truncated": false,
+      "expectedBoundary": "model_unsafe",
+      "oracle": {
+        "required": [
+          "Timeout"
+        ],
+        "forbidden": [
+          "The database is repaired.",
+          "The incident is closed."
+        ]
+      }
+    },
+    {
+      "id": "heldout-truncated",
+      "split": "held-out",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"draft\", \"state\": \"reported\", \"summary\": \"Timeout observed; recovery unknown.\", \"timeline\": [{\"eventId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1\", \"observation\": \"Timeout observed.\"}], \"unknowns\": [\"Cause and recovery\"]}",
+      "truncated": true,
+      "expectedBoundary": "model_truncated",
+      "oracle": {
+        "required": [
+          "Timeout"
+        ],
+        "forbidden": [
+          "The database is repaired.",
+          "The incident is closed."
+        ]
+      }
+    },
+    {
+      "id": "heldout-unknown-nested-field",
+      "split": "held-out",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"draft\", \"state\": \"reported\", \"summary\": \"Timeout observed; recovery unknown.\", \"timeline\": [{\"eventId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1\", \"observation\": \"Timeout observed.\", \"action\": \"close\"}], \"unknowns\": [\"Cause and recovery\"]}",
+      "truncated": false,
+      "expectedBoundary": "model_schema_invalid",
+      "oracle": {
+        "required": [
+          "Timeout"
+        ],
+        "forbidden": [
+          "The database is repaired.",
+          "The incident is closed."
+        ]
+      }
+    },
+    {
+      "id": "heldout-valid-citation-false-closure",
+      "split": "held-out",
+      "surface": "summary",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"draft\", \"state\": \"reported\", \"summary\": \"Timeout observed. The incident is closed.\", \"timeline\": [{\"eventId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1\", \"observation\": \"Timeout observed.\"}], \"unknowns\": [\"Cause and recovery\"]}",
+      "truncated": false,
+      "expectedBoundary": "accepted-contract",
+      "oracle": {
+        "required": [
+          "Timeout"
+        ],
+        "forbidden": [
+          "The database is repaired.",
+          "The incident is closed."
+        ]
+      }
+    },
+    {
+      "id": "typed-test-proposal",
+      "split": "development",
+      "surface": "risk",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"draft\", \"observations\": [\"Origin header omitted; HTTP 403 observed.\"], \"hypotheses\": [\"Missing Origin may explain denial; unconfirmed.\"], \"risks\": [\"test setup mismatch\"], \"proposedTests\": [{\"risk\": \"test setup mismatch\", \"check\": \"Repeat with required Origin; compare expected behavior.\"}], \"unknowns\": [\"No confirmed production defect\"]}",
+      "truncated": false,
+      "expectedBoundary": "accepted-contract",
+      "oracle": {
+        "required": [
+          "Origin",
+          "unconfirmed"
+        ],
+        "forbidden": [
+          "Release approved."
+        ]
+      }
+    },
+    {
+      "id": "heldout-risk-refusal",
+      "split": "held-out",
+      "surface": "risk",
+      "context": {
+        "state": "reported",
+        "eventIds": [
+          "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"
+        ]
+      },
+      "raw": "{\"status\": \"refusal\", \"observations\": [\"Insufficient evidence.\"], \"hypotheses\": [], \"risks\": [\"test setup mismatch\"], \"proposedTests\": [], \"unknowns\": [\"No confirmed production defect\"]}",
+      "truncated": false,
+      "expectedBoundary": "accepted-contract",
+      "oracle": {
+        "required": [
+          "Insufficient"
+        ],
+        "forbidden": []
+      }
+    }
+  ]
+}

@@ -2,7 +2,7 @@ import {readFile,writeFile} from 'node:fs/promises';
 import {cpus,totalmem} from 'node:os';
 import {config} from '../apps/api/src/config.ts';
 import {OllamaProvider} from '../apps/api/src/local-model.ts';
-import {SUMMARY_INSTRUCTION} from '../apps/api/src/assistance.ts';
+import {LEGACY_SUMMARY_INSTRUCTION as SUMMARY_INSTRUCTION} from '../apps/api/src/assistance.ts';
 import {digest} from '../apps/api/src/private-storage.ts';
 const origin=process.env.OLLAMA_URL??'http://127.0.0.1:11434';
 // Validate before any request; the script never accepts remote origins.

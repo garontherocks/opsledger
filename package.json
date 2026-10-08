@@ -18,14 +18,16 @@
     "start": "node --experimental-strip-types apps/api/src/server.ts",
     "db:migrate": "node --experimental-strip-types scripts/migrate.ts",
     "db:seed:lab": "node --experimental-strip-types scripts/seed.ts",
-    "test:unit": "node --experimental-strip-types --test tests/domain.test.ts tests/lifecycle.domain.test.ts tests/knowledge.domain.test.ts tests/async.domain.test.ts tests/client.unit.test.ts tests/local-model.unit.test.ts",
+    "test:unit": "node --experimental-strip-types --test tests/domain.test.ts tests/lifecycle.domain.test.ts tests/knowledge.domain.test.ts tests/async.domain.test.ts tests/client.unit.test.ts tests/local-model.unit.test.ts tests/structured-output.unit.test.ts",
     "test:integration": "node --experimental-strip-types scripts/integration-runner.ts",
     "test:e2e": "node --experimental-strip-types scripts/browser-runner.ts",
     "db:lab": "node --experimental-strip-types scripts/lab-db.ts",
     "worker": "node --experimental-strip-types apps/api/src/worker.ts",
     "quality:baseline": "node --experimental-strip-types scripts/quality-baseline.ts",
     "ai:pilot": "node --experimental-strip-types scripts/local-ai-pilot.ts",
-    "ai:live-smoke": "node --experimental-strip-types scripts/live-summary-smoke.ts"
+    "ai:live-smoke": "node --experimental-strip-types scripts/live-summary-smoke.ts",
+    "ai:eval": "node --experimental-strip-types scripts/phase7-eval.ts",
+    "ai:structured-pilot": "node --env-file=.env --experimental-strip-types scripts/phase7-live-pilot.ts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.7",

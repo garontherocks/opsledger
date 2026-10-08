@@ -1,0 +1,33 @@
+{
+  "at": "2026-10-08T17:15:00.238554+00:00",
+  "lint": "passed",
+  "typecheck": "passed",
+  "build": "passed",
+  "unit": {
+    "total": 35,
+    "passed": 35
+  },
+  "integration": {
+    "total": 64,
+    "passed": 63,
+    "skipped": 1,
+    "skipReason": "existing native PostgreSQL row-lock test; PGlite backend"
+  },
+  "browser": {
+    "status": "blocked",
+    "reason": "Chromium 156 archive invalid; fallback Chromium 141 archive also invalid; executable unavailable, browser test did not execute",
+    "acceptanceClaim": false
+  },
+  "liveStructuredInference": {
+    "status": "pending desktop",
+    "command": "npm run ai:structured-pilot"
+  },
+  "newDependencies": false,
+  "sourceDefaults": {
+    "aiEnabled": false,
+    "timeoutMs": 30000,
+    "structuredOutputTokens": 768,
+    "legacyPilotOutputTokens": 256
+  },
+  "phase8Started": false
+}
