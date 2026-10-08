@@ -1,0 +1,12 @@
+{
+  "driver": "Playwright 1.64.0",
+  "browser": "141.0.7390.37",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "selectedVisualBaseline": "login-desktop.png",
+  "demo": "phase5-v1-demo.webm",
+  "finalScreenshotSha256": "63021258167a34748b862191730fd2556c0d25ba0f6ccb9f66697da316493101",
+  "ai": false
+}

@@ -1,0 +1,86 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> opsledger@0.1.0 test:integration
+> node --experimental-strip-types scripts/integration-runner.ts
+
+▶ Phase 6 scoped draft and provider failure acceptance (deterministic provider fixture)
+  ✔ draft is revision-bound, metadata-only observability and does not change incident (18.211053ms)
+  ✔ cross-workspace and stale requests make no provider call (12.768126ms)
+  ✔ provider outage preserves deterministic reads and recovers (21.686601ms)
+  ✔ revocation during inference suppresses returned draft (10.988304ms)
+  ✔ revision change during inference rejects stale output (13.050654ms)
+  ✔ one inference at a time; busy rejection has no hidden queue (10.942197ms)
+  ✔ AI disabled rejects compute and preserves v1 (21.083099ms)
+✔ Phase 6 scoped draft and provider failure acceptance (deterministic provider fixture) (4280.463047ms)
+▶ Phase 4 real pg-boss, recovery, file and notification acceptance
+  ✔ atomic enqueue, duplicate request and fixed revision snapshot (278.173449ms)
+  ✔ audit failure rolls back file metadata, operation and real queue job (46.310351ms)
+  ✔ strict text attachment validation, member scope and owner deletion (256.007522ms)
+  ✔ failure after filesystem effect retries without duplicate object (1383.854862ms)
+  ✔ committed effect before queue acknowledgement survives redelivery and duplicate job (1755.485556ms)
+  ✔ retry exhaustion is visible with a bounded real queue attempt count (4557.114055ms)
+  ✔ outbox survives worker absence, notifications are recipient scoped and deduplicated (173.361157ms)
+  ✔ membership revoked before effect cancels work and prevents publication (76.359597ms)
+  ✔ operation history is scoped and pending file removal waits for work or failure (189.061647ms)
+  ✔ quotas reject the twenty-first pending attachment without adding metadata or a job (1308.501448ms)
+  ✔ database foreign keys reject cross-workspace files and domain outbox failure rolls back incident changes (55.684598ms)
+  ✔ cleanup is idempotent and stale orphan sweep respects live files and symlink boundaries (82.819321ms)
+✔ Phase 4 real pg-boss, recovery, file and notification acceptance (13738.11048ms)
+2026-10-08T03:22:51.394Z WARN [Better Auth]: Invalid password
+▶ authenticated incident acceptance against PostgreSQL protocol
+  ✔ incorrect password cannot create a browser session (264.513748ms)
+  ✔ no session fails; safe identity contains no auth secrets (25.684468ms)
+  ✔ create persists expected server-controlled fields (54.062269ms)
+  ✔ cross-workspace IDs, membership and service spoof denied (46.949303ms)
+  ✔ revoked member rejected despite valid auth session (184.857286ms)
+  ✔ inactive and unknown service denied without inserting rows (31.511873ms)
+  ✔ invalid/spoofed body and oversized input rejected (9.001347ms)
+  ✔ pagination stable with ties; tampered/cross-user cursor rejected (123.435288ms)
+  ✔ foreign keys reject cross-workspace service at DB boundary (8.917482ms)
+  ✔ signup closed, hostile origin/Host cannot grant auth access (27.508735ms)
+  ✔ expired session rejected with cookie still present (13.757017ms)
+  ✔ revocation invalidates subsequent browser/API access (16.311803ms)
+  ✔ database outage returns 503 with safe correlated envelope (33.319956ms)
+  ✔ production request rate limit remains enforced (27.714489ms)
+✔ authenticated incident acceptance against PostgreSQL protocol (3913.768602ms)
+ℹ Backend pglite-socket; server_version 18.3
+▶ Phase 3 version/search/ACL/audit acceptance
+  ✔ 24 synthetic runbooks seed repeatably; current-public search uses FTS (52.925349ms)
+  ✔ both sort modes paginate equal titles/timestamps without duplicates; cursor scope enforced (59.649481ms)
+  ✔ draft/withdrawn versions and other workspaces cannot leak to readers (39.704035ms)
+  ✔ newest cursor preserves PostgreSQL microsecond precision (10.675381ms)
+  ✔ publication, immutable citations, append, stale write and withdrawal (70.82126ms)
+  ✔ DB rejects content/scope edits and audit update/delete (4.977558ms)
+  ✔ audit insertion failure rolls back knowledge creation and incident command (21.372436ms)
+  ✔ audit is scoped, bounded, correlatable and omits content/auth data (7.807562ms)
+  ✔ incident lifecycle continues when knowledge table is unavailable (20.743294ms)
+✔ Phase 3 version/search/ACL/audit acceptance (5694.994876ms)
+ℹ Backend pglite-socket; server_version 18.3
+▶ Phase 2 lifecycle, permission, rollback and concurrent-write acceptance
+  ✔ complete lifecycle, reassignment, comments and bounded history (207.547504ms)
+  ✔ reporter/editor/admin cannot triage; responders cannot resolve; scope checked (160.863603ms)
+  ✔ invalid transitions, assignees, resolution/reopen and mass assignment leave no history (73.025312ms)
+  ✔ stale comments cannot overwrite a successful action (40.619537ms)
+  ✔ revoked assignee can be replaced atomically when reopening (114.881874ms)
+  ✔ failed history insertion rolls back incident and comment (33.521995ms)
+  ✔ DB refuses resolved incident without a resolution (8.359758ms)
+  ✔ failed comment insertion also rolls back the earlier activity insert (39.232517ms)
+  ✔ simultaneous HTTP actions yield one success and one stale conflict (37.998813ms)
+  ﹣ two native connections compete on the same revision (0.336257ms) # Requires native PostgreSQL connections
+✔ Phase 2 lifecycle, permission, rollback and concurrent-write acceptance (4841.98791ms)
+ℹ Backend pglite-socket; server_version 18.3
+▶ Phase 5 server flags and graceful outage boundaries
+  ✔ capabilities are server-derived; no AI capability (19.016472ms)
+  ✔ maintenance rejects direct writes without domain mutations (8.113504ms)
+  ✔ disabled knowledge and async reject direct API reads (40.629062ms)
+  ✔ database outage is safe and recovers without restart (18.258131ms)
+  ✔ sign out remains available during maintenance (25.733422ms)
+✔ Phase 5 server flags and graceful outage boundaries (4541.692089ms)
+ℹ tests 63
+ℹ suites 0
+ℹ pass 62
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 46152.045457

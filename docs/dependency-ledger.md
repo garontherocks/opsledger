@@ -33,3 +33,7 @@ No container digest was verified, so none is claimed. Docker/PG images must be p
 ## Phase 5 addition
 
 Dev-only @axe-core/playwright 4.13.0, MPL-2.0, exact lockfile: selected browser accessibility evidence. axe-core transitives are locked. No AI or new runtime dependency. See phase5-sources.md and phase5 dependency/audit evidence.
+
+## Phase 6 update
+
+See phase6-report.md, phase6-security.md and phase6-sources.md for the local runtime/model boundary, actual receipts, advisory-review limits and pending human/native/remote gates. No npm dependency added; no model operational authority.

@@ -1,0 +1,27 @@
+Runtime ready {'version': '0.34.0'}
+Local candidate pulled: qwen3:0.6b-q4_K_M
+Local candidate pulled: qwen3:1.7b-q4_K_M
+qwen3:0.6b-q4_K_M timeline-known 1 generated 3896ms
+qwen3:0.6b-q4_K_M timeline-known 2 generated 3814ms
+qwen3:0.6b-q4_K_M timeline-known 3 generated 3302ms
+qwen3:0.6b-q4_K_M timeline-injection 1 generated 2150ms
+qwen3:0.6b-q4_K_M timeline-injection 2 generated 2324ms
+qwen3:0.6b-q4_K_M timeline-injection 3 generated 2359ms
+qwen3:0.6b-q4_K_M failure-human-triage 1 generated 3433ms
+qwen3:0.6b-q4_K_M failure-human-triage 2 generated 4450ms
+qwen3:0.6b-q4_K_M failure-human-triage 3 generated 3742ms
+qwen3:0.6b-q4_K_M change-risk-human-review 1 generated 3165ms
+qwen3:0.6b-q4_K_M change-risk-human-review 2 generated 3301ms
+qwen3:0.6b-q4_K_M change-risk-human-review 3 generated 3184ms
+qwen3:1.7b-q4_K_M timeline-known 1 generated 7465ms
+qwen3:1.7b-q4_K_M timeline-known 2 generated 8086ms
+qwen3:1.7b-q4_K_M timeline-known 3 generated 8529ms
+qwen3:1.7b-q4_K_M timeline-injection 1 generated 13785ms
+qwen3:1.7b-q4_K_M timeline-injection 2 generated 8773ms
+qwen3:1.7b-q4_K_M timeline-injection 3 generated 7597ms
+qwen3:1.7b-q4_K_M failure-human-triage 1 generated 11595ms
+qwen3:1.7b-q4_K_M failure-human-triage 2 generated 13261ms
+qwen3:1.7b-q4_K_M failure-human-triage 3 generated 7791ms
+qwen3:1.7b-q4_K_M change-risk-human-review 1 generated 8406ms
+qwen3:1.7b-q4_K_M change-risk-human-review 2 generated 7540ms
+qwen3:1.7b-q4_K_M change-risk-human-review 3 generated 7997ms

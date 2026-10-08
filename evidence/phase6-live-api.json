@@ -1,0 +1,61 @@
+{
+  "backend": "pglite-socket",
+  "runtime": "actual Ollama 0.34.0 CPU-only",
+  "firstDraft": {
+    "runId": "a3631db8-c267-4d45-8903-eca8269cd310",
+    "requestId": "f90d1946-7d6c-4615-b4f3-0e5f398a4d37",
+    "incidentId": "8104e81e-16fd-4526-b6e4-cc623f76cdb3",
+    "revision": 2,
+    "promptVersion": "timeline-draft-v1",
+    "promptHash": "63bbc8f2aece315bc3daea0c0be9ee071fbfa30e9243b87c559f5ccf04370b2f",
+    "contextHash": "c7befe7a2caacc7a2652b5a4b1d4fe91985edc8d56fd70da921882e2852b1535",
+    "eventIds": [
+      "e7efc82e-4dd1-4206-ba4a-1eb2ee31d368"
+    ],
+    "omittedOlderEvents": false,
+    "notesTruncated": false,
+    "reviewRequired": true,
+    "text": "The incident handoff is as follows:\n\n- The incident ID 8104e81e-16fd-4526-b6e4-cc623f76cdb3 was reported.\n- A comment was added to the incident noting that worker timeouts were observed, but the cause and recovery remain unknown.\n- No tools or operational actions were mentioned.",
+    "model": "qwen3:0.6b-q4_K_M",
+    "digest": "sha256:7df6b6e09427a769808717c0a93cadc4ae99ed4eb8bf5ca557c90846becea435",
+    "runtime": "0.34.0",
+    "promptTokens": 218,
+    "outputTokens": 80,
+    "latencyMs": 4326.826552,
+    "truncated": false
+  },
+  "stoppedProvider": {
+    "status": 503,
+    "error": {
+      "code": "model_unavailable",
+      "message": "Service unavailable",
+      "requestId": "e992932f-a4a1-4e73-9c70-487f92ec3b09"
+    }
+  },
+  "deterministicReadDuringOutage": 200,
+  "recoveredDraft": {
+    "runId": "e4caa9ce-ba85-4e51-90af-f3f37d1e67dc",
+    "requestId": "d0440b8a-5f2d-43a7-aa2e-8eb5aa517874",
+    "incidentId": "8104e81e-16fd-4526-b6e4-cc623f76cdb3",
+    "revision": 2,
+    "promptVersion": "timeline-draft-v1",
+    "promptHash": "63bbc8f2aece315bc3daea0c0be9ee071fbfa30e9243b87c559f5ccf04370b2f",
+    "contextHash": "c7befe7a2caacc7a2652b5a4b1d4fe91985edc8d56fd70da921882e2852b1535",
+    "eventIds": [
+      "e7efc82e-4dd1-4206-ba4a-1eb2ee31d368"
+    ],
+    "omittedOlderEvents": false,
+    "notesTruncated": false,
+    "reviewRequired": true,
+    "text": "The incident handoff is as follows:\n\n- The incident ID 8104e81e-16fd-4526-b6e4-cc623f76cdb3 was reported.\n- A comment was added to the incident noting that worker timeouts were observed, but the cause and recovery remain unknown.\n- No tools or operational actions were mentioned.",
+    "model": "qwen3:0.6b-q4_K_M",
+    "digest": "sha256:7df6b6e09427a769808717c0a93cadc4ae99ed4eb8bf5ca557c90846becea435",
+    "runtime": "0.34.0",
+    "promptTokens": 218,
+    "outputTokens": 80,
+    "latencyMs": 2353.957021,
+    "truncated": false
+  },
+  "incidentRevisionAfter": 2,
+  "humanReview": "pending"
+}

@@ -1,0 +1,21 @@
+{
+  "runtimeVersion": "0.34.0",
+  "archiveSha256": "cf95886728959aa09910bb34de5cca1cc5a8f68003b5597197d3f2c2d57c0804",
+  "apiVersionObserved": true,
+  "localCpuOnly": true,
+  "cloudDisabledLogObserved": true,
+  "listeners": [
+    "127.0.0.1:11435 pilot",
+    "127.0.0.1:11436 owned API smoke"
+  ],
+  "experimentalProcessesStopped": true,
+  "currentPlaywrightBrowserDownload": "failed; no default-browser parity claimed",
+  "recoveredBrowser": {
+    "version": "141.0.7390.37",
+    "build": 1194,
+    "archiveSha256": "d745c7210cc88b73c7991a22c9624819960d84bc3de77ac7336d2de841a8c91f",
+    "privatePath": ".local/chromium-1194"
+  },
+  "ffmpegBuild": 1013,
+  "privateKeysWeightsBinariesExcluded": true
+}

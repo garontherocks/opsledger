@@ -1,0 +1,32 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> opsledger@0.1.0 test:unit
+> node --experimental-strip-types --test tests/domain.test.ts tests/lifecycle.domain.test.ts tests/knowledge.domain.test.ts tests/async.domain.test.ts tests/client.unit.test.ts tests/local-model.unit.test.ts
+
+✔ attachments are bounded canonical base64 UTF-8 text with conservative names (3.59249ms)
+✔ interrupted writes are not silently retried (1.82689ms)
+✔ safe API error reference is preserved for recovery (2.742734ms)
+✔ invalid success response requires checking state before another write (0.897877ms)
+✔ input trims and counts Unicode code points (2.903172ms)
+✔ whitespace, short text, invalid severity and privileged fields fail (0.473991ms)
+✔ pagination is bounded and unknown query fields fail (1.146365ms)
+✔ production cannot enable lab mode or plain HTTP (4.867405ms)
+✔ knowledge boundaries, strict authority and bounded query (8.364404ms)
+✔ content provenance hash has canonical order and changes with content or service (0.526218ms)
+✔ exhaustive state/action/role contract (175 combinations) (1.923434ms)
+✔ action validation rejects privilege fields, missing revision and blank resolution/reopen reason (3.471882ms)
+✔ provider checks local manifest and sends bounded nonstreaming generation (40.91561ms)
+✔ wrong digest fails before generation (13.712098ms)
+✔ provider deadline cancels a nonresponsive local runtime (101.992161ms)
+✔ oversized output is bounded before JSON parsing (11.579196ms)
+✔ redirects never reach another origin (5.091667ms)
+✔ remote origins, cloud model tags and enabled unpinned production AI are rejected (4.596765ms)
+✔ selected credentials are redacted from synthetic free text (0.24325ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 378.769551

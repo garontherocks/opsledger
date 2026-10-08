@@ -1,0 +1,15 @@
+{
+  "backend": "pglite-socket",
+  "provider": "explicit deterministic fixture, not live inference",
+  "checks": [
+    "no incident/audit mutation",
+    "credential redaction",
+    "scope/stale denial before provider",
+    "timeout/outage recovery",
+    "revocation and stale snapshot after provider",
+    "single-request capacity",
+    "AI disabled preserves v1"
+  ],
+  "modelCalls": 6,
+  "rawPromptOrCookiesLogged": false
+}

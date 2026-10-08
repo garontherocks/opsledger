@@ -25,3 +25,7 @@ Security review is evidence-based: an advisory index read is not a full dependen
 ## Phase 5 current consolidated review
 
 See phase5-security.md for the implemented deterministic v1 trust boundaries, control/test mapping and remaining native deployment/backup risks. Earlier sections are historical planning and do not establish production verification.
+
+## Phase 6 update
+
+See phase6-report.md, phase6-security.md and phase6-sources.md for the local runtime/model boundary, actual receipts, advisory-review limits and pending human/native/remote gates. No npm dependency added; no model operational authority.
