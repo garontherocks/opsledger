@@ -1,6 +1,6 @@
-# OpsLedger — Deterministic v1 / Phase 5
+# OpsLedger — Local assistance / Phase 6
 
-Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. No model dependency. Branch: feat/deterministic-v1-baseline. No merge or deployment.
+Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. No model dependency. Branch: feat/local-ai-assistance. No merge or deployment.
 
 ## Native local startup
 
@@ -38,7 +38,7 @@ Sign in as north-editor@example.test (or north-admin@example.test) with the reta
 
 The synthetic corpus contains 24 runbooks across two workspaces, including repeated titles/timestamps, drafts, withdrawn versions and malicious Markdown strings. Keyword search uses PostgreSQL simple full-text search, with service/category filters, title/newest order and signed scoped keyset pagination. No AI, embeddings or attachment parsing. Admin/editor may inspect workspace audit metadata; other roles read published knowledge only. Knowledge editor privileges do not grant incident lead privileges.
 
-Browser acceptance runs six separate server lifetimes to avoid exhausting a shared production rate-limit bucket. The default harness creates a fresh PGlite database per flow; the native browser lane shares its fresh job database and generated password across flows. Production rate limits are unchanged.
+Browser acceptance runs seven separate server lifetimes to avoid exhausting a shared production rate-limit bucket. The default harness creates a fresh PGlite database per flow; the native browser lane shares its fresh job database and generated password across flows. Production rate limits are unchanged.
 
 ## Async operations and private files
 
@@ -65,3 +65,11 @@ READ_ONLY=true pauses all business API writes and presents maintenance controls;
 `npm run quality:baseline` (without TEST_DATABASE_URL) runs a disposable same-version quiesced PGlite DB/files restore and a serial conventional route benchmark. No live/user backup is taken or delivered. See phase5-architecture.md for conditions and native-backup gaps. The browser suite adds axe checks on selected states, keyboard focus/mobile recovery, one reviewed Linux login visual baseline, server-flag presentation and an authenticated v1 recording. Match the browser environment before reviewing a pixel comparison. Automated passes do not establish full WCAG conformance.
 
 New evidence: phase5-accessibility.json, phase5-restore.json, phase5-performance.json, phase5-v1-demo.webm and phase5 final check logs. Native PostgreSQL 18.6, independent workers/roles, actual volume/crash recovery and remote CI remain pending.
+
+## Local incident draft assistance (Phase 6)
+
+AI_ENABLED defaults false. In the nonproduction synthetic lab, enable it only with LAB_MODE=true and an installed local model/digest pin. Start Ollama on 127.0.0.1 with OLLAMA_NO_CLOUD=1; configure OLLAMA_URL, OLLAMA_MODEL and OLLAMA_DIGEST in .env, then restart the API. Model tags are a fixed server allowlist; a request cannot supply a model, prompt or URL. No paid/hosted provider is configured. See docs/phase6-local-startup.md for exact startup and pilot commands.
+
+Open incident detail and choose Draft timeline summary. Review against activity; the draft does not mutate or save incident content. State/revision or membership changes during inference suppress stale/unauthorized output. Errors preserve incident operations and knowledge search. Runtime identity, prompt/context hashes, event IDs, token counts and latency accompany the draft; successful production-style server logs include metadata without raw prompts/output.
+
+Actual local CPU evidence compares Qwen3 0.6B/1.7B Q4_K_M over 24 generations. These small smoke candidates do not replace the planned desktop 8B benchmark; actual GPU/VRAM remains to be checked. Observed false claims/citation errors mean semantic/human review remains mandatory. docs/phase6-learning.md supplies the six-part teach-back checkpoint; learner demonstration is pending. Full Phase 6/M1 release gates and remote CI remain pending. Phase 7 is not started.

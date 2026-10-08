@@ -5,8 +5,9 @@ import './style.css';
 import {api} from './api.ts';
 import {IncidentDetail} from './IncidentDetail.tsx';
 import {AsyncPanel,NotificationsPanel} from './AsyncPanel.tsx';
+import {SummaryPanel} from './SummaryPanel.tsx';
 import {KnowledgePanel} from './KnowledgePanel.tsx';
-type Identity={features:{readOnly:boolean,knowledge:boolean,async:boolean,ai:false},user:{name:string,email:string},workspaces:{id:string,name:string,role:string}[]};
+type Identity={features:{readOnly:boolean,knowledge:boolean,async:boolean,ai:boolean},user:{name:string,email:string},workspaces:{id:string,name:string,role:string}[]};
 type Service={id:string,name:string};
 function App(){
   const [reload,setReload]=useState(0);
@@ -69,12 +70,13 @@ function App(){
           setItems(old=>[...old,...page.items]);setCursor(page.nextCursor);
         })}>Load more</button>}
         {detail&&<IncidentDetail key={detail.id} incident={detail} workspace={workspace} readOnly={identity.features.readOnly} role={identity.workspaces.find(w=>w.id===workspace)?.role??''} busy={busy} execute={action} onChange={value=>{setDetail(value);setItems(old=>old.map(i=>i.id===value.id?value:i));}}/>}
+        {detail&&identity.features.ai&&<SummaryPanel key={detail.id+'-'+detail.revision} workspace={workspace} incident={detail.id} revision={detail.revision} disabled={busy||identity.features.readOnly}/>}
         {detail&&identity.features.async&&<><button onClick={()=>setShowFiles(value=>!value)}>Open files</button>{showFiles&&<AsyncPanel key={detail.id} workspace={workspace} incident={detail.id} revision={detail.revision} readOnly={identity.features.readOnly} role={identity.workspaces.find(w=>w.id===workspace)?.role??''}/>}</>}
         </section></div>}
       {view==='notifications'&&identity.features.async&&<NotificationsPanel key={workspace} workspace={workspace} readOnly={identity.features.readOnly} onOpen={id=>void action(async()=>{setDetail(await api<IncidentDTO>('/api/v1/workspaces/'+workspace+'/incidents/'+id));setView('incidents');})}/>}
       {view==='knowledge'&&identity.features.knowledge&&<KnowledgePanel key={workspace} workspace={workspace} readOnly={identity.features.readOnly} role={identity.workspaces.find(w=>w.id===workspace)?.role??''} services={services}/>}
       </>}
       </>}
-      <footer>OpsLedger · Deterministic v1 · No AI assistance</footer></main></>;
+      <footer>OpsLedger · {identity?.features.ai?'Local lab · AI drafts require review':'Deterministic v1 · No AI assistance'}</footer></main></>;
 }
 const element=document.getElementById('root');if(!element)throw new Error('Missing root');createRoot(element).render(<App/>);

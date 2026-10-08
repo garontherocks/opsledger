@@ -96,7 +96,7 @@ test('authenticated incident acceptance against PostgreSQL protocol',async t=>{
       const spoof=await app.inject({url:'/api/v1/me',headers:{cookie,host:'evil.example.test'}});assert.equal(spoof.statusCode,200);
     });
     await t.test('expired session rejected with cookie still present',async()=>{
-      await database.pool.query('UPDATE session SET expires_at=now()-interval \'1 hour\' WHERE user_id=$1',['south-reporter']);
+      await database.pool.query('UPDATE session SET expires_at=(now() AT TIME ZONE \'UTC\')-interval \'1 hour\' WHERE user_id=$1',['south-reporter']);
       assert.equal((await app.inject({url:'/api/v1/me',headers:{cookie:southCookie}})).statusCode,401);
     });
     await t.test('revocation invalidates subsequent browser/API access',async()=>{

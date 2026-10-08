@@ -1,6 +1,6 @@
 // Bounded requests; writes are never automatically retried.
-export async function api<T>(path:string,options?:RequestInit):Promise<T>{
- const signal=options?.signal?AbortSignal.any([options.signal,AbortSignal.timeout(15000)]):AbortSignal.timeout(15000);
+export async function api<T>(path:string,options?:RequestInit,timeoutMs=15000):Promise<T>{
+ const signal=options?.signal?AbortSignal.any([options.signal,AbortSignal.timeout(timeoutMs)]):AbortSignal.timeout(timeoutMs);
  let response:Response;
  try{response=await fetch(path,{...options,signal,headers:{...(options?.body!==undefined?{'content-type':'application/json'}:{}),...options?.headers}});}
  catch(error){if(options?.signal?.aborted)throw error;throw new Error('Connection interrupted. Refresh to check the result before submitting again.');}

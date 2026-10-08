@@ -14,10 +14,14 @@ import {Action,HistoryQuery,Activity} from '../../../packages/contracts/src/life
 import {Knowledge} from './knowledge.ts';
 import {CreateRunbook,NewVersion,PublishAction,RunbookParams,VersionParams,Search,RunbookVersion,AuditQuery} from '../../../packages/contracts/src/knowledge.ts';
 
+import {SummaryRequest,SummaryDraft} from '../../../packages/contracts/src/assistance.ts';
+import {Assistance} from './assistance.ts';
+import {OllamaProvider,type TextProvider} from './local-model.ts';
 import type {AsyncOps} from './async-ops.ts';
 import {ExportRequest,UploadRequest,FileParams,OperationParams,NotificationParams,BoundedPage,OperationList} from '../../../packages/contracts/src/async.ts';
 
-export async function buildApp(store:Store,settings:Settings,serveWeb=false,operations?:AsyncOps){
+export async function buildApp(store:Store,settings:Settings,serveWeb=false,operations?:AsyncOps,provider?:TextProvider){
+  const assistance=new Assistance(store.pool,settings,provider??new OllamaProvider(settings));
   const auth=createAuth(store.pool,settings);
   const knowledge=new Knowledge(store.pool,settings.AUTH_SECRET);
   const identities=new WeakMap<FastifyRequest,string>();
@@ -76,7 +80,8 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false,oper
     const session=await auth.api.getSession({headers:fromNodeHeaders(request.headers)});
     if(!session)throw new HttpError(401,'unauthenticated','Sign in required');identities.set(request,session.user.id);return session.user;
   }
-  app.get('/api/v1/me',{schema:{response:{200:z.object({user:z.object({id:z.string(),name:z.string(),email:z.string()}),workspaces:z.array(z.object({id:z.uuid(),name:z.string(),role:z.string()})),features:z.object({readOnly:z.boolean(),knowledge:z.boolean(),async:z.boolean(),ai:z.literal(false)})})}}},async request=>{const user=await identity(request);return {user:{id:user.id,name:user.name,email:user.email},workspaces:await store.me(user.id),features:{readOnly:settings.READ_ONLY==='true',knowledge:settings.KNOWLEDGE_ENABLED==='true',async:settings.ASYNC_ENABLED==='true',ai:false as const}};});
+  app.get('/api/v1/me',{schema:{response:{200:z.object({user:z.object({id:z.string(),name:z.string(),email:z.string()}),workspaces:z.array(z.object({id:z.uuid(),name:z.string(),role:z.string()})),features:z.object({readOnly:z.boolean(),knowledge:z.boolean(),async:z.boolean(),ai:z.boolean()})})}}},async request=>{const user=await identity(request);return {user:{id:user.id,name:user.name,email:user.email},workspaces:await store.me(user.id),features:{readOnly:settings.READ_ONLY==='true',knowledge:settings.KNOWLEDGE_ENABLED==='true',async:settings.ASYNC_ENABLED==='true',ai:settings.AI_ENABLED==='true'}};});
+  app.post('/api/v1/workspaces/:workspaceId/incidents/:incidentId/summary',{config:{rateLimit:{max:3,timeWindow:'1 minute'}},schema:{params:DetailParams,body:SummaryRequest,response:{200:SummaryDraft}}},async request=>{const user=await identity(request);await store.member(user.id,request.params.workspaceId);const result=await assistance.summarize(user.id,request.params.workspaceId,request.params.incidentId,request.body.expectedRevision,request.id);request.log.info({runId:result.runId,requestId:request.id,revision:result.revision,model:result.model,digest:result.digest,promptVersion:result.promptVersion,contextHash:result.contextHash,promptHash:result.promptHash,latencyMs:result.latencyMs,promptTokens:result.promptTokens,outputTokens:result.outputTokens,truncated:result.truncated},'AI draft generated; human review required');return result;});
   app.get('/api/v1/workspaces/:workspaceId/services',{schema:{params:Params}},async request=>{
     const user=await identity(request);await store.member(user.id,request.params.workspaceId);return store.services(request.params.workspaceId);
   });
