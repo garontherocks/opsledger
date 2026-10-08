@@ -1,0 +1,44 @@
+{
+  "automatedOnly": true,
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa"
+  ],
+  "screens": [
+    {
+      "screen": "login",
+      "violations": []
+    },
+    {
+      "screen": "incident-empty",
+      "violations": []
+    },
+    {
+      "screen": "mobile",
+      "violations": []
+    },
+    {
+      "screen": "incident-detail",
+      "violations": []
+    },
+    {
+      "screen": "files",
+      "violations": []
+    },
+    {
+      "screen": "knowledge",
+      "violations": []
+    },
+    {
+      "screen": "notifications",
+      "violations": []
+    }
+  ],
+  "manualChecks": [
+    "keyboard skip link focus",
+    "320px no horizontal overflow",
+    "form preserved after controlled HTTP 503"
+  ]
+}

@@ -1,0 +1,6 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> opsledger@0.1.0 quality:baseline
+> node --experimental-strip-types scripts/quality-baseline.ts
+
+Local restore drill and deterministic pre-AI benchmark passed. Native/live-backup gates remain pending.

@@ -1,0 +1,21 @@
+{
+  "validatedSource": "7ab2159fc72388282eea1ee6dd733737de234a88",
+  "runtimeDependencies": [
+    "@better-auth/drizzle-adapter",
+    "@fastify/rate-limit",
+    "@fastify/static",
+    "@fastify/swagger",
+    "better-auth",
+    "drizzle-orm",
+    "fastify",
+    "fastify-type-provider-zod",
+    "pg",
+    "pg-boss",
+    "react",
+    "react-dom",
+    "zod"
+  ],
+  "capability": "ai literal false, integration asserted",
+  "modelServiceOrInferenceRouteIntroduced": false,
+  "evidenceScope": "current direct dependencies, source diff and deterministic acceptance flows; no unrelated host inventory claim"
+}

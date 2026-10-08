@@ -1,0 +1,49 @@
+{
+  "at": "2026-10-08T00:19:38.217Z",
+  "validatedSource": "7ab2159fc72388282eea1ee6dd733737de234a88",
+  "branch": "feat/deterministic-v1-baseline",
+  "checks": {
+    "cleanLockedInstall": "passed",
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "unit": {
+      "passed": 12,
+      "failed": 0
+    },
+    "integration": {
+      "totalIncludingParents": 55,
+      "passed": 54,
+      "failed": 0,
+      "nativeOnlySkipped": 1
+    },
+    "browser": {
+      "flows": 6,
+      "passed": 6,
+      "retries": 0,
+      "completedReportsVerified": true
+    },
+    "accessibility": {
+      "selectedStates": 7,
+      "violations": 0,
+      "fullConformanceClaim": false
+    },
+    "localQuiescedRestore": "passed",
+    "startupSmoke": "passed",
+    "auditVulnerabilities": 0,
+    "ai": false,
+    "boundedSecretReview": {
+      "filesScanned": 201,
+      "hits": 0
+    }
+  },
+  "pending": [
+    "PostgreSQL 18.6 native acceptance and concurrency barrier",
+    "separate API/worker processes and least-privilege roles",
+    "actual volume/process-kill/power-loss resilience",
+    "native backup/restore",
+    "remote CI artifacts"
+  ],
+  "phase6Started": false,
+  "fullPhase5OrM1ReleaseClaim": false
+}

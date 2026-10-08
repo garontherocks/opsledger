@@ -1,0 +1,77 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> opsledger@0.1.0 test:integration
+> node --experimental-strip-types scripts/integration-runner.ts
+
+▶ Phase 4 real pg-boss, recovery, file and notification acceptance
+  ✔ atomic enqueue, duplicate request and fixed revision snapshot (106.597539ms)
+  ✔ audit failure rolls back file metadata, operation and real queue job (19.86202ms)
+  ✔ strict text attachment validation, member scope and owner deletion (95.154266ms)
+  ✔ failure after filesystem effect retries without duplicate object (1883.387562ms)
+  ✔ committed effect before queue acknowledgement survives redelivery and duplicate job (1998.824336ms)
+  ✔ retry exhaustion is visible with a bounded real queue attempt count (3699.284356ms)
+  ✔ outbox survives worker absence, notifications are recipient scoped and deduplicated (84.478651ms)
+  ✔ membership revoked before effect cancels work and prevents publication (39.37334ms)
+  ✔ operation history is scoped and pending file removal waits for work or failure (68.835398ms)
+  ✔ quotas reject the twenty-first pending attachment without adding metadata or a job (507.292426ms)
+  ✔ database foreign keys reject cross-workspace files and domain outbox failure rolls back incident changes (13.14435ms)
+  ✔ cleanup is idempotent and stale orphan sweep respects live files and symlink boundaries (55.668825ms)
+✔ Phase 4 real pg-boss, recovery, file and notification acceptance (10957.105665ms)
+2026-10-08T00:18:52.098Z WARN [Better Auth]: Invalid password
+▶ authenticated incident acceptance against PostgreSQL protocol
+  ✔ incorrect password cannot create a browser session (132.755459ms)
+  ✔ no session fails; safe identity contains no auth secrets (11.082638ms)
+  ✔ create persists expected server-controlled fields (24.132746ms)
+  ✔ cross-workspace IDs, membership and service spoof denied (20.203104ms)
+  ✔ revoked member rejected despite valid auth session (93.560178ms)
+  ✔ inactive and unknown service denied without inserting rows (17.858194ms)
+  ✔ invalid/spoofed body and oversized input rejected (8.79842ms)
+  ✔ pagination stable with ties; tampered/cross-user cursor rejected (77.517013ms)
+  ✔ foreign keys reject cross-workspace service at DB boundary (2.75633ms)
+  ✔ signup closed, hostile origin/Host cannot grant auth access (12.840601ms)
+  ✔ expired session rejected with cookie still present (7.626441ms)
+  ✔ revocation invalidates subsequent browser/API access (9.537695ms)
+  ✔ database outage returns 503 with safe correlated envelope (10.075028ms)
+  ✔ production request rate limit remains enforced (13.383992ms)
+✔ authenticated incident acceptance against PostgreSQL protocol (2739.307021ms)
+ℹ Backend pglite-socket; server_version 18.3
+▶ Phase 3 version/search/ACL/audit acceptance
+  ✔ 24 synthetic runbooks seed repeatably; current-public search uses FTS (16.17278ms)
+  ✔ both sort modes paginate equal titles/timestamps without duplicates; cursor scope enforced (89.008299ms)
+  ✔ draft/withdrawn versions and other workspaces cannot leak to readers (73.998568ms)
+  ✔ newest cursor preserves PostgreSQL microsecond precision (11.273927ms)
+  ✔ publication, immutable citations, append, stale write and withdrawal (73.471088ms)
+  ✔ DB rejects content/scope edits and audit update/delete (5.073648ms)
+  ✔ audit insertion failure rolls back knowledge creation and incident command (27.15071ms)
+  ✔ audit is scoped, bounded, correlatable and omits content/auth data (9.63383ms)
+  ✔ incident lifecycle continues when knowledge table is unavailable (27.149959ms)
+✔ Phase 3 version/search/ACL/audit acceptance (3160.290591ms)
+ℹ Backend pglite-socket; server_version 18.3
+▶ Phase 2 lifecycle, permission, rollback and concurrent-write acceptance
+  ✔ complete lifecycle, reassignment, comments and bounded history (92.623024ms)
+  ✔ reporter/editor/admin cannot triage; responders cannot resolve; scope checked (62.726125ms)
+  ✔ invalid transitions, assignees, resolution/reopen and mass assignment leave no history (32.211738ms)
+  ✔ stale comments cannot overwrite a successful action (17.061351ms)
+  ✔ revoked assignee can be replaced atomically when reopening (53.230939ms)
+  ✔ failed history insertion rolls back incident and comment (17.006248ms)
+  ✔ DB refuses resolved incident without a resolution (3.63009ms)
+  ✔ failed comment insertion also rolls back the earlier activity insert (15.584162ms)
+  ✔ simultaneous HTTP actions yield one success and one stale conflict (18.666303ms)
+  ﹣ two native connections compete on the same revision (0.237338ms) # Requires native PostgreSQL connections
+✔ Phase 2 lifecycle, permission, rollback and concurrent-write acceptance (3138.392774ms)
+ℹ Backend pglite-socket; server_version 18.3
+▶ Phase 5 server flags and graceful outage boundaries
+  ✔ capabilities are server-derived; no AI capability (10.625618ms)
+  ✔ maintenance rejects direct writes without domain mutations (3.070865ms)
+  ✔ disabled knowledge and async reject direct API reads (11.446477ms)
+  ✔ database outage is safe and recovers without restart (7.713552ms)
+  ✔ sign out remains available during maintenance (14.397691ms)
+✔ Phase 5 server flags and graceful outage boundaries (2168.639394ms)
+ℹ tests 55
+ℹ suites 0
+ℹ pass 54
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 26692.056981

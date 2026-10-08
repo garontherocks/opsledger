@@ -1,0 +1,27 @@
+{
+  "scope": "new dev-only accessibility dependency",
+  "packages": [
+    {
+      "name": "@axe-core/playwright",
+      "version": "4.13.0",
+      "license": "MPL-2.0",
+      "engines": null,
+      "dependencies": {
+        "axe-core": "~4.13.0"
+      },
+      "peerDependencies": {
+        "playwright-core": ">= 1.0.0"
+      }
+    },
+    {
+      "name": "axe-core",
+      "version": "4.13.0",
+      "license": "MPL-2.0",
+      "engines": {
+        "node": ">=4"
+      },
+      "dependencies": null,
+      "peerDependencies": null
+    }
+  ]
+}

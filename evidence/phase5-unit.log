@@ -1,0 +1,25 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> opsledger@0.1.0 test:unit
+> node --experimental-strip-types --test tests/domain.test.ts tests/lifecycle.domain.test.ts tests/knowledge.domain.test.ts tests/async.domain.test.ts tests/client.unit.test.ts
+
+✔ attachments are bounded canonical base64 UTF-8 text with conservative names (5.347242ms)
+✔ interrupted writes are not silently retried (2.025518ms)
+✔ safe API error reference is preserved for recovery (3.271878ms)
+✔ invalid success response requires checking state before another write (0.495818ms)
+✔ input trims and counts Unicode code points (2.879406ms)
+✔ whitespace, short text, invalid severity and privileged fields fail (0.396538ms)
+✔ pagination is bounded and unknown query fields fail (1.024737ms)
+✔ production cannot enable lab mode or plain HTTP (3.563879ms)
+✔ knowledge boundaries, strict authority and bounded query (6.500281ms)
+✔ content provenance hash has canonical order and changes with content or service (0.495468ms)
+✔ exhaustive state/action/role contract (175 combinations) (2.004686ms)
+✔ action validation rejects privilege fields, missing revision and blank resolution/reopen reason (3.230766ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 237.513445
