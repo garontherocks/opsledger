@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-08T17:43:49.044Z",
+  "backend": "pglite-socket",
+  "extension": {
+    "extversion": "0.8.1"
+  },
+  "provider": "synthetic fixed embeddings; not live model proof",
+  "records": [
+    {
+      "case": "versioned Recall@5/MRR comparison separates fixed-vector mechanics from keyword retrieval",
+      "passed": true
+    },
+    {
+      "case": "overlapping chunks preserve exact Unicode spans and size budgets",
+      "passed": true
+    },
+    {
+      "case": "fixed bilingual embeddings give ranked exact cosine hits",
+      "passed": true
+    },
+    {
+      "case": "duplicate ingest replaces rows atomically without accumulating chunks",
+      "passed": true
+    },
+    {
+      "case": "scope and role denial happen before embedding",
+      "passed": true
+    },
+    {
+      "case": "mixed model/digest vectors cannot be retrieved",
+      "passed": true
+    },
+    {
+      "case": "withdrawal purges stale chunks and explicit purge/reindex is independent",
+      "passed": true
+    },
+    {
+      "case": "membership revocation during embedding discards the result",
+      "passed": true
+    },
+    {
+      "case": "source revision change during embedding aborts ingest without partial rows",
+      "passed": true
+    }
+  ]
+}

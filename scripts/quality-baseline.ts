@@ -1,3 +1,4 @@
+import {vector} from '@electric-sql/pglite-pgvector';
 import assert from 'node:assert/strict';
 import {mkdtemp,rm,cp,readFile,writeFile,readdir,lstat} from 'node:fs/promises';
 import {tmpdir,cpus,totalmem} from 'node:os';
@@ -35,7 +36,7 @@ try{
  const before=await fingerprints(source.pool);const started=performance.now();
  const backup=await source.dump!();await cp(join(root,'live'),join(root,'backup'),{recursive:true});
  await source.close();closed=true;
- const restoreStart=performance.now();restored=await PGlite.create({loadDataDir:backup});socket=new PGLiteSocketServer({db:restored,host:'127.0.0.1',port:55441});await socket.start();
+ const restoreStart=performance.now();restored=await PGlite.create({loadDataDir:backup,extensions:{vector}});socket=new PGLiteSocketServer({db:restored,host:'127.0.0.1',port:55441});await socket.start();
  pool=new Pool({host:'127.0.0.1',port:55441,user:'postgres',database:'postgres',max:1});await migrate(pool);await cp(join(root,'backup'),join(root,'restored'),{recursive:true});
  assert.deepEqual(await fingerprints(pool),before);
  assert.equal((await pool.query('SELECT count(*) FROM async_operations o LEFT JOIN pgboss.job j ON j.id=o.job_id WHERE j.id IS NULL')).rows[0].count,'0');

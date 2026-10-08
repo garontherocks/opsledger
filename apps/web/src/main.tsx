@@ -7,7 +7,7 @@ import {IncidentDetail} from './IncidentDetail.tsx';
 import {AsyncPanel,NotificationsPanel} from './AsyncPanel.tsx';
 import {SummaryPanel} from './SummaryPanel.tsx';
 import {KnowledgePanel} from './KnowledgePanel.tsx';
-type Identity={features:{readOnly:boolean,knowledge:boolean,async:boolean,ai:boolean},user:{name:string,email:string},workspaces:{id:string,name:string,role:string}[]};
+type Identity={features:{readOnly:boolean,knowledge:boolean,async:boolean,ai:boolean,embeddings:boolean},user:{name:string,email:string},workspaces:{id:string,name:string,role:string}[]};
 type Service={id:string,name:string};
 function App(){
   const [reload,setReload]=useState(0);
@@ -74,7 +74,7 @@ function App(){
         {detail&&identity.features.async&&<><button onClick={()=>setShowFiles(value=>!value)}>Open files</button>{showFiles&&<AsyncPanel key={detail.id} workspace={workspace} incident={detail.id} revision={detail.revision} readOnly={identity.features.readOnly} role={identity.workspaces.find(w=>w.id===workspace)?.role??''}/>}</>}
         </section></div>}
       {view==='notifications'&&identity.features.async&&<NotificationsPanel key={workspace} workspace={workspace} readOnly={identity.features.readOnly} onOpen={id=>void action(async()=>{setDetail(await api<IncidentDTO>('/api/v1/workspaces/'+workspace+'/incidents/'+id));setView('incidents');})}/>}
-      {view==='knowledge'&&identity.features.knowledge&&<KnowledgePanel key={workspace} workspace={workspace} readOnly={identity.features.readOnly} role={identity.workspaces.find(w=>w.id===workspace)?.role??''} services={services}/>}
+      {view==='knowledge'&&identity.features.knowledge&&<KnowledgePanel semanticEnabled={identity.features.embeddings} key={workspace} workspace={workspace} readOnly={identity.features.readOnly} role={identity.workspaces.find(w=>w.id===workspace)?.role??''} services={services}/>}
       </>}
       </>}
       <footer>OpsLedger · {identity?.features.ai?'Local lab · AI drafts require review':'Deterministic v1 · No AI assistance'}</footer></main></>;

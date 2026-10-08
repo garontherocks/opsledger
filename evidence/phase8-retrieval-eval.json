@@ -1,0 +1,369 @@
+{
+  "at": "2026-10-08T17:43:48.971Z",
+  "datasetVersion": "bilingual-retrieval-v1",
+  "provider": "fixed synthetic lexical vectors; metrics demonstrate SQL/labels pipeline, not embeddinggemma quality",
+  "thresholds": {
+    "recallAt5": 0.85,
+    "mrr": 0.75
+  },
+  "development": {
+    "vector": {
+      "n": 6,
+      "recallAt5": 1,
+      "mrr": 1
+    },
+    "keyword": {
+      "n": 6,
+      "recallAt5": 0.3333333333333333,
+      "mrr": 0.3333333333333333
+    }
+  },
+  "heldOut": {
+    "vector": {
+      "n": 3,
+      "recallAt5": 1,
+      "mrr": 1
+    },
+    "keyword": {
+      "n": 3,
+      "recallAt5": 0.6666666666666666,
+      "mrr": 0.6666666666666666
+    }
+  },
+  "heldOutConsumed": true,
+  "results": [
+    {
+      "id": "backup-en",
+      "split": "development",
+      "query": "restore backup",
+      "relevant": 0,
+      "vectorRank": 1,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbookId": "dfc174aa-8f5a-45f5-8165-61d5b92f35ad",
+          "version": 1,
+          "span": [
+            0,
+            72
+          ],
+          "score": 1
+        },
+        {
+          "runbookId": "c356dafc-f35b-4278-8ef4-01b4a8effed6",
+          "version": 1,
+          "span": [
+            0,
+            61
+          ],
+          "score": 0.00009998999303206801
+        },
+        {
+          "runbookId": "a24670ec-08e5-48d3-8c21-bfeecbf9d4a9",
+          "version": 1,
+          "span": [
+            0,
+            71
+          ],
+          "score": 0.00009998999303206801
+        }
+      ]
+    },
+    {
+      "id": "backup-es",
+      "split": "development",
+      "query": "restaurar respaldo",
+      "relevant": 0,
+      "vectorRank": 1,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbookId": "dfc174aa-8f5a-45f5-8165-61d5b92f35ad",
+          "version": 1,
+          "span": [
+            0,
+            72
+          ],
+          "score": 1
+        },
+        {
+          "runbookId": "c356dafc-f35b-4278-8ef4-01b4a8effed6",
+          "version": 1,
+          "span": [
+            0,
+            61
+          ],
+          "score": 0.00009998999303206801
+        },
+        {
+          "runbookId": "a24670ec-08e5-48d3-8c21-bfeecbf9d4a9",
+          "version": 1,
+          "span": [
+            0,
+            71
+          ],
+          "score": 0.00009998999303206801
+        }
+      ]
+    },
+    {
+      "id": "backup-checksum",
+      "split": "development",
+      "query": "backup checksum verification",
+      "relevant": 0,
+      "vectorRank": 1,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbookId": "dfc174aa-8f5a-45f5-8165-61d5b92f35ad",
+          "version": 1,
+          "span": [
+            0,
+            72
+          ],
+          "score": 1
+        },
+        {
+          "runbookId": "c356dafc-f35b-4278-8ef4-01b4a8effed6",
+          "version": 1,
+          "span": [
+            0,
+            61
+          ],
+          "score": 0.00009998999303206801
+        },
+        {
+          "runbookId": "a24670ec-08e5-48d3-8c21-bfeecbf9d4a9",
+          "version": 1,
+          "span": [
+            0,
+            71
+          ],
+          "score": 0.00009998999303206801
+        }
+      ]
+    },
+    {
+      "id": "latency-en",
+      "split": "development",
+      "query": "timeout latency worker",
+      "relevant": 1,
+      "vectorRank": 1,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbookId": "c356dafc-f35b-4278-8ef4-01b4a8effed6",
+          "version": 1,
+          "span": [
+            0,
+            61
+          ],
+          "score": 1
+        },
+        {
+          "runbookId": "a24670ec-08e5-48d3-8c21-bfeecbf9d4a9",
+          "version": 1,
+          "span": [
+            0,
+            71
+          ],
+          "score": 0.00009998999303206801
+        },
+        {
+          "runbookId": "dfc174aa-8f5a-45f5-8165-61d5b92f35ad",
+          "version": 1,
+          "span": [
+            0,
+            72
+          ],
+          "score": 0.00009998999303206801
+        }
+      ]
+    },
+    {
+      "id": "latency-es",
+      "split": "development",
+      "query": "diagnosticar lentitud",
+      "relevant": 1,
+      "vectorRank": 1,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbookId": "c356dafc-f35b-4278-8ef4-01b4a8effed6",
+          "version": 1,
+          "span": [
+            0,
+            61
+          ],
+          "score": 1
+        },
+        {
+          "runbookId": "a24670ec-08e5-48d3-8c21-bfeecbf9d4a9",
+          "version": 1,
+          "span": [
+            0,
+            71
+          ],
+          "score": 0.00009998999303206801
+        },
+        {
+          "runbookId": "dfc174aa-8f5a-45f5-8165-61d5b92f35ad",
+          "version": 1,
+          "span": [
+            0,
+            72
+          ],
+          "score": 0.00009998999303206801
+        }
+      ]
+    },
+    {
+      "id": "latency-retry",
+      "split": "development",
+      "query": "latency before retry",
+      "relevant": 1,
+      "vectorRank": 1,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbookId": "c356dafc-f35b-4278-8ef4-01b4a8effed6",
+          "version": 1,
+          "span": [
+            0,
+            61
+          ],
+          "score": 1
+        },
+        {
+          "runbookId": "a24670ec-08e5-48d3-8c21-bfeecbf9d4a9",
+          "version": 1,
+          "span": [
+            0,
+            71
+          ],
+          "score": 0.00009998999303206801
+        },
+        {
+          "runbookId": "dfc174aa-8f5a-45f5-8165-61d5b92f35ad",
+          "version": 1,
+          "span": [
+            0,
+            72
+          ],
+          "score": 0.00009998999303206801
+        }
+      ]
+    },
+    {
+      "id": "credentials-en",
+      "split": "held-out",
+      "query": "rotate credential",
+      "relevant": 2,
+      "vectorRank": 1,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbookId": "a24670ec-08e5-48d3-8c21-bfeecbf9d4a9",
+          "version": 1,
+          "span": [
+            0,
+            71
+          ],
+          "score": 1
+        },
+        {
+          "runbookId": "c356dafc-f35b-4278-8ef4-01b4a8effed6",
+          "version": 1,
+          "span": [
+            0,
+            61
+          ],
+          "score": 0.00009998999303206801
+        },
+        {
+          "runbookId": "dfc174aa-8f5a-45f5-8165-61d5b92f35ad",
+          "version": 1,
+          "span": [
+            0,
+            72
+          ],
+          "score": 0.00009998999303206801
+        }
+      ]
+    },
+    {
+      "id": "credentials-es",
+      "split": "held-out",
+      "query": "rotar clave",
+      "relevant": 2,
+      "vectorRank": 1,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbookId": "a24670ec-08e5-48d3-8c21-bfeecbf9d4a9",
+          "version": 1,
+          "span": [
+            0,
+            71
+          ],
+          "score": 1
+        },
+        {
+          "runbookId": "c356dafc-f35b-4278-8ef4-01b4a8effed6",
+          "version": 1,
+          "span": [
+            0,
+            61
+          ],
+          "score": 0.00009998999303206801
+        },
+        {
+          "runbookId": "dfc174aa-8f5a-45f5-8165-61d5b92f35ad",
+          "version": 1,
+          "span": [
+            0,
+            72
+          ],
+          "score": 0.00009998999303206801
+        }
+      ]
+    },
+    {
+      "id": "password-request",
+      "split": "held-out",
+      "query": "password requesting identity",
+      "relevant": 2,
+      "vectorRank": 1,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbookId": "a24670ec-08e5-48d3-8c21-bfeecbf9d4a9",
+          "version": 1,
+          "span": [
+            0,
+            71
+          ],
+          "score": 1
+        },
+        {
+          "runbookId": "c356dafc-f35b-4278-8ef4-01b4a8effed6",
+          "version": 1,
+          "span": [
+            0,
+            61
+          ],
+          "score": 0.00009998999303206801
+        },
+        {
+          "runbookId": "dfc174aa-8f5a-45f5-8165-61d5b92f35ad",
+          "version": 1,
+          "span": [
+            0,
+            72
+          ],
+          "score": 0.00009998999303206801
+        }
+      ]
+    }
+  ]
+}

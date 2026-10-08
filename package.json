@@ -18,7 +18,7 @@
     "start": "node --experimental-strip-types apps/api/src/server.ts",
     "db:migrate": "node --experimental-strip-types scripts/migrate.ts",
     "db:seed:lab": "node --experimental-strip-types scripts/seed.ts",
-    "test:unit": "node --experimental-strip-types --test tests/domain.test.ts tests/lifecycle.domain.test.ts tests/knowledge.domain.test.ts tests/async.domain.test.ts tests/client.unit.test.ts tests/local-model.unit.test.ts tests/structured-output.unit.test.ts",
+    "test:unit": "node --experimental-strip-types --test tests/domain.test.ts tests/lifecycle.domain.test.ts tests/knowledge.domain.test.ts tests/async.domain.test.ts tests/client.unit.test.ts tests/local-model.unit.test.ts tests/structured-output.unit.test.ts tests/embeddings.unit.test.ts",
     "test:integration": "node --experimental-strip-types scripts/integration-runner.ts",
     "test:e2e": "node --experimental-strip-types scripts/browser-runner.ts",
     "db:lab": "node --experimental-strip-types scripts/lab-db.ts",
@@ -47,6 +47,7 @@
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
     "@electric-sql/pglite": "0.5.8",
+    "@electric-sql/pglite-pgvector": "0.0.9",
     "@electric-sql/pglite-socket": "0.2.11",
     "@playwright/test": "1.64.0",
     "@types/node": "24.19.1",

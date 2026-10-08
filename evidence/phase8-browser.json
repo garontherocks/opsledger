@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-08T17:43:41.696Z",
+  "passed": true,
+  "provider": "synthetic fixture",
+  "checks": [
+    "ranked source",
+    "literal rendering",
+    "purge",
+    "keyword fallback"
+  ]
+}

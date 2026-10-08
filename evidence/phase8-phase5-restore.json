@@ -1,0 +1,77 @@
+{
+  "backend": "PGlite 0.5.8 / embedded PostgreSQL 18.3",
+  "scope": "quiesced synthetic DB dump plus private files, same version",
+  "backupBytes": 42963968,
+  "backupSha256": "2c9ff9b3b0357732e8268ddc03a7bc866449a35a1a468e426f548fb45f1e0f1b",
+  "tables": {
+    "app_migrations": {
+      "rows": 6,
+      "sha256": "6ae7ed44ac3b4b8d9d3f6fd3f1bf98e00293190774a7efd078dc075506a075f5"
+    },
+    "incidents": {
+      "rows": 1,
+      "sha256": "ffd816a399c969e1e5b0fb9fe35a9d0335c3ba4c38e6edbb64e109d25bde1da4"
+    },
+    "incident_activity": {
+      "rows": 1,
+      "sha256": "0d04bbbca1492f4b96cbcd7d70884574a123290578585af374b4ee8d66ab745b"
+    },
+    "incident_comments": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "runbooks": {
+      "rows": 24,
+      "sha256": "42ea6a16fd6e159f0e3f44493623ba6a47d695904424f84860fa7285d7e17061"
+    },
+    "runbook_versions": {
+      "rows": 25,
+      "sha256": "cd3208a355684d919f6dacab234ccf60fe66b77a1b9d4575ec52b12b8e0cf723"
+    },
+    "audit_events": {
+      "rows": 31,
+      "sha256": "e68ac48af16fd68758a5174b38c8395e6eb8bb296c903f29fc3cfaad983163fc"
+    },
+    "domain_outbox": {
+      "rows": 2,
+      "sha256": "e28dea3cfe832b33252b29ebaed1ec29c5089e6061adcd031aa2906a597944c1"
+    },
+    "async_operations": {
+      "rows": 4,
+      "sha256": "9ec3e6315502a33c12a9eba1b94c251689a63c647bd70d44a8642caa8e7267f0"
+    },
+    "operation_timeline": {
+      "rows": 12,
+      "sha256": "55bbab20fb1f7f23dc7cdf1ff22e91b1a622dc442078ffdfcb680bdb0b8608d1"
+    },
+    "private_files": {
+      "rows": 1,
+      "sha256": "486a4f1d6b3d8bc721c14a89e00cf1336ee16a0dc50d88ac6d5142d484326e75"
+    },
+    "notifications": {
+      "rows": 3,
+      "sha256": "160ef979715000ef44f8433d4bec91dc912e4909bb9638036ec9499b03a19782"
+    },
+    "memberships": {
+      "rows": 10,
+      "sha256": "a840c3672513c5a6e547f191216a7391335d6bc2ff160041843715f365c9ba94"
+    }
+  },
+  "privateFileHash": "efce349420050c8d2a8a4eef4380b4eb6a0c73ed6be3d17968751485505d3ebd",
+  "privateFiles": 1,
+  "restoreMs": 566.5486340000002,
+  "totalDrillMs": 710.7513439999998,
+  "checks": [
+    "exact table fingerprints",
+    "migration checksums unchanged",
+    "queue job references and notifications retained",
+    "0700 restored root",
+    "revision 2 export hash",
+    "0600 file permissions",
+    "retained credential sign-in",
+    "cross-workspace 404"
+  ],
+  "nativeRestore": false,
+  "liveBackup": false,
+  "temporaryBackupRetained": false
+}

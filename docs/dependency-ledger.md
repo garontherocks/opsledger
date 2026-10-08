@@ -37,3 +37,7 @@ Dev-only @axe-core/playwright 4.13.0, MPL-2.0, exact lockfile: selected browser 
 ## Phase 6 update
 
 See phase6-report.md, phase6-security.md and phase6-sources.md for the local runtime/model boundary, actual receipts, advisory-review limits and pending human/native/remote gates. No npm dependency added; no model operational authority.
+
+## Phase 8 additions
+
+Exact dev dependency @electric-sql/pglite-pgvector 0.0.9 (Apache-2.0), compatible peer PGlite 0.5.8, lock integrity retained. Embedded extension reports 0.8.1; native build uses pgvector 0.8.7 with verified archive SHA-256 and postgres:18.6 base. Native image build/digest verification remains pending because Docker is unavailable in Work. No separate vector database or ANN dependency. Temporary browser tooling is ignored under .local and is not a product dependency.

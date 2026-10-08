@@ -1,3 +1,4 @@
+import {vector} from '@electric-sql/pglite-pgvector';
 import { PGlite } from '@electric-sql/pglite';
 import { PGLiteSocketServer } from '@electric-sql/pglite-socket';
 import { Pool } from 'pg';
@@ -11,7 +12,7 @@ export async function testDatabase(port=55432){
     await migrate(pool);
     return {pool,backend:'postgresql-server',dump:undefined,close:()=>pool.end()};
   }
-  const db=await PGlite.create();const socket=new PGLiteSocketServer({db,host:'127.0.0.1',port});
+  const db=await PGlite.create({extensions:{vector}});const socket=new PGLiteSocketServer({db,host:'127.0.0.1',port});
   await socket.start();
   const pool=new Pool({host:'127.0.0.1',port,database:'postgres',user:'postgres',max:1,connectionTimeoutMillis:2000});
   await migrate(pool);

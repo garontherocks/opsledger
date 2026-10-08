@@ -1,8 +1,9 @@
+import {vector} from '@electric-sql/pglite-pgvector';
 import {spawn} from 'node:child_process';
 import {readFile} from 'node:fs/promises';
 import {PGlite} from '@electric-sql/pglite';
 import {PGLiteSocketServer} from '@electric-sql/pglite-socket';
-const db=await PGlite.create();
+const db=await PGlite.create({extensions:{vector}});
 const socket=new PGLiteSocketServer({db,host:'127.0.0.1',port:55434});await socket.start();
 const env={...process.env,DATABASE_URL:'postgresql://postgres@127.0.0.1:55434/postgres',AUTH_SECRET:crypto.randomUUID()+crypto.randomUUID(),BASE_URL:'http://localhost:3101',PORT:'3101',NODE_ENV:'development',LAB_MODE:'true',LAB_DB_BACKEND:'pglite'};
 async function run(file:string){
