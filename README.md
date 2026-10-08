@@ -1,6 +1,6 @@
-# OpsLedger — Local assistance / Phase 6
+# OpsLedger — M2 AI Product
 
-Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. No model dependency. Branch: feat/local-ai-assistance. No merge or deployment.
+Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. Optional pinned local structured assistance, semantic retrieval and grounded runbook answers. Branch: feat/m2-ai-regression. No merge or deployment. M2 desktop/quality/understanding acceptance is pending; no Phase 11.
 
 ## Native local startup
 
@@ -8,7 +8,7 @@ Requires Node 24.19.x, npm 11 and Docker Compose with PostgreSQL 18.6. From the 
 
 1. Run `npm ci --ignore-scripts`.
 2. Copy .env.example to .env. Generate a database password and a separate random auth secret (at least 32 characters); replace placeholders. Never commit .env.
-3. Set DB_PASSWORD in your shell to that database password. Run `docker compose -f infra/compose.yaml up -d`. The database listens on localhost and persists a volume. Changing the environment password does not update an existing database.
+3. Set DB_PASSWORD in your shell to that database password. Run `docker compose -f infra/compose.yaml up --build -d`. The database listens on localhost and persists a volume. Changing the environment password does not update an existing database.
 4. Run `node --env-file=.env --experimental-strip-types scripts/migrate.ts` twice.
 5. Run `node --env-file=.env --experimental-strip-types scripts/seed.ts`. Use the generated .local/credentials.json to sign in. This file has restricted permissions. Retain it; repeat seeding never replaces existing passwords or memberships. LAB_MODE must be true and NODE_ENV must not be production.
 6. Run `npm run build`, then `node --env-file=.env --experimental-strip-types apps/api/src/server.ts`. Open http://localhost:3100 and create an incident for InvoiceWorker.
@@ -83,3 +83,9 @@ Clone https://github.com/garontherocks/opsledger.git and checkout `feat/local-ai
 Authorized after the Phase 6 closure. The incident endpoint now consumes a strict schema-constrained JSON model response with deterministic state/citation checks; unknown fields, unsafe markup, incomplete output and malformed JSON fail safely. Human accept/edit/reject decisions remain local and never change the incident. Contracts do not establish factual truth.
 
 Run `npm run ai:eval` for the versioned fixture/oracle report. See [Phase 7 report](docs/phase7-report.md), [desktop batch](docs/phase7-desktop-validation.md) and [learner checkpoint](docs/phase7-learning.md). Engineering checks passed except browser execution blocked by unavailable Chromium; actual structured inference and the new human/learner acceptance remain pending. Phase 8 is not started. Historical Phase 6 source/learning evidence is preserved.
+
+## M2 milestone handoff
+
+See [engineering report](docs/m2-engineering-report.md), [architecture](docs/m2-architecture.md), [security/evals](docs/m2-security-evals.md), [one desktop bundle](docs/m2-desktop-validation.md), [selected review samples](docs/m2-human-review-samples.md), and [consolidated Teach-Back](docs/m2-teach-back.md). Governance permits autonomous consecutive phases only within an explicitly authorized milestone; stop after Phase 10. Individual phase reports and evidence remain intact.
+
+AI/embeddings default off independently. Local inference is read-only and untrusted; optional signed feedback only records metadata. Native test fixtures require a disposable localhost `_test` connection and CREATEDB test role; the harness creates and normally drops only its generated databases, leaving the supplied database intact. Production least privilege remains a separate gate.

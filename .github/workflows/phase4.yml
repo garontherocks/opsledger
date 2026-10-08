@@ -24,8 +24,8 @@ jobs:
         run: |
           docker build -f infra/Dockerfile.db -t opsledger-ci-db .
           docker run -d --name opsledger-ci-db -p 127.0.0.1:5432:5432 -e POSTGRES_USER=opsledger -e POSTGRES_PASSWORD=disposable-ci-only -e POSTGRES_DB=opsledger_test opsledger-ci-db
-          for attempt in $(seq 1 30); do docker exec opsledger-ci-db pg_isready -U opsledger -d opsledger_test && break; sleep 1; done
-          docker exec opsledger-ci-db pg_isready -U opsledger -d opsledger_test
+          for attempt in $(seq 1 30); do docker exec opsledger-ci-db pg_isready -h 127.0.0.1 -U opsledger -d opsledger_test && break; sleep 1; done
+          docker exec opsledger-ci-db pg_isready -h 127.0.0.1 -U opsledger -d opsledger_test
       - run: npm ci --ignore-scripts
       - run: npm run lint && npm run typecheck && npm run build
       - run: npm run test:unit
