@@ -7,6 +7,9 @@ export function config(env: NodeJS.ProcessEnv = process.env) {
     BIND_HOST:z.enum(['127.0.0.1','0.0.0.0']).default('127.0.0.1'),
     PORT:z.coerce.number().int().min(1).max(65535).default(3100),
     STORAGE_DIR:z.string().refine(isAbsolute).default(resolve('.local/storage')),
+    READ_ONLY:z.enum(['true','false']).default('false'),
+    KNOWLEDGE_ENABLED:z.enum(['true','false']).default('true'),
+    ASYNC_ENABLED:z.enum(['true','false']).default('true'),
     LAB_MODE:z.enum(['true','false']).default('false'),
   }).parse(env);
   if(settings.NODE_ENV==='production' && settings.LAB_MODE==='true') throw new Error('Lab mode is forbidden in production');

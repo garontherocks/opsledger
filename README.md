@@ -1,6 +1,6 @@
-# OpsLedger — Phase 4
+# OpsLedger — Deterministic v1 / Phase 5
 
-Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. No model dependency. Branch: feat/reliable-async-files. No merge or deployment.
+Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. No model dependency. Branch: feat/deterministic-v1-baseline. No merge or deployment.
 
 ## Native local startup
 
@@ -24,11 +24,11 @@ Integration and E2E default to separate transient PGlite test databases. Set TES
 
 Optional harness: `LAB_MODE=true npm run db:lab` hosts persistent PGlite on port 55432. Explicitly set DATABASE_URL to postgresql://postgres@127.0.0.1:55432/postgres, then migrate/seed/build/start. This is test tooling, not native PostgreSQL deployment. The application never silently selects it.
 
-Generate OpenAPI with `node --experimental-strip-types scripts/openapi.ts`. See docs/phase4-architecture.md, docs/phase4-report.md and evidence for actual results. Phase 0 probes and Phase 1 reports remain historical.
+Generate OpenAPI with `node --experimental-strip-types scripts/openapi.ts`. See docs/phase5-architecture.md, docs/phase5-report.md and evidence for actual results. Phase 0 probes and Phase 1 reports remain historical.
 
 To upgrade a Phase 1 database, run migrations and the synthetic seed again using the retained credentials; incident rows and previous migration checksums are preserved. For lifecycle UI use north-lead@example.test with that same local synthetic password. Reporters can comment, responders can triage/assign/investigate, and only leads can resolve/close/reopen. Admin/editor membership does not imply lead privileges. Refresh after a stale-revision conflict; actions are never silently retried.
 
-Remote CI/native PostgreSQL acceptance remains pending. The native test uses a controlled row lock and checks two waiting backend PIDs; the default PGlite run explicitly skips it. Phase 3 local knowledge/search/audit acceptance is recorded; Phase 4 local async/file acceptance is recorded; Phase 5 has not started.
+Remote CI/native PostgreSQL acceptance remains pending. The native test uses a controlled row lock and checks two waiting backend PIDs; the default PGlite run explicitly skips it. Phase 3 local knowledge/search/audit acceptance is recorded; Phase 4 local async/file acceptance is recorded; Phase 5 local quality baseline is recorded; full release/M1 remains gated. Phase 6 has not started.
 
 ## Knowledge and audit
 
@@ -38,7 +38,7 @@ Sign in as north-editor@example.test (or north-admin@example.test) with the reta
 
 The synthetic corpus contains 24 runbooks across two workspaces, including repeated titles/timestamps, drafts, withdrawn versions and malicious Markdown strings. Keyword search uses PostgreSQL simple full-text search, with service/category filters, title/newest order and signed scoped keyset pagination. No AI, embeddings or attachment parsing. Admin/editor may inspect workspace audit metadata; other roles read published knowledge only. Knowledge editor privileges do not grant incident lead privileges.
 
-Browser acceptance runs three separate server lifetimes to avoid exhausting a shared production rate-limit bucket. The default harness creates a fresh PGlite database per flow; the native browser lane shares its fresh job database and generated password across flows. Production rate limits are unchanged.
+Browser acceptance runs six separate server lifetimes to avoid exhausting a shared production rate-limit bucket. The default harness creates a fresh PGlite database per flow; the native browser lane shares its fresh job database and generated password across flows. Production rate limits are unchanged.
 
 ## Async operations and private files
 
@@ -57,3 +57,11 @@ Limits: 20 pending user requests per requester, 100 per workspace, 20 live attac
 Tests use real pg-boss jobs with the PGlite backend and no queue mock. Four browser flows each start a fresh server; their harness runs the real worker callback/poller in the server process. Controlled crash-point errors prove replay behavior; an actual killed worker/power loss and native multiworker behavior remain pending. See phase4-job-timeline.json and phase4-storage-cleanup.json. No Redis or AI dependency.
 
 Optional container runtime configuration (unexecuted here): after applying app migrations and seed to the native DB, run `docker compose -f infra/compose.yaml --profile runtime up --build`. API/worker share the private-files named volume with a non-root Node user; only API localhost:3100 is exposed. The default Compose command still provisions the database alone for host-based startup. The runtime image/volume/role acceptance is pending, and no image digest or successful container build is claimed.
+
+## Quality baseline and server flags
+
+READ_ONLY=true pauses all business API writes and presents maintenance controls; auth/read/refresh remain available and existing queued work may finish. KNOWLEDGE_ENABLED=false disables runbooks. ASYNC_ENABLED=false disables async APIs and bootstrap; restart API and worker for consistent rollout. Defaults preserve existing behavior. Flags are server configuration, not role grants. `/api/v1/me` exposes current capabilities with ai:false.
+
+`npm run quality:baseline` (without TEST_DATABASE_URL) runs a disposable same-version quiesced PGlite DB/files restore and a serial conventional route benchmark. No live/user backup is taken or delivered. See phase5-architecture.md for conditions and native-backup gaps. The browser suite adds axe checks on selected states, keyboard focus/mobile recovery, one reviewed Linux login visual baseline, server-flag presentation and an authenticated v1 recording. Match the browser environment before reviewing a pixel comparison. Automated passes do not establish full WCAG conformance.
+
+New evidence: phase5-accessibility.json, phase5-restore.json, phase5-performance.json, phase5-v1-demo.webm and phase5 final check logs. Native PostgreSQL 18.6, independent workers/roles, actual volume/crash recovery and remote CI remain pending.

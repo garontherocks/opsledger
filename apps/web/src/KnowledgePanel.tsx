@@ -3,8 +3,8 @@ import type {RunbookDTO} from '../../../packages/contracts/src/knowledge.ts';
 import {api} from './api.ts';
 type Page={items:RunbookDTO[],nextCursor:string|null};
 type AuditPage={items:{seq:string,action:string,actorId:string,revision:number}[],nextBefore:string|null};
-export function KnowledgePanel({workspace,role,services}:{workspace:string,role:string,services:{id:string,name:string}[]}){
- const writer=['editor','admin'].includes(role);
+export function KnowledgePanel({workspace,role,services,readOnly=false}:{workspace:string,role:string,readOnly?:boolean,services:{id:string,name:string}[]}){
+ const writer=['editor','admin'].includes(role),canWrite=writer&&!readOnly;
  const [query,setQuery]=useState(''),[status,setStatus]=useState('published'),[sort,setSort]=useState('title'),[category,setCategory]=useState(''),[service,setService]=useState('');
  const [page,setPage]=useState<Page>({items:[],nextCursor:null}),[detail,setDetail]=useState<RunbookDTO|null>(null),[events,setEvents]=useState<AuditPage|null>(null);
  const [error,setError]=useState(''),[busy,setBusy]=useState(false);
@@ -43,10 +43,10 @@ export function KnowledgePanel({workspace,role,services}:{workspace:string,role:
   {detail&&<article aria-label="Runbook version"><h3>{detail.title}</h3><p>Version {detail.number} · {detail.status} · Revision {detail.revision}</p><pre className="runbook-body">{detail.body}</pre>
    <p>SHA-256: <code className="content-hash">{detail.contentHash}</code></p><a href={base+'/runbooks/'+detail.id+'/versions/'+detail.number}>Version JSON</a>
    <button disabled={busy} onClick={()=>void execute(async()=>setDetail(await api<RunbookDTO>(base+'/runbooks/'+detail.id+'/versions/'+detail.number)))}>Refresh version</button>
-   {writer&&detail.status==='draft'&&<button disabled={busy} onClick={()=>void publication('publish')}>Publish version</button>}
-   {writer&&detail.status==='published'&&<button disabled={busy} onClick={()=>void publication('withdraw')}>Withdraw version</button>}
+   {canWrite&&detail.status==='draft'&&<button disabled={busy} onClick={()=>void publication('publish')}>Publish version</button>}
+   {canWrite&&detail.status==='published'&&<button disabled={busy} onClick={()=>void publication('withdraw')}>Withdraw version</button>}
   </article>}
-  {writer&&<><button disabled={busy} onClick={()=>setDetail(null)}>New runbook</button>
+  {canWrite&&<><button disabled={busy} onClick={()=>setDetail(null)}>New runbook</button>
    <form key={detail?detail.id+'-'+detail.number:'new'} onSubmit={save}><h3>{detail?'Append a draft version':'Create draft'}</h3>
     <label htmlFor="runbook-title">Runbook title</label><input id="runbook-title" name="title" defaultValue={detail?.title??''} required minLength={5} maxLength={120}/>
     <label htmlFor="runbook-body">Markdown body</label><textarea id="runbook-body" name="body" defaultValue={detail?.body??''} required minLength={10} maxLength={10000}/>

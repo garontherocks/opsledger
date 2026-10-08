@@ -4,9 +4,10 @@ import type {IncidentAction} from '../../../packages/contracts/src/lifecycle.ts'
 import {api} from './api.ts';
 type Entry={id:string,revision:number,kind:string,actorId:string,note:string|null,fromState:string,toState:string};
 type Page={items:Entry[],nextBeforeRevision:number|null};
-export function IncidentDetail({incident,workspace,role,busy,execute,onChange}:{incident:IncidentDTO,workspace:string,role:string,busy:boolean,execute:(work:()=>Promise<void>)=>Promise<void>,onChange:(value:IncidentDTO)=>void}){
+export function IncidentDetail({incident,workspace,role,busy,execute,onChange,readOnly=false}:{incident:IncidentDTO,workspace:string,role:string,readOnly?:boolean,busy:boolean,execute:(work:()=>Promise<void>)=>Promise<void>,onChange:(value:IncidentDTO)=>void}){
  const [history,setHistory]=useState<Page>({items:[],nextBeforeRevision:null});
  const [assignees,setAssignees]=useState<{id:string,name:string}[]>([]);
+ const [reload,setReload]=useState(0);
  const [loadError,setLoadError]=useState('');
  const [historyLoading,setHistoryLoading]=useState(true);
  const path='/api/v1/workspaces/'+workspace+'/incidents/'+incident.id;
@@ -17,7 +18,7 @@ export function IncidentDetail({incident,workspace,role,busy,execute,onChange}:{
    .catch(e=>{if(!abort.signal.aborted)setLoadError((e as Error).message);})
    .finally(()=>{if(!abort.signal.aborted)setHistoryLoading(false);});
   return ()=>abort.abort();
- },[path,workspace,incident.revision]);
+ },[path,workspace,incident.revision,reload]);
  async function mutate(input:Omit<IncidentAction,'expectedRevision'>){
   await execute(async()=>onChange(await api<IncidentDTO>(path+'/actions',{method:'POST',body:JSON.stringify({...input,expectedRevision:incident.revision})})));
  }
@@ -29,7 +30,7 @@ export function IncidentDetail({incident,workspace,role,busy,execute,onChange}:{
   event.preventDefault();const data=new FormData(event.currentTarget),assignee=String(data.get('reopenAssignee')??'');
   void mutate({action:'reopen',reason:String(data.get('reason')), ...(assignee?{assigneeId:assignee}:{})} as Omit<IncidentAction,'expectedRevision'>);
  }
- const operational=['responder','lead'].includes(role),lead=role==='lead';
+ const operational=!readOnly&&['responder','lead'].includes(role),lead=!readOnly&&role==='lead';
  return <article aria-label="Incident detail"><h3>{incident.title}</h3><p>{incident.description}</p>
   <dl><dt>Status</dt><dd>{incident.state}</dd><dt>Severity</dt><dd>{incident.severity}</dd><dt>Revision</dt><dd>{incident.revision}</dd>
   <dt>Assigned to</dt><dd>{incident.assigneeId??'Unassigned'}</dd></dl>
@@ -45,8 +46,8 @@ export function IncidentDetail({incident,workspace,role,busy,execute,onChange}:{
   {lead&&['resolved','closed'].includes(incident.state)&&<form onSubmit={reopen}>
    <label htmlFor="reopen-assignee">Reopen assignee</label><select id="reopen-assignee" name="reopenAssignee" defaultValue=""><option value="">Keep current assignment</option>{assignees.map(a=><option key={a.id} value={a.id}>{a.name}</option>)}</select>
    <label>Reopen reason<textarea name="reason" required minLength={10} maxLength={5000}/></label><button disabled={busy}>Reopen</button></form>}
-  <form onSubmit={e=>form(e,'comment','comment','body')}><label>Comment<textarea name="comment" required maxLength={5000}/></label><button disabled={busy}>Add comment</button></form>
-  <h4>Activity</h4>{loadError&&<p role="alert">{loadError}</p>}
+  {!readOnly&&<form onSubmit={e=>form(e,'comment','comment','body')}><label>Comment<textarea name="comment" required maxLength={5000}/></label><button disabled={busy}>Add comment</button></form>}
+  <h4>Activity</h4>{loadError&&<><p role="alert">{loadError}</p><button disabled={historyLoading} onClick={()=>setReload(value=>value+1)}>Retry activity</button></>}
   {historyLoading&&<p role="status">Loading activity…</p>}
   {!historyLoading&&!loadError&&!history.items.length&&<p>No activity yet.</p>}
   <ol>{history.items.map(entry=><li key={entry.id}>Revision {entry.revision} · {entry.kind} · {entry.actorId}<p>{entry.fromState} → {entry.toState}</p>{entry.note&&<p>{entry.note}</p>}</li>)}</ol>

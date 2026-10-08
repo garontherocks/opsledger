@@ -29,3 +29,7 @@ Registry resolved 2026-10-07. Exact probe pins and lockfile govern reproduction.
 Override: @esbuild-kit/core-utils → esbuild 0.25.12, scoped to Drizzle Kit loader dependency. Initial npm audit: four moderate findings from one transitive esbuild advisory. Final audit: zero reported vulnerabilities; migration generation passes. Review/remove override when upstream fixes its range; do not downgrade Drizzle Kit to the audit suggested old release.
 
 No container digest was verified, so none is claimed. Docker/PG images must be pinned when the live gate runs. Embedded Postgres npm packages were investigated but only prerelease wrappers and an older 18.4 binary were available; not adopted.
+
+## Phase 5 addition
+
+Dev-only @axe-core/playwright 4.13.0, MPL-2.0, exact lockfile: selected browser accessibility evidence. axe-core transitives are locked. No AI or new runtime dependency. See phase5-sources.md and phase5 dependency/audit evidence.

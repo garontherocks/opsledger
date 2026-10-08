@@ -21,3 +21,7 @@ No AI trust boundary exists in the implemented Phase 0 probe. Future AI risks st
 Failure injection/reset routes must not register outside lab mode, and startup rejects production combined with lab/reset flags. Network isolation alone does not justify unrestricted test routes.
 
 Security review is evidence-based: an advisory index read is not a full dependency audit; npm audit may contain stale/incomplete findings and is not an exploitability proof.
+
+## Phase 5 current consolidated review
+
+See phase5-security.md for the implemented deterministic v1 trust boundaries, control/test mapping and remaining native deployment/backup risks. Earlier sections are historical planning and do not establish production verification.

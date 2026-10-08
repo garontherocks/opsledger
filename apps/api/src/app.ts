@@ -31,6 +31,12 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false,oper
   app.addHook('onRequest',async(request,reply)=>{
     reply.header('x-content-type-options','nosniff').header('referrer-policy','same-origin');
     reply.header('content-security-policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; frame-ancestors 'none'; base-uri 'self'");
+    const path=request.url.split('?')[0]!;
+    if(path.startsWith('/api/v1/')){
+      reply.header('cache-control','no-store');
+      if(settings.READ_ONLY==='true'&&!['GET','HEAD','OPTIONS'].includes(request.method))throw new HttpError(503,'read_only','Maintenance: workspace writes paused');
+      if(settings.KNOWLEDGE_ENABLED==='false'&&path.includes('/runbooks'))throw new HttpError(503,'feature_disabled','Knowledge disabled');
+    }
     if(!['GET','HEAD','OPTIONS'].includes(request.method)){
       if(request.headers.origin && request.headers.origin!==new URL(settings.BASE_URL).origin)throw new HttpError(403,'forbidden_origin','Origin denied');
       if(request.headers['sec-fetch-site']==='cross-site')throw new HttpError(403,'forbidden_origin','Origin denied');
@@ -70,7 +76,7 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false,oper
     const session=await auth.api.getSession({headers:fromNodeHeaders(request.headers)});
     if(!session)throw new HttpError(401,'unauthenticated','Sign in required');identities.set(request,session.user.id);return session.user;
   }
-  app.get('/api/v1/me',async request=>{const user=await identity(request);return {user:{id:user.id,name:user.name,email:user.email},workspaces:await store.me(user.id)};});
+  app.get('/api/v1/me',{schema:{response:{200:z.object({user:z.object({id:z.string(),name:z.string(),email:z.string()}),workspaces:z.array(z.object({id:z.uuid(),name:z.string(),role:z.string()})),features:z.object({readOnly:z.boolean(),knowledge:z.boolean(),async:z.boolean(),ai:z.literal(false)})})}}},async request=>{const user=await identity(request);return {user:{id:user.id,name:user.name,email:user.email},workspaces:await store.me(user.id),features:{readOnly:settings.READ_ONLY==='true',knowledge:settings.KNOWLEDGE_ENABLED==='true',async:settings.ASYNC_ENABLED==='true',ai:false as const}};});
   app.get('/api/v1/workspaces/:workspaceId/services',{schema:{params:Params}},async request=>{
     const user=await identity(request);await store.member(user.id,request.params.workspaceId);return store.services(request.params.workspaceId);
   });
@@ -117,7 +123,7 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false,oper
   app.get('/api/v1/workspaces/:workspaceId/audit',{schema:{params:Params,querystring:AuditQuery}},async request=>{
     const user=await identity(request);return knowledge.events(user.id,request.params.workspaceId,request.query.pageSize,request.query.before);
   });
-  async function access(request:FastifyRequest,workspace:string){const user=await identity(request);await store.member(user.id,workspace);if(!operations)throw new HttpError(503,'async_unavailable','Async operations unavailable');return {user,ops:operations};}
+  async function access(request:FastifyRequest,workspace:string){const user=await identity(request);await store.member(user.id,workspace);if(settings.ASYNC_ENABLED==='false'||!operations)throw new HttpError(503,'async_unavailable','Async operations unavailable');return {user,ops:operations};}
   app.post('/api/v1/workspaces/:workspaceId/incidents/:incidentId/exports',{schema:{params:DetailParams,body:ExportRequest}},async(request,reply)=>{
     const {user,ops}=await access(request,request.params.workspaceId);return reply.code(202).send(await ops.request(user.id,request.params.workspaceId,request.params.incidentId,request.body,'export',request.id));
   });
