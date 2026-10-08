@@ -1,0 +1,60 @@
+{
+  "phase": 11,
+  "date": "2026-10-08",
+  "testedCodeSha": "e0afd490b5d0c8bf5d5f303977c0cfebf80045e7",
+  "runId": 37852023630,
+  "url": "https://github.com/garontherocks/opsledger/actions/runs/37852023630",
+  "jobs": [
+    {
+      "id": 113566992387,
+      "name": "acceptance (api)",
+      "conclusion": "success"
+    },
+    {
+      "id": 113566992076,
+      "name": "acceptance (browser)",
+      "conclusion": "success"
+    }
+  ],
+  "observed": {
+    "lint": "pass",
+    "typecheck": "pass",
+    "build": "pass",
+    "unit": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0
+    },
+    "agentPolicyFixtures": {
+      "passed": 8,
+      "failed": 0
+    },
+    "priorAiRegression": {
+      "passed": 114
+    },
+    "nativeIntegration": {
+      "passed": 82,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browserFlows": {
+      "passed": 9
+    },
+    "auditModerate": "pass",
+    "localRestoreAndPreAiBenchmark": "pass"
+  },
+  "initialFailure": {
+    "runId": 37851375965,
+    "jobId": 113564820741,
+    "test": "lifecycle.spec.ts",
+    "failure": "Resolution summary missing after reopen",
+    "correction": "Wait for committed closed state and revision 6 before filling the existing reopen form; no retry, timeout increase or assertion removal."
+  },
+  "limitations": [
+    "Deterministic proposal fixtures are not live Qwen tool-selection quality evidence.",
+    "M3 desktop live validation deferred; no learner answers or human judgments invented.",
+    "Local restore benchmark is not a new live production backup attestation.",
+    "main protection unavailable under current GitHub private repository plan."
+  ],
+  "closureCommit": "Documentation-only successor; CI attestation refers to testedCodeSha above."
+}
