@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-Phase 7 was explicitly authorized by Víctor on 2026-10-08 after the Phase 6 learner/desktop closure (cccafb47a8921a84a758568b0674ed7f83c29c95). Engineering implementation and deterministic acceptance/eval evidence are available. Browser acceptance, actual structured inference on the desktop and the Phase 7 learner/human checkpoint remain pending. Phase 8 is not started. Inherited native/remote release gates are not cleared.
+Phase 7 was explicitly authorized by Víctor on 2026-10-08 after the Phase 6 learner/desktop closure (cccafb47a8921a84a758568b0674ed7f83c29c95). Phase 7 engineering implementation, deterministic acceptance/evals and browser acceptance are complete. Actual structured inference remains advisory and is batched into the M2 Desktop Validation Bundle. Phase learning feeds the consolidated M2 Teach-Back under the approved 2026-10-08 governance. Phase 8 may now proceed inside authorized M2. Inherited native/remote release gates are not cleared.
 
 ## Behavior
 
@@ -16,7 +16,7 @@ A separate strict RiskProposal contract supplies observations, hypotheses, risks
 
 ## Tests and evals
 
-35 unit checks passed, including strict/nested schema behavior, provider format and budget, refusal, truncation, forged citation, Unicode-escaped unsafe markup, and a semantically false response whose state and citation are valid. Integration passed 63/64 with the inherited native-only case skipped. The updated browser test covers outage recovery, local accept/edit/reject, safe literal human edits, no incident transition and revision invalidation, but its execution is blocked by unavailable Chromium: both default 156 and historical 141 archive downloads were invalid. No browser or accessibility pass is claimed.
+35 unit checks passed, including strict/nested schema behavior, provider format and budget, refusal, truncation, forged citation, Unicode-escaped unsafe markup, and a semantically false response whose state and citation are valid. Integration passed 63/64 with the inherited native-only case skipped. The updated browser test covers outage recovery, local accept/edit/reject, safe literal human edits, no incident transition and revision invalidation, and passed with zero retries using Chromium 143.0.7499.0 from a temporary ignored runtime after default CDN archives were unavailable. Axe reported zero violations for the tested flow, not universal conformance. The fallback changes browser launch configuration only; it does not disable web security or product checks.
 
 Versioned dataset: tests/fixtures/phase7-eval-v1.json (13 deterministic model-like outputs). Versioned oracle: bounded-literal-oracle-v1, in the dataset. Eight development and five held-out cases are reported separately; held-out outputs are not provider prompt examples. This split is consumed by this run and is not fresh evidence for future prompt tuning. Oracles are bounded literal required/forbidden checks, not a general truth judge. No oracle labels are sent to the live provider.
 
@@ -24,9 +24,9 @@ Evidence/phase7-eval-report.json preserves raw and validated outputs. All 13 exp
 
 ## Decision and remaining work
 
-Keep direct timeline reading as the Phase 6 accepted baseline for brief timelines. Phase 7 contracts improve integration predictability and enforce identity/state checks, but factual claims with valid citations remain unverified. Actual desktop generation and one grouped review are required before model quality acceptance. Do not fix a false claim by weakening authorization, state, revision or release gates.
+Keep direct timeline reading as the Phase 6 accepted baseline for brief timelines. Phase 7 contracts improve integration predictability and enforce identity/state checks, but factual claims with valid citations remain unverified. Actual desktop generation and material quality samples are accumulated for M2 acceptance. Do not fix a false claim by weakening authorization, state, revision or release gates.
 
-See phase7-desktop-validation.md for one bounded desktop batch and phase7-learning.md for the six-part checkpoint. No new native database role, embedding/retrieval system, model tools, automatic mutation or hosted deployment is included.
+See phase7-desktop-validation.md for one bounded desktop batch and phase7-learning.md for accumulated learning materials. No new native database role, embedding/retrieval system, model tools, automatic mutation or hosted deployment is included.
 
 ## Sources
 

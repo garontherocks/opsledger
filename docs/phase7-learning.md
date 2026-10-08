@@ -1,6 +1,6 @@
-# Phase 7 learner checkpoint — pending
+# Phase 7 accumulated learning material
 
-Do not answer for Víctor or infer understanding from generated code. Complete only after the new Phase 7 engineering evidence is reviewed. Phase 6 exercises are not repeated.
+Do not answer for Víctor or infer understanding from generated code. These materials feed the consolidated M2 Teach-Back; no Phase 7 human checkpoint blocks progression. Phase 6 exercises are not repeated.
 
 ## Five practical questions
 
@@ -28,4 +28,4 @@ A JSON object has the correct state and event ID but its summary says the databa
 
 ## Evidence and human judgment
 
-Review phase7-eval-report.json and any actual desktop structured pilot separately. Record learner answers and grouped accept/edit/reject decisions only when provided. No completion or production readiness is claimed while this checkpoint is pending.
+Review phase7-eval-report.json and any actual desktop structured pilot separately. Record learner answers and grouped accept/edit/reject decisions only when provided. Human understanding remains pending at the M2 milestone gate; this is distinct from phase engineering completion.

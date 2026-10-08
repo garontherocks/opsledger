@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-08T17:15:00.238554+00:00",
+  "at": "2026-10-08T17:36:20.051009+00:00",
   "lint": "passed",
   "typecheck": "passed",
   "build": "passed",
@@ -14,12 +14,15 @@
     "skipReason": "existing native PostgreSQL row-lock test; PGlite backend"
   },
   "browser": {
-    "status": "blocked",
-    "reason": "Chromium 156 archive invalid; fallback Chromium 141 archive also invalid; executable unavailable, browser test did not execute",
-    "acceptanceClaim": false
+    "status": "passed",
+    "tests": 1,
+    "retries": 0,
+    "runtime": "Chromium 143.0.7499.0; temporary @sparticuz/chromium 143.0.4 under ignored .local, default Playwright CDN archive unavailable",
+    "configuration": "same test, temporary executable/single-process launch configuration; application security controls unchanged",
+    "acceptanceClaim": true
   },
   "liveStructuredInference": {
-    "status": "pending desktop",
+    "status": "deferred to M2 Desktop Validation Bundle",
     "command": "npm run ai:structured-pilot"
   },
   "newDependencies": false,
