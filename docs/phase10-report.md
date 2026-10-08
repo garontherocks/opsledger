@@ -13,3 +13,7 @@ Validation: clean install/lint/types/build and dated zero-known audit pass. Nati
 Learning and material semantic review are consolidated at M2. Stop before Phase 11. Do not promote model quality or proceed M3 from a fixture score alone.
 
 Sources checked 2026-10-08: https://www.promptfoo.dev/docs/faq/ ; https://www.promptfoo.dev/docs/configuration/telemetry/ ; https://www.promptfoo.dev/docs/providers/custom-api/ ; https://github.com/advisories/GHSA-86w9-cpqp-85rv ; https://github.com/advisories/GHSA-c475-qrg2-pj4r . Actual installed-source inspection/evidence takes precedence over assumed opt-out behavior.
+
+## M2 human gate update — 2026-10-08
+
+Desktop execution, critical-case sampled human review and consolidated Teach-Back completed at handoff 4e10225. See [actual checkpoint](m2-human-checkpoint.md). Semantic failures remain: irrelevant Spanish next step, unclear v1 conflict treatment and malicious summary contamination despite reported state. V2 conflict abstention is accepted as a sample, not automatic prompt promotion. Historical pending-human statements above are superseded by this actual record. Phase 9's agreed quality threshold remains outstanding because targets explicitly remain provisional; [formal acceptance check](m2-acceptance-check.md) records that sole M2 decision. No Phase 11/M3 begins.

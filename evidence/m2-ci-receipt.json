@@ -72,8 +72,9 @@
   ],
   "acceptance": {
     "phase6": "human-reviewed closed",
-    "M2": "desktop, material semantic/value calibration and consolidated learner checkpoint pending",
+    "M2": "desktop, sampled semantic review and Teach-Back completed; formal acceptance pending agreed Phase 9 quality threshold/policy",
     "M3": "not authorized",
-    "phase11Started": false
+    "phase11Started": false,
+    "humanEvidence": "m2-human-desktop-validation.json"
   }
 }

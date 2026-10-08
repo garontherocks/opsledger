@@ -17,3 +17,7 @@ A disabled-telemetry event attempted remote egress and was denied before network
 Source/prompt/context hashes correlate evidence without default raw-content logging. Desktop reports use synthetic content, remain ignored and redacted; pattern redaction is incomplete. Provisional semantic/answerability/retrieval thresholds require sampled human calibration and live desktop evidence. No model/prompt is automatically promoted.
 
 Evidence: phase7-eval-report.json; phase8-boundaries.json / phase8-retrieval-eval.json; phase9-evals.json; phase10-feedback.json / phase10-eval-report.json / phase10-telemetry-denial.json / phase10-checks.json; m2-ci-receipt.json. Human quality and product-value acceptance remain the M2 milestone gate.
+
+## Actual milestone outcome — 2026-10-08
+
+The desktop and human checkpoint is completed at handoff 4e10225. See [actual human record](m2-human-checkpoint.md) and [acceptance check](m2-acceptance-check.md). Original procedure/evidence limitations above remain historical; do not rerun the bundle or invent judgments. Three literal failures and all eight Accept/Edit/Reject judgments remain recorded. Threshold agreement is still provisional; no prompt/model is automatically promoted and M3 remains unauthorized.

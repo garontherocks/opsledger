@@ -1,6 +1,6 @@
 # Consolidated M2 Teach-Back
 
-Phase 6 understanding is already demonstrated. Do not repeat that checkpoint or assume learner answers. One milestone checkpoint remains:
+Phase 6 understanding is already demonstrated. Do not repeat that checkpoint or assume learner answers. Checkpoint completed 2026-10-08. The following original prompts remain for reference; actual supplied answers are in [human checkpoint](m2-human-checkpoint.md):
 
 1. What can JSON/state/ID/quote validation guarantee, and why can a valid cited answer still be false?
 2. Why do embedding digest, dimensions and chunk/index version define a vector space? What changes require reindexing?
@@ -17,4 +17,4 @@ Educational failures: [contract-valid falsehood](../evidence/phase7-eval-report.
 
 Senior/Staff scenarios: defend boundaries when asked to auto-close incidents from convincing cited text; design a paired fresh-held-out/repeated experiment when a benchmark-winning model worsens Spanish retrieval or abstention.
 
-Use [selected samples](m2-human-review-samples.md). Understanding is pending until the learner supplies explanations. Stop before M3.
+Use [selected samples](m2-human-review-samples.md). The learner supplied all eight answers, both architecture flows and both Senior/Staff scenarios; understanding checkpoint completed. Stop before M3.

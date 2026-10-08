@@ -95,3 +95,7 @@ AI/embeddings default off independently. Local inference is read-only and untrus
 Phase 8 adds bounded Markdown chunks, editor index/purge, pinned 768-dimensional embeddings and publication/workspace-scoped exact semantic search. Phase 9 adds quoted source-grounded answers with current-source revalidation and explicit abstention. Phase 10 adds optional signed append-only metadata feedback and local deterministic adversarial regression. See each phase report and evidence; fixture scores do not establish factual model quality.
 
 For a new lab, configure EMBEDDINGS_ENABLED, EMBEDDING_MODEL and full EMBEDDING_DIGEST separately from the generation model. AI_ENABLED and embeddings remain off by default. Existing labs follow the single M2 desktop bundle instead of repeating seeding or CI tests.
+
+## Actual M2 human checkpoint — 2026-10-08
+
+Desktop bundle and consolidated learning/review completed on handoff 4e10225: 36 generations, zero execution errors, three literal failures, small-corpus Recall@5/MRR 1.0, mean latency approximately 3.79 s. See [actual judgments and answers](docs/m2-human-checkpoint.md) and [formal acceptance assessment](docs/m2-acceptance-check.md). These supersede earlier pending-human notices. AI remains optional/unverified and direct reading remains the short-timeline baseline. Formal M2 acceptance awaits the agreed Phase 9 quality policy, not another desktop/checkpoint loop. M3 is not authorized.

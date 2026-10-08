@@ -44,3 +44,7 @@ Output: evidence/desktop-private/m2-validation.json. Failures/partial stages/raw
 Start API/worker with your existing commands. As editor, index one published runbook; inspect semantic search, copilot sources/version/spans/unverified label and optional feedback once. Inspect a normal incident. AI must not change state. Optional off flags preserve keyword/timeline fallback.
 
 Share only synthetic report and relevant startup results, never .env, credentials, dumps, weights or private content. Review [samples](m2-human-review-samples.md) and complete [one Teach-Back](m2-teach-back.md). Stop before Phase 11.
+
+## Actual milestone outcome — 2026-10-08
+
+The desktop and human checkpoint is completed at handoff 4e10225. See [actual human record](m2-human-checkpoint.md) and [acceptance check](m2-acceptance-check.md). Original procedure/evidence limitations above remain historical; do not rerun the bundle or invent judgments. Three literal failures and all eight Accept/Edit/Reject judgments remain recorded. Threshold agreement is still provisional; no prompt/model is automatically promoted and M3 remains unauthorized.
