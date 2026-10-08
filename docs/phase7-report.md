@@ -1,5 +1,8 @@
 # Phase 7 — Structured outputs and eval foundations
 
+Historical phase-specific observations are preserved below. Current M2 is formally accepted under [the agreed policy](m2-quality-acceptance-policy.md) and merged into main through PR #1. Earlier pending native/desktop/human observations are superseded by [consolidated acceptance](m2-acceptance-check.md), actual human evidence and post-merge CI run 37848330566. Operational production debt remains unproven; M3 is not authorized.
+
+
 ## Status and scope
 
 Phase 7 was explicitly authorized by Víctor on 2026-10-08 after the Phase 6 learner/desktop closure (cccafb47a8921a84a758568b0674ed7f83c29c95). Phase 7 engineering implementation, deterministic acceptance/evals and browser acceptance are complete. Actual structured inference remains advisory and is batched into the M2 Desktop Validation Bundle. Phase learning feeds the consolidated M2 Teach-Back under the approved 2026-10-08 governance. Phase 8 may now proceed inside authorized M2. Inherited native/remote release gates are not cleared.

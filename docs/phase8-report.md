@@ -1,5 +1,8 @@
 # Phase 8 — Ingestion and semantic retrieval
 
+Historical phase-specific observations are preserved below. Current M2 is formally accepted under [the agreed policy](m2-quality-acceptance-policy.md) and merged into main through PR #1. Earlier pending native/desktop/human observations are superseded by [consolidated acceptance](m2-acceptance-check.md), actual human evidence and post-merge CI run 37848330566. Operational production debt remains unproven; M3 is not authorized.
+
+
 Engineering scope complete: optional ranked semantic runbook search alongside keyword search; no generation or operational tools. Direct local embedding capability and PostgreSQL pgvector exact cosine search avoid a separate vector service or premature ANN/reranker. Explicit editor reindex/purge controls are independent of query generation.
 
 Plain runbook Markdown is treated as inert source text, not rendered HTML or executable instructions. The deterministic chunker bounds 10,000-character immutable bodies to at most 16 overlapping chunks (1,000 characters with 120 overlap), preserving UTF-16 body offsets and surrogate pairs. This is not a PDF/URL ingestion service. Chunk metadata includes source/version/content hash, model/digest, fixed 768 dimensions and chunk-v1-768 index version. No credentials or model weights are stored.

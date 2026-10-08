@@ -1,6 +1,6 @@
 # OpsLedger — M2 AI Product
 
-Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. Optional pinned local structured assistance, semantic retrieval and grounded runbook answers. Branch: feat/m2-ai-regression. No merge or deployment. M2 desktop/quality/understanding acceptance is pending; no Phase 11.
+Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. Optional pinned local structured assistance, semantic retrieval and grounded runbook answers. Current baseline: `main`. M2 was formally accepted for its optional, unverified, non-operational lab scope and merged through PR #1 at `8fd90c6e6521e5c6c4083141f41f9bc2e85e68f9`. No production deployment or Phase 11/M3 authorization is implied.
 
 ## Native local startup
 
@@ -20,7 +20,7 @@ Run npm scripts: lint, typecheck, build, test:unit and test:integration; run `np
 
 For browser acceptance run `npx playwright install --with-deps chromium`, `npm run build`, `npm run test:e2e`.
 
-Integration and E2E default to separate transient PGlite test databases. Set TEST_DATABASE_URL to use a fresh disposable native database on localhost with a name ending in _test. Each lane needs its own fresh database: seeding deliberately does not reset existing passwords. Never use a product database. CI provides independently fresh PostgreSQL 18.6 API and browser lanes.
+Integration and E2E default to separate transient PGlite test databases. Set TEST_DATABASE_URL to use a fresh disposable native database on localhost with a name ending in _test. The native harness owns a generated database per fixture, requiring a disposable CREATEDB test role, and leaves the supplied database intact. Seeding deliberately does not reset existing passwords. Never use a product database. CI provides independently fresh PostgreSQL 18.6 API and browser lanes.
 
 Optional harness: `LAB_MODE=true npm run db:lab` hosts persistent PGlite on port 55432. Explicitly set DATABASE_URL to postgresql://postgres@127.0.0.1:55432/postgres, then migrate/seed/build/start. This is test tooling, not native PostgreSQL deployment. The application never silently selects it.
 
@@ -28,7 +28,7 @@ Generate OpenAPI with `node --experimental-strip-types scripts/openapi.ts`. See 
 
 To upgrade a Phase 1 database, run migrations and the synthetic seed again using the retained credentials; incident rows and previous migration checksums are preserved. For lifecycle UI use north-lead@example.test with that same local synthetic password. Reporters can comment, responders can triage/assign/investigate, and only leads can resolve/close/reopen. Admin/editor membership does not imply lead privileges. Refresh after a stale-revision conflict; actions are never silently retried.
 
-Remote CI/native PostgreSQL acceptance remains pending. The native test uses a controlled row lock and checks two waiting backend PIDs; the default PGlite run explicitly skips it. Phase 3 local knowledge/search/audit acceptance is recorded; Phase 4 local async/file acceptance is recorded; Phase 5 local quality baseline is recorded; full release/M1 remains gated. Phase 6 local assistance is implemented; see the desktop closure below.
+Native PostgreSQL integration and remote CI passed, including [post-merge main run 37848330566](https://github.com/garontherocks/opsledger/actions/runs/37848330566). The native test uses a controlled row lock and checks two waiting backend PIDs; the default PGlite run explicitly skips it. Phase 3 local knowledge/search/audit acceptance is recorded; Phase 4 local async/file acceptance is recorded; Phase 5 local quality baseline is recorded; full release/M1 remains gated. Phase 6 local assistance is implemented; see the desktop closure below.
 
 ## Knowledge and audit
 
@@ -64,7 +64,7 @@ READ_ONLY=true pauses all business API writes and presents maintenance controls;
 
 `npm run quality:baseline` (without TEST_DATABASE_URL) runs a disposable same-version quiesced PGlite DB/files restore and a serial conventional route benchmark. No live/user backup is taken or delivered. See phase5-architecture.md for conditions and native-backup gaps. The browser suite adds axe checks on selected states, keyboard focus/mobile recovery, one reviewed Linux login visual baseline, server-flag presentation and an authenticated v1 recording. Match the browser environment before reviewing a pixel comparison. Automated passes do not establish full WCAG conformance.
 
-New evidence: phase5-accessibility.json, phase5-restore.json, phase5-performance.json, phase5-v1-demo.webm and phase5 final check logs. Native PostgreSQL 18.6, independent workers/roles, actual volume/crash recovery and remote CI remain pending.
+New evidence: phase5-accessibility.json, phase5-restore.json, phase5-performance.json, phase5-v1-demo.webm and phase5 final check logs. Native PostgreSQL 18.6 integration and remote CI passed. Independent production workers/roles, actual volume/crash recovery and native live backup remain unproven.
 
 ## Local incident draft assistance (Phase 6)
 

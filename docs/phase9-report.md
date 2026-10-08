@@ -1,5 +1,8 @@
 # Phase 9 — Grounded runbook answers
 
+Historical phase-specific observations are preserved below. Current M2 is formally accepted under [the agreed policy](m2-quality-acceptance-policy.md) and merged into main through PR #1. Earlier pending native/desktop/human observations are superseded by [consolidated acceptance](m2-acceptance-check.md), actual human evidence and post-merge CI run 37848330566. Operational production debt remains unproven; M3 is not authorized.
+
+
 Engineering scope complete: optional lab copilot assembles at most three authorized current chunks and proposes cited claims/next steps. No operational action, tool interface, agent loop or incident mutation is introduced. Keyword search remains the baseline/fallback. Hybrid/reranking is not adopted without a measured need.
 
 A strict JSON contract requires source chunk IDs and exact 10–300-character quotations for every claim/proposal. Sources carry immutable runbook version/content hash and UTF-16 body spans. The application rejects forged IDs, fabricated quotations, unexpected fields/tools, malformed/truncated/unsafe output, invalid refusal/abstention and uncited drafts. The 12,000-character prompt and existing provider response/deadline budgets remain. Context is redacted for configured secret and credential patterns; returned context excerpts can therefore be sanitized while their hash/version/span refer to the original source. Redaction is defense in depth, not a promise to detect arbitrary sensitive text.

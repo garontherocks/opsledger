@@ -1,5 +1,8 @@
 # Phase 10 — AI/RAG regression and threat gates
 
+Historical phase-specific observations are preserved below. Current M2 is formally accepted under [the agreed policy](m2-quality-acceptance-policy.md) and merged into main through PR #1. Earlier pending native/desktop/human observations are superseded by [consolidated acceptance](m2-acceptance-check.md), actual human evidence and post-merge CI run 37848330566. Operational production debt remains unproven; M3 is not authorized.
+
+
 Implementation: optional metadata-only quality feedback for server-issued RAG runs, signed caller/workspace/expiry receipts, append-only single-decision persistence, no incident mutation. Existing independent AI/embedding disable flags preserve keyword/timeline fallback. Versioned strict-summary, retrieval and RAG adversarial fixtures are exercised through a local Promptfoo target with a local JavaScript boundary grader and handwritten attacker cases. No model is a safety authority; no remote red-team generation, LLM judge, agent loop, shell tool, model write, paid API or Langfuse deployment is introduced.
 
 The deterministic lane has 19 cases × 2 labeled boundary configurations × 3 repeats = 114 evaluations. All expected boundary outcomes match; zero unexpected egress remains after explicit telemetry suppression. Repeated fixtures are regression evidence, not inference variability, and fixture targets do not react to prompt versions. Contract-valid semantic falsehoods remain visible as failures of bounded literal checks. No prompt-quality improvement or calibrated semantic threshold is claimed.
