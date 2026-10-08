@@ -1,0 +1,67 @@
+{
+  "phase": 12,
+  "date": "2026-10-08",
+  "testedCodeSha": "6e4be7923e177a42799da0c691d267d985356b4a",
+  "baseMerge": "b0b785a922288a831fe28266c4d2bb27462b6e5a",
+  "runId": 37853758279,
+  "url": "https://github.com/garontherocks/opsledger/actions/runs/37853758279",
+  "jobs": [
+    {
+      "id": 113572888570,
+      "name": "acceptance (api)",
+      "conclusion": "success"
+    },
+    {
+      "id": 113572888399,
+      "name": "acceptance (browser)",
+      "conclusion": "success"
+    }
+  ],
+  "observed": {
+    "lint": "pass",
+    "typecheck": "pass",
+    "build": "pass",
+    "auditModerate": "pass",
+    "unit": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0
+    },
+    "mcpProcessAndProtocol": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "eras": [
+        "2026-07-28",
+        "2025-11-25"
+      ],
+      "scope": "approved synthetic snapshots; parity of all 3 tools and 3 resources; both-era cooperative timeout/cancellation"
+    },
+    "agentPolicyFixtures": {
+      "passed": 8,
+      "failed": 0
+    },
+    "priorAiRegression": {
+      "passed": 114,
+      "unexpectedEgress": 0
+    },
+    "nativeIntegration": {
+      "passed": 82,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browserFlows": {
+      "passed": 9
+    },
+    "localRestoreAndPreAiBenchmark": "pass"
+  },
+  "limitations": [
+    "No private OpsLedger data adapter or operational authority.",
+    "SDK/process tests do not establish live model selection quality or product value.",
+    "JS egress guard is not an OS/native/child-process sandbox.",
+    "Cooperative cancellation is not side-effect rollback.",
+    "Local restore benchmark is not a production/live backup attestation.",
+    "Main protection unavailable under current private-repository plan."
+  ],
+  "closure": "Documentation/evidence-only successor; this receipt attests testedCodeSha, not future commits."
+}
