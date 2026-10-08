@@ -1,10 +1,11 @@
+import {RagPanel} from './RagPanel.tsx';
 import {SemanticPanel} from './SemanticPanel.tsx';
 import {useEffect,useState,type FormEvent} from 'react';
 import type {RunbookDTO} from '../../../packages/contracts/src/knowledge.ts';
 import {api} from './api.ts';
 type Page={items:RunbookDTO[],nextCursor:string|null};
 type AuditPage={items:{seq:string,action:string,actorId:string,revision:number}[],nextBefore:string|null};
-export function KnowledgePanel({workspace,role,services,readOnly=false,semanticEnabled=false}:{workspace:string,role:string,readOnly?:boolean,semanticEnabled?:boolean,services:{id:string,name:string}[]}){
+export function KnowledgePanel({workspace,role,services,readOnly=false,semanticEnabled=false,aiEnabled=false}:{workspace:string,role:string,readOnly?:boolean,semanticEnabled?:boolean,aiEnabled?:boolean,services:{id:string,name:string}[]}){
  const writer=['editor','admin'].includes(role),canWrite=writer&&!readOnly;
  const [query,setQuery]=useState(''),[status,setStatus]=useState('published'),[sort,setSort]=useState('title'),[category,setCategory]=useState(''),[service,setService]=useState('');
  const [page,setPage]=useState<Page>({items:[],nextCursor:null}),[detail,setDetail]=useState<RunbookDTO|null>(null),[events,setEvents]=useState<AuditPage|null>(null);
@@ -31,7 +32,7 @@ export function KnowledgePanel({workspace,role,services,readOnly=false,semanticE
   if(!detail)return;
   await execute(async()=>{setDetail(await api<RunbookDTO>(base+'/runbooks/'+detail.id+'/versions/'+detail.number+'/actions',{method:'POST',body:JSON.stringify({action,expectedRevision:detail.revision})}));const path=searchPath();setPage(await api<Page>(path));setResultPath(path);});
  }
- return <section aria-label="Knowledge"><h2>Runbooks</h2>{semanticEnabled&&<SemanticPanel key={workspace} workspace={workspace} canWrite={canWrite}/>}{error&&<p role="alert">{error}</p>}{busy&&<p role="status">Loading knowledge…</p>}
+ return <section aria-label="Knowledge"><h2>Runbooks</h2>{semanticEnabled&&aiEnabled&&<RagPanel key={workspace} workspace={workspace}/>}{semanticEnabled&&<SemanticPanel key={workspace} workspace={workspace} canWrite={canWrite}/>}{error&&<p role="alert">{error}</p>}{busy&&<p role="status">Loading knowledge…</p>}
   <form onSubmit={search}><label>Keywords<input value={query} onChange={e=>setQuery(e.target.value)} maxLength={200}/></label>
    <label htmlFor="knowledge-sort">Sort runbooks</label><select id="knowledge-sort" value={sort} onChange={e=>setSort(e.target.value)}><option value="title">Title</option><option value="newest">Newest</option></select>
    <label htmlFor="knowledge-category">Category filter</label><select id="knowledge-category" value={category} onChange={e=>setCategory(e.target.value)}><option value="">All categories</option><option>operations</option><option>recovery</option><option>security</option></select>

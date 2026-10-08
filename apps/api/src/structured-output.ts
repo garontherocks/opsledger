@@ -2,7 +2,7 @@ import {SummaryContent,RiskProposal,type SummaryContentDTO} from '../../../packa
 import {HttpError} from './errors.ts';
 // Defense in depth for unsupported markup/active URL content. React still renders plain text.
 export function unsafeText(text:string){return /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]|<\/?[a-z][^>]*>|(?:javascript|data|vbscript)\s*:/i.test(text);}
-function parse(raw:string,truncated:boolean){
+export function parseStructured(raw:string,truncated:boolean){
  if(truncated)throw new HttpError(503,'model_truncated','Incomplete local draft');
  if(raw.length>8000)throw new HttpError(503,'model_output_budget','Local draft too large');
  if(unsafeText(raw))throw new HttpError(503,'model_unsafe','Unsupported local content');
@@ -12,7 +12,7 @@ function parse(raw:string,truncated:boolean){
  return parsed;
 }
 export function validateSummary(raw:string,context:{state:string,eventIds:string[]},truncated=false){
- const parsed=SummaryContent.safeParse(parse(raw,truncated));
+ const parsed=SummaryContent.safeParse(parseStructured(raw,truncated));
  if(!parsed.success)throw new HttpError(503,'model_schema_invalid','Invalid local contract');
  const content=parsed.data;
  if(content.state!==context.state||content.timeline.some(item=>!context.eventIds.includes(item.eventId))||new Set(content.timeline.map(item=>item.eventId)).size!==content.timeline.length)throw new HttpError(503,'model_grounding_invalid','Invalid local state or citation');
@@ -20,7 +20,7 @@ export function validateSummary(raw:string,context:{state:string,eventIds:string
  return content;
 }
 export function validateRisk(raw:string,truncated=false){
- const parsed=RiskProposal.safeParse(parse(raw,truncated));
+ const parsed=RiskProposal.safeParse(parseStructured(raw,truncated));
  if(!parsed.success)throw new HttpError(503,'model_schema_invalid','Invalid local risk contract');
  if(parsed.data.status!=='draft'&&(parsed.data.hypotheses.length||parsed.data.proposedTests.length))throw new HttpError(503,'model_schema_invalid','Invalid refusal contract');
  return parsed.data;

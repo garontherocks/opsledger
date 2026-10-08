@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-08T17:51:19.648526+00:00",
+  "lint": "passed",
+  "types": "passed",
+  "build": "passed",
+  "unitPassed": 36,
+  "integration": {
+    "total": 81,
+    "passed": 80,
+    "skipped": 1
+  },
+  "browser": {
+    "passed": 1,
+    "retries": 0,
+    "provider": "deterministic fixture"
+  },
+  "qualityGate": "advisory, uncalibrated; material human review batched at M2",
+  "phase10Started": false
+}

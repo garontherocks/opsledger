@@ -1,3 +1,5 @@
+import {Rag} from './rag.ts';
+import {RagRequest,RagDraft} from '../../../packages/contracts/src/rag.ts';
 import {Retrieval} from './retrieval.ts';
 import {OllamaEmbeddings,type EmbeddingProvider} from './embeddings.ts';
 import {SemanticQuery,SemanticResult,IndexRequest} from '../../../packages/contracts/src/retrieval.ts';
@@ -25,6 +27,7 @@ import {ExportRequest,UploadRequest,FileParams,OperationParams,NotificationParam
 
 export async function buildApp(store:Store,settings:Settings,serveWeb=false,operations?:AsyncOps,provider?:TextProvider,embeddingProvider?:EmbeddingProvider){
   const retrieval=new Retrieval(store.pool,settings.AUTH_SECRET,embeddingProvider??new OllamaEmbeddings(settings));
+  const rag=new Rag(retrieval,settings,provider??new OllamaProvider(settings));
   const assistance=new Assistance(store.pool,settings,provider??new OllamaProvider(settings));
   const auth=createAuth(store.pool,settings);
   const knowledge=new Knowledge(store.pool,settings.AUTH_SECRET);
@@ -130,6 +133,7 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false,oper
     const user=await identity(request);return knowledge.search(user.id,request.params.workspaceId,request.query);
   });
   function embeddingsEnabled(){if(settings.EMBEDDINGS_ENABLED!=='true')throw new HttpError(503,'feature_disabled','Semantic retrieval disabled');}
+  app.post('/api/v1/workspaces/:workspaceId/runbooks/answer',{config:{rateLimit:{max:3,timeWindow:'1 minute'}},schema:{params:Params,body:RagRequest,response:{200:RagDraft}}},async request=>{embeddingsEnabled();const user=await identity(request);return rag.answer(user.id,request.params.workspaceId,request.body,request.id);});
   app.get('/api/v1/workspaces/:workspaceId/runbooks/semantic',{config:{rateLimit:{max:10,timeWindow:'1 minute'}},schema:{params:Params,querystring:SemanticQuery,response:{200:SemanticResult}}},async request=>{embeddingsEnabled();const user=await identity(request);return {items:await retrieval.search(user.id,request.params.workspaceId,request.query),mode:'exact-cosine' as const,qualityVerified:false as const};});
   app.post('/api/v1/workspaces/:workspaceId/runbooks/:runbookId/index',{schema:{params:RunbookParams,body:IndexRequest}},async request=>{embeddingsEnabled();const user=await identity(request);return retrieval.index(user.id,request.params.workspaceId,request.params.runbookId,request.body.expectedRevision);});
   app.post('/api/v1/workspaces/:workspaceId/runbooks/:runbookId/index/purge',{schema:{params:RunbookParams,body:IndexRequest}},async request=>{embeddingsEnabled();const user=await identity(request);return retrieval.purge(user.id,request.params.workspaceId,request.params.runbookId,request.body.expectedRevision);});
