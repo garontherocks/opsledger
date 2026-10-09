@@ -4,6 +4,7 @@ test('lead moves incident through lifecycle; stale second tab must refresh',asyn
  const actions:unknown[]=[];
  page.on('request',request=>{if(request.method()==='POST'&&request.url().endsWith('/actions')){const data=request.postDataJSON();actions.push({kind:'request',action:data.action,expectedRevision:data.expectedRevision,reason:data.reason??null});} }finally{
   actions.push({kind:'final-ui',detail:await page.getByRole('article',{name:'Incident detail'}).innerText().catch(()=>null),alerts:await page.getByRole('alert').allTextContents()});
+  console.log('LIFECYCLE_DIAGNOSTIC '+JSON.stringify({syntheticOnly:true,actions}));
   await mkdir('evidence',{recursive:true});await writeFile('evidence/m3-lifecycle-diagnostic-'+testInfo.repeatEachIndex+'.json',JSON.stringify({syntheticOnly:true,actions},null,2)+'\n');
  }
 });
