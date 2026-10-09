@@ -26,8 +26,19 @@ import {Assistance} from './assistance.ts';
 import {OllamaProvider,type TextProvider} from './local-model.ts';
 import type {AsyncOps} from './async-ops.ts';
 import {ExportRequest,UploadRequest,FileParams,OperationParams,NotificationParams,BoundedPage,OperationList} from '../../../packages/contracts/src/async.ts';
+import {readFile} from 'node:fs/promises';
+import {QaDocument} from './qa-context.ts';
+import {QaStore,QaMemoryRequest} from './qa-state.ts';
+import {QaWorkflow,QaDecision,QaConsume,type QaRunner} from './qa-workflow.ts';
+import {fixedQaRunner} from '../../../scripts/qa-fixed-runner.ts';
 
-export async function buildApp(store:Store,settings:Settings,serveWeb=false,operations?:AsyncOps,provider?:TextProvider,embeddingProvider?:EmbeddingProvider){
+export async function buildApp(store:Store,settings:Settings,serveWeb=false,operations?:AsyncOps,provider?:TextProvider,embeddingProvider?:EmbeddingProvider,qaRunner?:QaRunner){
+  let qa:QaWorkflow|undefined;
+  if(settings.QA_LAB_ENABLED==='true'){
+    const corpus=JSON.parse(await readFile(new URL('../../../tests/fixtures/phase14-corpus.json',import.meta.url),'utf8')) as {documents:unknown[]};
+    const sources=z.array(QaDocument).parse(corpus.documents).map(d=>({id:d.id,path:d.path,sha:d.sha,digest:d.digest}));
+    qa=new QaWorkflow(new QaStore(store.pool,settings.AUTH_SECRET,settings.QA_TARGET_SHA!,sources),qaRunner??fixedQaRunner);
+  }
   const retrieval=new Retrieval(store.pool,settings.AUTH_SECRET,embeddingProvider??new OllamaEmbeddings(settings));
   const feedback=new Feedback(store.pool,settings.AUTH_SECRET);
   const rag=new Rag(retrieval,settings,provider??new OllamaProvider(settings));
@@ -90,7 +101,17 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false,oper
     const session=await auth.api.getSession({headers:fromNodeHeaders(request.headers)});
     if(!session)throw new HttpError(401,'unauthenticated','Sign in required');identities.set(request,session.user.id);return session.user;
   }
-  app.get('/api/v1/me',{schema:{response:{200:z.object({user:z.object({id:z.string(),name:z.string(),email:z.string()}),workspaces:z.array(z.object({id:z.uuid(),name:z.string(),role:z.string()})),features:z.object({readOnly:z.boolean(),knowledge:z.boolean(),async:z.boolean(),ai:z.boolean(),embeddings:z.boolean()})})}}},async request=>{const user=await identity(request);return {user:{id:user.id,name:user.name,email:user.email},workspaces:await store.me(user.id),features:{readOnly:settings.READ_ONLY==='true',knowledge:settings.KNOWLEDGE_ENABLED==='true',async:settings.ASYNC_ENABLED==='true',ai:settings.AI_ENABLED==='true',embeddings:settings.EMBEDDINGS_ENABLED==='true'}};});
+  app.get('/api/v1/me',{schema:{response:{200:z.object({user:z.object({id:z.string(),name:z.string(),email:z.string()}),workspaces:z.array(z.object({id:z.uuid(),name:z.string(),role:z.string()})),features:z.object({readOnly:z.boolean(),knowledge:z.boolean(),async:z.boolean(),ai:z.boolean(),embeddings:z.boolean(),qaLab:z.boolean()})})}}},async request=>{const user=await identity(request);return {user:{id:user.id,name:user.name,email:user.email},workspaces:await store.me(user.id),features:{readOnly:settings.READ_ONLY==='true',knowledge:settings.KNOWLEDGE_ENABLED==='true',async:settings.ASYNC_ENABLED==='true',ai:settings.AI_ENABLED==='true',embeddings:settings.EMBEDDINGS_ENABLED==='true',qaLab:!!qa}};});
+  if(qa){
+    const RunParams=z.strictObject({workspaceId:z.uuid(),runId:z.uuid()});
+    app.post('/api/v1/workspaces/:workspaceId/qa-runs',{schema:{params:Params,body:z.strictObject({})}},async request=>{const user=await identity(request);await store.member(user.id,request.params.workspaceId);return qa!.store.create({workspaceId:request.params.workspaceId,userId:user.id});});
+    app.get('/api/v1/workspaces/:workspaceId/qa-runs/:runId',{schema:{params:RunParams}},async request=>{const user=await identity(request);return qa!.read({workspaceId:request.params.workspaceId,userId:user.id},request.params.runId);});
+    app.post('/api/v1/workspaces/:workspaceId/qa-runs/:runId/checkpoint',{schema:{params:RunParams,body:z.strictObject({key:z.uuid(),expectedRevision:z.number().int().positive()})}},async request=>{const user=await identity(request);return qa!.store.checkpoint({workspaceId:request.params.workspaceId,userId:user.id},request.params.runId,request.body.expectedRevision,request.body.key);});
+    app.post('/api/v1/workspaces/:workspaceId/qa-runs/:runId/checks',{config:{rateLimit:{max:3,timeWindow:'1 minute'}},schema:{params:RunParams,body:z.strictObject({})}},async request=>{const user=await identity(request);await store.member(user.id,request.params.workspaceId);return qa!.checks({workspaceId:request.params.workspaceId,userId:user.id},request.params.runId);});
+    app.post('/api/v1/workspaces/:workspaceId/qa-runs/:runId/decision',{schema:{params:RunParams,body:QaDecision}},async request=>{const user=await identity(request);return qa!.decide({workspaceId:request.params.workspaceId,userId:user.id},request.params.runId,request.body);});
+    app.post('/api/v1/workspaces/:workspaceId/qa-runs/:runId/memory',{schema:{params:RunParams,body:QaMemoryRequest}},async request=>{const user=await identity(request);return qa!.store.remember({workspaceId:request.params.workspaceId,userId:user.id},request.params.runId,request.body);});
+    app.post('/api/v1/workspaces/:workspaceId/qa-runs/:runId/report',{schema:{params:RunParams,body:QaConsume}},async request=>{const user=await identity(request);return qa!.consume({workspaceId:request.params.workspaceId,userId:user.id},request.params.runId,request.body);});
+  }
   app.post('/api/v1/workspaces/:workspaceId/incidents/:incidentId/summary',{config:{rateLimit:{max:3,timeWindow:'1 minute'}},schema:{params:DetailParams,body:SummaryRequest,response:{200:SummaryDraft}}},async request=>{const user=await identity(request);await store.member(user.id,request.params.workspaceId);const result=await assistance.summarize(user.id,request.params.workspaceId,request.params.incidentId,request.body.expectedRevision,request.id);request.log.info({runId:result.runId,requestId:request.id,revision:result.revision,model:result.model,digest:result.digest,promptVersion:result.promptVersion,contextHash:result.contextHash,promptHash:result.promptHash,latencyMs:result.latencyMs,promptTokens:result.promptTokens,outputTokens:result.outputTokens,truncated:result.truncated},'AI draft generated; human review required');return result;});
   app.post('/api/v1/workspaces/:workspaceId/ai-feedback',{schema:{params:Params,body:QualityFeedback}},async request=>{const user=await identity(request);return feedback.record(user.id,request.params.workspaceId,request.body);});
   app.get('/api/v1/workspaces/:workspaceId/services',{schema:{params:Params}},async request=>{
@@ -185,3 +206,4 @@ export async function buildApp(store:Store,settings:Settings,serveWeb=false,oper
   }
   return app;
 }
+

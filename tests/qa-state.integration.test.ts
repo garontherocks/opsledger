@@ -43,7 +43,7 @@ test('Phase 15 durable QA state/history/memory and actual child restart',async t
   });
   await t.test('memory requires human reviewer role; append-only ledgers and poisoned state fail closed',async()=>{
    const reporter={workspaceId:NORTH,userId:'north-reporter'},run=await store.create(reporter);await store.checkpoint(reporter,run.id,1,randomUUID());await assert.rejects(store.remember(reporter,run.id,{key:randomUUID(),expectedRevision:2,sourceId:'lifecycle',risk:'revision-conflict',ttlSeconds:100}));
-   await assert.rejects(db.pool.query('UPDATE qa_history SET request_hash=$2 WHERE run_id=$1',[run.id,hash('poison')]));await assert.rejects(db.pool.query('DELETE FROM qa_history WHERE run_id=$1',[run.id]));
+   for(const sql of ['UPDATE qa_history SET request_hash=repeat(\'a\',64) WHERE run_id=$1','DELETE FROM qa_history WHERE run_id=$1']){const client=await db.pool.connect();try{await client.query('BEGIN');await assert.rejects(client.query(sql,[run.id]),{code:'P0001'});}finally{await client.query('ROLLBACK');client.release();}}
    await db.pool.query("UPDATE qa_runs SET state=jsonb_set(state,'{status}','\"complete\"') WHERE id=$1",[run.id]);await assert.rejects(store.read(reporter,run.id));completed++;
   });
   await t.test('simultaneous duplicate checkpoints commit one event only',async()=>{

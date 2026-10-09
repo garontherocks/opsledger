@@ -12,7 +12,8 @@ export type QaState=z.infer<typeof QaState>;
 export type QaIdentity={workspaceId:string,userId:string};
 export type QaProvenance={id:string,sha:string,digest:string,path:string};
 const Finding=z.strictObject({id:z.uuid(),runId:z.uuid(),workspaceId:z.uuid(),ownerId:z.string(),reviewerId:z.string(),risk:QA_RISK,sourceId:z.string(),sourceSha:QA_SHA,sourceDigest:QA_HASH,contextHash:QA_HASH,sha:QA_SHA,expiresAt:z.number().int().positive(),untrusted:z.literal(true)});
-const Event=z.strictObject({kind:z.enum(['created','checkpoint','memory_reviewed']),stateHash:QA_HASH,revision:z.number().int().min(1).max(32)});
+const Event=z.strictObject({kind:z.enum(['created','checkpoint','memory_reviewed','workflow']),stateHash:QA_HASH,revision:z.number().int().min(1).max(32)});
+export const QaMemoryRequest=z.strictObject({key:z.uuid(),expectedRevision:z.number().int().positive(),sourceId:z.string().max(64),risk:QA_RISK,ttlSeconds:z.number().int().min(1).max(3600)});
 const denied=()=>new HttpError(404,'qa_scope','QA run unavailable');
 const conflict=()=>new HttpError(409,'qa_conflict','QA state changed or is invalid');
 // State is a mutable typed checkpoint. History is append-only audit. Memory is
@@ -68,7 +69,7 @@ export class QaStore{
   });
  }
  async remember(identity:QaIdentity,id:string,input:unknown){
-  const body=z.strictObject({key:z.uuid(),expectedRevision:z.number().int().positive(),sourceId:z.string().max(64),risk:QA_RISK,ttlSeconds:z.number().int().min(1).max(3600)}).parse(input);
+  const body=QaMemoryRequest.parse(input);
   return this.transaction(identity,async(c,role)=>{if(!['lead','admin'].includes(role))throw denied();const state=await this.locked(c,identity,id);const requestHash=hash(JSON.stringify(body));
    const old=await c.query('SELECT request_hash FROM qa_history WHERE run_id=$1 AND operation_key=$2',[id,body.key]);if(old.rowCount){if(old.rows[0].request_hash!==requestHash)throw conflict();return state;}
    if(state.status!=='context_ready'||state.revision!==body.expectedRevision||state.revision>=32)throw conflict();const source=this.sources.find(s=>s.id===body.sourceId);if(!source)throw denied();
