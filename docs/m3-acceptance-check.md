@@ -1,48 +1,42 @@
-# Formal M3 acceptance check — 2026-10-09
+# Formal M3 acceptance — 2026-10-09
 
-Decision: **NOT formally accepted yet**. The human/desktop checkpoint is complete. A required browser CI failure on the actual handoff remains unresolved; this is a blocking engineering gate, separate from live model quality. No model/prompt/budget change, desktop rerun, Teach-Back repetition, PR merge or M4 implementation was performed.
+Decision: **FORMALLY ACCEPTED for the limited Agent Foundations lab scope (Phases 11–13)**. The actual human/desktop checkpoint is complete, and the browser lifecycle blocker has been causally diagnosed and corrected with deterministic native before/after evidence and full required CI. This is not live-model quality promotion, production acceptance or M4 authorization.
 
-## Unchanged roadmap / phase DoD
+Accepted tested code: a55fbe29bcfb5e78fdee4dc4c54b5cdca44be479. Full [CI run 37953380880](https://github.com/garontherocks/opsledger/actions/runs/37953380880), [exact receipt](../evidence/m3-lifecycle-remediation-ci-receipt.json). This acceptance-record successor changes documentation/evidence only; the actual desktop run remains at 52b1f567766a0098313c5637e4ec6f00c7d54c0d. No desktop/Teach-Back repeat is requested.
 
-| Gate | Assessment / evidence |
+## Unchanged roadmap / phase gates
+
+| Gate | Accepted outcome |
 |---|---|
-| Phase 11: mandatory checks cannot be skipped; invalid proposals never execute | Satisfied by deterministic controller fixtures/unit tests, with live six-turn fail-closed behavior consistent with boundedness; live runs do not independently exercise every invalid proposal |
-| Phase 12: direct/MCP behavior parity; stderr diagnostics preserve stdout protocol | Satisfied by actual modern/legacy stdio contracts, wire transcript, correction and Windows CI |
-| Phase 13: no metadata-based permission grant; local-only deployment | Satisfied by progressive reviewed skill/prompt tests, hostile metadata/resource denials, local HTTP scope/audience/Host/Origin/expiry/replay matrix |
-| Cross-platform launcher defect | Corrected; original zero-run failure preserved; Windows CI and actual desktop rerun execute the three lanes |
-| Desktop milestone execution | Completed at 52b1f567766a0098313c5637e4ec6f00c7d54c0d; 9 runs / 54 provider calls / 0 provider errors; 9 blocked by turn_budget; 0 drafts |
-| Human semantic sampling | Complete: representative blocked run accepted as safe controller denial; final draft review not applicable |
-| Consolidated learning | Complete: seven actual answers, two architecture explanations, execution/HTTP controlled failures and two Senior/Staff scenarios |
-| Per-phase reports, architecture, evidence and security review | Preserved; current checkpoint recorded without retroactively rewriting failure evidence |
-| Full required CI at corrective code cf4c6f0… | Passed run 37867155568: API, Windows and nine browser flows |
-| Full required CI at final handoff 52b1f56… | **Blocking failure:** run 37867546978; API and Windows passed, browser lifecycle failed; earlier green code CI does not erase this subsequent failure |
-| PR #5 merge / M4 authorization | Not authorized; PR remains open/unmerged; stop before Phase 14 |
+| Phase 11 DoD: mandatory checks cannot be skipped; invalid proposals never execute | Deterministic scope/schema/integrity/coverage/budget tests pass; model proposals have no executor authority |
+| Phase 12 DoD: direct/MCP parity; stderr preserves stdout protocol | Modern/legacy stdio contracts, resources, wire transcript, bounded diagnostics and Windows launch checks pass |
+| Phase 13 DoD: no metadata permission grant; local-only deployment | Reviewed progressive Skill/prompt/resource boundaries and local HTTP Host/Origin/token/scope/audience/expiry/replay matrix pass |
+| Security and prior product regression | Lint/types/build/audit; 48 units; 83 native integrations without skips; 8 MCP + 7 M3 tests; 8 agent fixtures; 114 AI regressions, zero unexpected egress; restore/baseline; Windows lane pass |
+| Browser lifecycle required gate | Corrected native incident/outbox deadlock: deterministic old mutation rejects with 40P01; identical overlap now commits both; five targeted native browser runs and all nine full browser flows pass |
+| Actual M3 desktop execution | Completed 9 runs / 54 provider calls / 0 provider errors at supplied handoff; 9 six-turn turn_budget blocks; 0 drafts; actual environment and full pin recorded |
+| Human semantic sampling | Representative blocked run accepted as safe controller denial; final draft review not applicable; no fabricated draft judgment |
+| Consolidated learning | Seven actual learner answers, two architecture flows, controlled failures and both Senior/Staff scenarios completed |
+| Evidence/history | Original Windows startup failure, original browser failure and pre-fix causal reproduction preserved; per-phase scopes, reports and commits remain distinct |
+| PR integration / next milestone | PR #5 remains unmerged; Phase 14/M4 is not authorized |
 
-## Live 9/9 turn_budget classification
+## Lifecycle blocker resolution
 
-All three lanes show the same repeated allowed read. This is bounded live-model quality evidence, not a transport-specific failure and not successful task completion. The controller did not manufacture a draft or bypass mandatory coverage. The Phase 11–13 DoD clauses above concern enforced boundaries, parity and knowledge/authority separation; they do not require a successful live final draft. Therefore this observed safe blockage does not itself block **Agent Foundations** acceptance under those unchanged phase DoD.
+Original run 37867546978 failed after Reopen while awaiting Resolution summary. With unchanged product, instrumented native browser run 37952011139 showed Reopen POST expectedRevision=6 submitted and failed with HTTP 500; UI correctly retained closed/revision 6 and displayed a safe error. Controlled native run 37952941824 then proved the mutation/dispatcher locking cycle with SQLSTATE 40P01.
 
-The roadmap section N still contains **provisional release targets**, including tool selection >=0.90 on allowed scenarios. This checkpoint does not establish that target and must not be called a passing tool-selection evaluation. Nine repeated executions of one known task are not a calibrated representative allowed-scenario dataset. Observed task finalization is zero of nine on this task; no numeric semantic pass rate or generalization claim is inferred. No target is waived, lowered or silently converted to satisfied. This model/prompt is not validated for effective live agent completion or automatic promotion. Product/release quality remains unmet; that matters before relying on agent output operationally or making benefit claims.
+Store.act locked incident FOR UPDATE then needed a workspace FK lock; dispatch held workspace FOR UPDATE then needed an incident FK lock. Non-key incident mutation now uses FOR NO KEY UPDATE, preserving conflicting-writer serialization while allowing the reference-only FK check. Real handlers and barrier-controlled lock overlap pass, not merely a later green rerun. Existing concurrent expectedRevision coverage still proves two independent blocked backends, exactly one commit and one revision_conflict. No transaction retries, arbitrary sleeps/timeout increases, assertion removal or AI changes.
 
-## Blocking engineering issue discovered by the final check
+Original failed Playwright test-results were not archived by the old evidence-only upload. Artifact metadata/download access and this historical limitation are documented; no original screenshot/trace or historical per-request SQLSTATE is invented. [Focused remediation / security review](m3-lifecycle-remediation.md), [before evidence](../evidence/m3-lifecycle-before-fix.json), [original CI failure](../evidence/m3-handoff-ci-failure.json).
 
-Actual handoff pull-request CI: [run 37867546978](https://github.com/garontherocks/opsledger/actions/runs/37867546978). Jobs: windows-launchers 113617805984 success; acceptance (api) 113617806126 success; acceptance (browser) 113617806093 failure.
+## Live 9/9 turn_budget classification / quality debt
 
-The browser failed tests/browser/lifecycle.spec.ts:38 after clicking Reopen: getByLabel('Resolution summary', exact=true) was not visible within 5 seconds. Incident and knowledge flows passed before that failure; the complete nine-flow suite did not pass in this run. Root cause is not established by the failure log alone. It may be an application/test synchronization issue, but it is not labeled harmless flakiness and is not waived. The handoff was documentation/evidence-only above the earlier green corrective code; identical code plus a previous pass does not resolve an intermittent required gate failure.
+All three lanes repeated the same valid read and stopped at the six-turn budget. This is poor/inconclusive tool-selection/finalization evidence for the fixed task, alongside positive safe-boundedness evidence. It is not successful live completion, a transport failure, generalization, promotion or product benefit.
 
-Required resolution: diagnose this browser lifecycle failure, correct any implementation/test synchronization defect without blanket retries or weaker assertions, and demonstrate the required deterministic gate is satisfied. Do not rerun the desktop bundle or Teach-Back to address this unrelated CI gate. [Failure receipt](../evidence/m3-handoff-ci-failure.json). No code correction was performed in this checkpoint-recording assignment; governance requires stopping at the unresolved required deterministic gate.
+The unchanged Phase 11–13 DoD concern enforced boundaries, parity and knowledge/authority separation; they do not require a successful live final draft. Therefore this bounded outcome does not block limited Agent Foundations acceptance. The roadmap's provisional tool-selection >=0.90 release target remains **unproven**, not waived or marked satisfied. Nine repeats of one known task are not a representative calibrated allowed-scenario evaluation. The current model/prompt is not validated as an effective live agent or automatically promotable.
 
-## Non-blocking debt for the limited foundations lab
+## Remaining limitations / recommendation
 
-- Poor live tool progression/finalization: repeated same read, no successful drafts. Blocks functional model-quality/promotion claims; preserve unchanged pins/budgets until an authorized eval-driven experiment.
-- Known fixed task / consumed fixtures, no fresh calibrated bilingual held-out promotion evidence; no demonstrated benefit over direct reading.
-- Synthetic approved source registry, no private tenant/source lifecycle adapter.
-- JavaScript/process egress guard is not OS/native/child-process isolation; cooperative cancellation cannot roll back arbitrary external side effects.
-- Local HTTP educational profile, no production TLS/OAuth platform; reusable bearer with fresh request IDs remains usable until expiry/revocation within existing scope/audience.
-- GitHub private-plan main protection limitation remains procedural.
+No required engineering or milestone-human blocker remains in the accepted code state. Non-blocking limited-lab debt remains: poor live progression/finalization; synthetic/consumed tasks and no fresh calibrated bilingual held-out promotion evidence or product-value baseline comparison; synthetic offline registry without private tenant/source lifecycle integration; JS/process guards rather than OS/native isolation; cooperative cancellation without arbitrary rollback; educational loopback HTTP without production TLS/OAuth; reusable scoped bearer with fresh nonce; procedural private-repository main protection limitation.
 
-## Recommendation and authorization
+These limitations block broader operational, production/security and model-quality claims. Future promotion retains the agreed calibrated quality targets and critical adversarial boundaries. M4 is recommended as an explicitly authorized eval-driven next milestone with these limitations visible; Phase 14's measurable-benefit DoD must be demonstrated independently. Do not infer product benefit from M3.
 
-Complete the outstanding browser CI diagnosis/gate first. Once that deterministic blocker is resolved, the supplied human checkpoint and honest live quality evidence need not be repeated merely for documentation; reassess M3 formal acceptance using the unchanged DoD. Recommend M4 only conditionally after M3 engineering acceptance and explicit user authorization, as eval-driven research with the model-quality limitation visible. Phase 14's own measurable-benefit DoD must not be presumed satisfied from M3.
-
-The original Windows failure remains failure evidence. The final nine-run bundle remains a completed experiment with zero drafts. Human checkpoint completion does not by itself override required CI. PR #5 remains unmerged. No Phase 14/M4.
+The human checkpoint and its actual 0-draft result are unchanged. The original failed attempts remain failures. No merge PR #5, no Phase 14/M4 start, no model/prompt/budget modification and no desktop/Teach-Back rerun.

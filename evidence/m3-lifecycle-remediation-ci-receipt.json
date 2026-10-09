@@ -1,0 +1,93 @@
+{
+  "source": "actual completed GitHub Actions jobs and decoded logs",
+  "testedCodeSha": "a55fbe29bcfb5e78fdee4dc4c54b5cdca44be479",
+  "runId": 37953380880,
+  "url": "https://github.com/garontherocks/opsledger/actions/runs/37953380880",
+  "jobs": [
+    {
+      "id": 113897630043,
+      "name": "acceptance (api)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 113897630381,
+      "name": "windows-launchers",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 113897630505,
+      "name": "acceptance (browser)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "nativeLockProof": {
+    "before": {
+      "backend": "postgresql-server",
+      "events": [
+        "mutation incident row locked",
+        "dispatcher workspace row locked"
+      ],
+      "outcomes": [
+        {
+          "status": "rejected",
+          "code": "40P01"
+        },
+        {
+          "status": "fulfilled"
+        }
+      ]
+    },
+    "after": {
+      "backend": "postgresql-server",
+      "events": [
+        "mutation incident row locked",
+        "dispatcher workspace row locked"
+      ],
+      "outcomes": [
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        }
+      ]
+    }
+  },
+  "targetedLifecycle": {
+    "nativeRuns": 5,
+    "retries": 0,
+    "controlledServerCommitVsClientDelivery": true
+  },
+  "full": {
+    "units": 48,
+    "nativeIntegrations": 83,
+    "nativeSkips": 0,
+    "mcpTests": 8,
+    "m3Tests": 7,
+    "agentFixtures": 8,
+    "aiRegressions": 114,
+    "unexpectedEgress": 0,
+    "browserFlows": 9,
+    "lint": "pass",
+    "types": "pass",
+    "build": "pass",
+    "audit": "zero vulnerabilities",
+    "restoreAndBaseline": "pass",
+    "windows": "pass"
+  },
+  "supplementalLocal": {
+    "browser": "Chromium 153",
+    "backend": "PGlite one-client; not native lock proof",
+    "controlledResponseLifecycleRuns": 6,
+    "result": "passed"
+  },
+  "originalFailedEvidencePreserved": true,
+  "desktopBundleRerun": false,
+  "teachBackRepeated": false,
+  "aiModelPromptBudgetsChanged": false,
+  "prMerged": false,
+  "phase14Started": false
+}
