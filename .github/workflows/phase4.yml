@@ -41,6 +41,12 @@ jobs:
         name: Native bounded QA workflow, crash boundaries and actual registered suite
         run: npm run m4:workflow-test
       - if: matrix.lane == 'api'
+        name: Native signed QA orchestration and duplicate recovery
+        run: npm run m5:orchestration-test
+      - if: matrix.lane == 'api'
+        name: Actual n8n Community signed webhook, error branch and scrubbed export
+        run: npm run m5:n8n-smoke
+      - if: matrix.lane == 'api'
         name: M4 desktop bundle plumbing (fixture, not model-quality evidence)
         run: M4_BUNDLE_FIXTURE=true npm run ai:m4-harness
       - if: matrix.lane == 'api'
@@ -80,6 +86,7 @@ jobs:
             evidence/m3-*
             evidence/phase14-*
             evidence/phase15-*
+            evidence/phase17-*
             evidence/phase16-*
             evidence/m4-*
             evidence/phase12-*

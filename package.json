@@ -41,7 +41,9 @@
     "m4:workflow-test": "node --experimental-strip-types --test --test-concurrency=1 tests/qa-workflow.integration.test.ts tests/qa-crash.integration.test.ts tests/qa-api.integration.test.ts tests/qa-runner.integration.test.ts",
     "ai:m4-desktop": "node --env-file=.env --import ./scripts/m3-egress.ts --experimental-strip-types scripts/m4-desktop.ts",
     "ai:m4-harness": "node --import ./scripts/m3-egress.ts --experimental-strip-types scripts/m4-desktop.ts",
-    "ai:m3-desktop": "node --env-file=.env --import ./scripts/m3-egress.ts --experimental-strip-types scripts/m3-desktop.ts"
+    "ai:m3-desktop": "node --env-file=.env --import ./scripts/m3-egress.ts --experimental-strip-types scripts/m3-desktop.ts",
+    "m5:orchestration-test": "node --experimental-strip-types --test tests/qa-orchestration.integration.test.ts",
+    "m5:n8n-smoke": "node --experimental-strip-types scripts/phase17-n8n.ts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.7",

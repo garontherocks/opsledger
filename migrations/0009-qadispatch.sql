@@ -1,0 +1,1 @@
+CREATE TABLE qa_dispatches(event_id uuid PRIMARY KEY,run_id uuid NOT NULL REFERENCES qa_runs(id),request_hash text NOT NULL,lease_id uuid NOT NULL,lease_until timestamptz NOT NULL,result jsonb,result_mac text);
