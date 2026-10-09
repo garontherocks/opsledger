@@ -1,8 +1,8 @@
 # M4 — Agentic QA engineering handoff
 
-Initial Phase 16 gates passed on e3426f234e6d4dbed9fb5811ae68cef61fcf85c3, with required Linux API/browser and Windows CI green at [run 37960577739](https://github.com/garontherocks/opsledger/actions/runs/37960577739). Actual CI checkout d19fed05c2e5822a5a100aaf61b0eb0af733e318 has exactly the same tree as the branch code commit; [receipt](../evidence/phase16-ci-receipt.json) records both identities. The final handoff successor adds documentation/evidence only and retains its own required checks.
+Initial Phase 16 gates passed on e3426f234e6d4dbed9fb5811ae68cef61fcf85c3, with required Linux API/browser and Windows CI green at [run 37960577739](https://github.com/garontherocks/opsledger/actions/runs/37960577739). Actual CI checkout d19fed05c2e5822a5a100aaf61b0eb0af733e318 has exactly the same tree as the branch code commit; [receipt](../evidence/phase16-ci-receipt.json) records both identities. The initial handoff was superseded by the expiry correction below; a final documentation/evidence successor requires its own head checks.
 
-**Milestone boundary reached; final engineering review identified an expiry/write TOCTOU gap not covered by the earlier green run. A controlled red test reproduces it. Correction rechecks expiry after asynchronous target verification and at the transactional INSERT via the DB clock; corrective full CI is pending. Formal M4 acceptance remains pending actual human/desktop outcomes. No M5 started; PR #6 unmerged.**
+**Milestone boundary reached; final engineering review identified an expiry/write TOCTOU gap not covered by the earlier green run. A controlled red test reproduces it. Correction rechecks expiry after asynchronous target verification and at the transactional INSERT via the DB clock; corrective full CI passed on e1fb584b4c3808ae8371f514d0678cd4d0841d20 / [37962926938](https://github.com/garontherocks/opsledger/actions/runs/37962926938), all three lanes green. Formal M4 acceptance remains pending actual human/desktop outcomes. No M5 started; PR #6 unmerged.**
 
 ## Individual phase boundaries
 
@@ -21,7 +21,7 @@ Reports: [14](phase14-report.md), [15](phase15-report.md), [16](phase16-report.m
 | Existing domain/provider/controller units | 48 passed |
 | QA context / provenance / paired mechanics | 3 passed; 5/5 known mechanical evidence needs found, no semantic/value inference |
 | Native Phase 15 state/history/memory | 7 tests passed; independent Node child recovered committed revision 2 |
-| Native Phase 16 workflow/API/crash/real runner | 12 tests passed, zero skips |
+| Native Phase 16 workflow/API/crash/real runner | 14 tests passed, zero skips after expiry correction |
 | Abrupt native child crash modes | context, claim, receipt, approval, report, after_report: all recovered; one stored report each |
 | Actual fixed registered suite | all four gates passed on Linux and Windows, bound to actual checkout SHA |
 | Existing native product integrations | 83 passed, zero skips; lifecycle lock-overlap regression also passed |
@@ -55,4 +55,4 @@ Finish the single M4 human/desktop checkpoint, then decide M5 explicitly. Recomm
 
 ## Final expiry hard-gate correction
 
-The prior green run did not prove expiry remained valid during the final asynchronous target check. [Preserved actual red regression](../evidence/phase16-expiry-toctou-regression.json) records the gap and local report-only impact. The controller now rejects elapsed application expiry after that check, and the INSERT independently enforces approval/run expiry using PostgreSQL clock_timestamp. Added controlled async expiry and independent native DB/application-clock cases. Full corrective CI must pass before engineering handoff.
+The prior green run did not prove expiry remained valid during the final asynchronous target check. [Preserved actual red regression](../evidence/phase16-expiry-toctou-regression.json) records the gap and local report-only impact. The controller now rejects elapsed application expiry after that check, and the INSERT independently enforces approval/run expiry using PostgreSQL clock_timestamp. Added controlled async expiry and independent native DB/application-clock cases. Full corrective CI passed on e1fb584b4c3808ae8371f514d0678cd4d0841d20: native workflow 14 tests, no skips; 83 product integrations, Windows, nine existing browser flows, QA UI and five lifecycle runs passed. [Corrective receipt](../evidence/phase16-expiry-ci-receipt.json). PostgreSQL [current-time documentation](https://www.postgresql.org/docs/18/functions-datetime.html) was checked on 2026-10-09: clock_timestamp changes during statement execution, unlike transaction-start current_timestamp.

@@ -45,3 +45,7 @@ The user explicitly authorized M4 Phases 14 → 15 → 16 from merged main c55ee
 
 Phases 14–16 each completed their engineering scope and separate gate/report before the next began. Tested Phase 16 code e3426f234e6d4dbed9fb5811ae68cef61fcf85c3 passed all Linux API/browser and Windows lanes in run 37960577739. Exact receipts and scope/debt are in [M4 engineering report](m4-engineering-report.md). Default QA retrieval adoption remains rejected; model quality/value/promotion remains unproven. Actual M3 results and all failures remain preserved. One desktop bundle, selected material review and consolidated Teach-Back await actual user outcomes. Formal M4 acceptance is pending that milestone checkpoint. PR #6 remains unmerged. Stop before Phase 17/M5; no additional milestone authorization granted.
 
+
+## M4 final expiry correction — 2026-10-09
+
+Final review reopened the Phase 16 engineering gate for approval expiry during an asynchronous SHA check. Corrective code e1fb584b4c3808ae8371f514d0678cd4d0841d20 passed all required lanes in [run 37962926938](https://github.com/garontherocks/opsledger/actions/runs/37962926938), including native application/DB-clock denial tests. Earlier receipts remain historical; [corrective receipt](../evidence/phase16-expiry-ci-receipt.json) supersedes that gate. Final docs-only head retains its own required CI. Actual M4 human/desktop/Teach-Back remains pending; PR #6 unmerged, stop before Phase 17/M5. No phase scope, DoD, threshold or authority change.
