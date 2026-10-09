@@ -33,7 +33,7 @@ try{
  const address=(await docker(['inspect','--format','{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}',container])).trim();
  assert.match(address,/^\d{1,3}(\.\d{1,3}){3}$/,'Owned internal container address');const n8nUrl='http://'+address+':5678';
  const deadline=Date.now()+90000;let healthy=false;
- while(Date.now()<deadline){try{healthy=(await fetch(n8nUrl+'/healthz',{signal:AbortSignal.timeout(1000)})).ok;if(healthy)break;}catch{/* bounded readiness probe */}await new Promise(r=>setTimeout(r,250));}
+ while(Date.now()<deadline){try{healthy=(await fetch(n8nUrl+'/healthz/readiness',{signal:AbortSignal.timeout(1000)})).ok;if(healthy)break;}catch{/* bounded readiness probe */}await new Promise(r=>setTimeout(r,250));}
  if(!healthy)throw new Error('Owned n8n health deadline exceeded');
  const setup=await fetch(n8nUrl+'/rest/owner/setup',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:'qa-owner@example.test',firstName:'Owned',lastName:'Fixture',password:randomUUID()+'aA9!'})});assert.equal(setup.status,200,'Disposable n8n owner bootstrap');
  const workflow=JSON.parse(await readFile('lab/n8n/qa-report.json','utf8')) as {nodes:{name:string,parameters:{url?:string}}[]};workflow.nodes.find(n=>n.name==='Scoped TypeScript service')!.parameters.url='http://'+bridgeHost+':3101/events';
@@ -42,7 +42,7 @@ try{
  assert.equal((await docker(['exec',container,'n8n','--version'])).trim(),'2.42.6','Pinned actual runtime');
  await docker(['exec',container,'n8n','import:credentials','--input=/tmp/credentials.json']);await docker(['exec',container,'n8n','import:workflow','--input=/tmp/workflow.json']);await docker(['exec',container,'n8n','publish:workflow','--id=OpsLedgerQaBridge']);await docker(['restart',container]);
  const publishedDeadline=Date.now()+90000;let ready=false;
- while(Date.now()<publishedDeadline){try{ready=(await fetch(n8nUrl+'/healthz',{signal:AbortSignal.timeout(1000)})).ok;if(ready)break;}catch{/* bounded startup */}await new Promise(r=>setTimeout(r,250));}if(!ready)throw new Error('Published n8n startup deadline');
+ while(Date.now()<publishedDeadline){try{ready=(await fetch(n8nUrl+'/healthz/readiness',{signal:AbortSignal.timeout(1000)})).ok;if(ready)break;}catch{/* bounded startup */}await new Promise(r=>setTimeout(r,250));}if(!ready)throw new Error('Published n8n startup deadline');
  const make=(operation='inspect',approvalId?:string)=>({version:'qa-webhook-v1',eventId:randomUUID(),runId:run.id,workspaceId:NORTH,sha,issuedAt:Date.now(),operation,...(approvalId?{approvalId}:{})});
  async function trigger(body:ReturnType<typeof make>,signature=webhookSignature(body,signingKey),authorized=true){const response=await fetch(n8nUrl+'/webhook/opsledger-qa-v1',{method:'POST',headers:{'content-type':'application/json','x-qa-inbound':authorized?inbound:'invalid','x-qa-signature':signature},body:JSON.stringify(body),signal:AbortSignal.timeout(45000)});if(!authorized)return {status:response.status,body:{outcome:'denied',reportStored:false}};assert.match(response.headers.get('content-type')??'',/application\/json/,'Authorized webhook must return the workflow JSON receipt (HTTP '+response.status+')');return {status:response.status,body:await response.json() as {outcome:string,reportStored:boolean}};}
  assert.equal((await trigger(make(),undefined,false)).status,403);
