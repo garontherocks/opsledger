@@ -31,6 +31,9 @@ jobs:
       - run: npm run test:unit
       - run: npm audit --audit-level=moderate
       - if: matrix.lane == 'api'
+        name: Native lifecycle lock-overlap regression
+        run: node --experimental-strip-types --test tests/lifecycle-outbox.integration.test.ts
+      - if: matrix.lane == 'api'
         run: npm run m3:test
       - if: matrix.lane == 'api'
         run: npm run mcp:test
