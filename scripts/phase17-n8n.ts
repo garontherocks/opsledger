@@ -19,6 +19,8 @@ const credential=randomUUID()+randomUUID(),signingKey=randomUUID()+randomUUID(),
 await mkdir(dir,{recursive:true});const envFile=resolve(dir,'n8n.env');
 await writeFile(envFile,[`N8N_ENCRYPTION_KEY=${encryption}`,'N8N_DIAGNOSTICS_ENABLED=false','N8N_VERSION_NOTIFICATIONS_ENABLED=false','N8N_TEMPLATES_ENABLED=false','N8N_BLOCK_ENV_ACCESS_IN_NODE=true','N8N_BLOCK_FILE_ACCESS_TO_N8N_FILES=true','N8N_COMMUNITY_PACKAGES_ENABLED=false','N8N_PERSONALIZATION_ENABLED=false','N8N_SECURE_COOKIE=false','N8N_LOG_LEVEL=error','EXECUTIONS_DATA_SAVE_ON_ERROR=none','EXECUTIONS_DATA_SAVE_ON_SUCCESS=none','EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS=false','NODES_EXCLUDE=["n8n-nodes-base.executeCommand","n8n-nodes-base.code","n8n-nodes-base.readWriteFile","n8n-nodes-base.ssh"]'].join('\n')+'\n',{mode:0o600});
 async function docker(args:string[]){try{return (await exec('docker',args,{timeout:300000,maxBuffer:1048576})).stdout;}catch(error){const e=error as {code?:unknown,stderr?:string,stdout?:string};let diagnostic=(e.stderr??e.stdout??'').slice(0,2048);for(const secret of [credential,signingKey,inbound,encryption])diagnostic=diagnostic.replaceAll(secret,'[redacted]');throw new Error('Owned n8n Docker '+args[0]+' failed ('+String(e.code)+'): '+diagnostic);}}
+const cliDiagnostics:string[]=[];
+async function cli(args:string[]){const output=await docker(['exec','-e','N8N_LOG_LEVEL=info',container,'n8n',...args]);let scrubbed=output;for(const secret of [credential,signingKey,inbound,encryption])scrubbed=scrubbed.replaceAll(secret,'[redacted]');cliDiagnostics.push(scrubbed);console.log('Owned n8n CLI '+args[0]+': '+scrubbed);return scrubbed;}
 let db:Awaited<ReturnType<typeof testDatabase>>|undefined,app:ReturnType<typeof orchestrationApp>|undefined;
 try{
  await docker(['pull',image]);await docker(['network','create','--internal',network]);
@@ -40,7 +42,7 @@ try{
  await writeFile(resolve(dir,'workflow.json'),JSON.stringify(workflow),{mode:0o600});await writeFile(resolve(dir,'credentials.json'),JSON.stringify([{id:'QaInbound',name:'Owned QA inbound',type:'httpHeaderAuth',data:{name:'x-qa-inbound',value:inbound}},{id:'QaService',name:'Single-run QA service',type:'httpHeaderAuth',data:{name:'authorization',value:'Bearer '+credential}}]),{mode:0o600});
  for(const file of ['workflow.json','credentials.json']){await docker(['cp',resolve(dir,file),container+':/tmp/'+file]);await docker(['exec','--user','0',container,'chown','node:node','/tmp/'+file]);}
  assert.equal((await docker(['exec',container,'n8n','--version'])).trim(),'2.42.6','Pinned actual runtime');
- await docker(['exec',container,'n8n','import:credentials','--input=/tmp/credentials.json']);await docker(['exec',container,'n8n','import:workflow','--input=/tmp/workflow.json']);await docker(['exec',container,'n8n','publish:workflow','--id=OpsLedgerQaBridge']);await docker(['restart',container]);
+ await cli(['import:credentials','--input=/tmp/credentials.json']);const imported=await cli(['import:workflow','--input=/tmp/workflow.json']);assert.match(imported,/Successfully imported 1 workflow/,'Actual workflow must be imported, not skipped');await cli(['publish:workflow','--id=OpsLedgerQaBridge']);await docker(['restart',container]);
  const publishedDeadline=Date.now()+90000;let ready=false;
  while(Date.now()<publishedDeadline){try{ready=(await fetch(n8nUrl+'/healthz/readiness',{signal:AbortSignal.timeout(1000)})).ok;if(ready)break;}catch{/* bounded startup */}await new Promise(r=>setTimeout(r,250));}if(!ready)throw new Error('Published n8n startup deadline');
  const make=(operation='inspect',approvalId?:string)=>({version:'qa-webhook-v1',eventId:randomUUID(),runId:run.id,workspaceId:NORTH,sha,issuedAt:Date.now(),operation,...(approvalId?{approvalId}:{})});
@@ -58,7 +60,7 @@ try{
  for(const secret of [credential,signingKey,inbound,encryption])logs=logs.replaceAll(secret,'[redacted]');
  let state='unavailable',address='unavailable',inside='unavailable',direct='unavailable';
  try{state=await docker(['inspect','--format','{{json .State}}',container]);address=(await docker(['inspect','--format','{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}',container])).trim();inside=await docker(['exec',container,'node','-e','fetch("http://127.0.0.1:5678/healthz").then(r=>console.log(r.status)).catch(()=>{console.log("unreachable");process.exitCode=1})']);direct=String((await fetch('http://'+address+':5678/healthz',{signal:AbortSignal.timeout(2000)})).status);}catch{/* bounded best-effort diagnostics */}
- const diagnostic={image,error:error instanceof Error?error.message:'runtime_failure',state,address,inside,direct,hostAccess:'owned internal container IP; no published port',logs,actualHumanApproval:false,classification:'n8n runtime/bootstrap evidence, not model quality'}; console.error(JSON.stringify(diagnostic));
+ const diagnostic={image,cliDiagnostics,error:error instanceof Error?error.message:'runtime_failure',state,address,inside,direct,hostAccess:'owned internal container IP; no published port',logs,actualHumanApproval:false,classification:'n8n runtime/bootstrap evidence, not model quality'}; console.error(JSON.stringify(diagnostic));
  await mkdir('evidence',{recursive:true});await writeFile('evidence/phase17-n8n-failure.json',JSON.stringify(diagnostic,null,2)+'\n');
  throw error;
 }finally{
