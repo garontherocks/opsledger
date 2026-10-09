@@ -1,0 +1,14 @@
+{
+  "run": 37984153192,
+  "head": "c0ed7a9456037b4940cde0f5198561ce69a863b8",
+  "checkoutSha": "8e8b367c594c4c6e9493532344120f32c43aecb2",
+  "containerRunning": true,
+  "insideHealthStatus": 200,
+  "hostDirectHealthStatus": 200,
+  "unauthenticatedWebhookStatus": 404,
+  "requiredUnauthenticatedStatus": 403,
+  "result": "failed",
+  "correction": "Probe /healthz/readiness (full initialization), not liveness, before exercising the webhook. Do not change required status or functional assertions.",
+  "source": "https://github.com/n8n-io/n8n/blob/n8n@2.42.6/packages/cli/src/abstract-server.ts",
+  "actualHumanApproval": false
+}
