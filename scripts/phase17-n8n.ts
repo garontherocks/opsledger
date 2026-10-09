@@ -51,6 +51,13 @@ try{
  await docker(['exec',container,'n8n','export:workflow','--id=OpsLedgerQaBridge','--output=/tmp/export.json']);await docker(['cp',container+':/tmp/export.json',resolve(dir,'export.json')]);const exported=await readFile(resolve(dir,'export.json'),'utf8');
  for(const secret of [credential,signingKey,inbound,encryption])assert(!exported.includes(secret),'No secret in real workflow export');
  await mkdir('evidence',{recursive:true});await writeFile('evidence/phase17-n8n-runtime.json',JSON.stringify({image,backend:db.backend,actualN8n:true,actualSignedHttpWebhook:true,fixtureTriage:true,actualHumanApproval:false,unauthenticatedWebhookDenied:true,forgedSignatureDenied:true,duplicateTriageCalls:triageCalls,reportEffects:1,exportContainsSecrets:false,internalNetwork:true,releaseAuthority:false},null,2)+'\n');console.log('Phase 17 actual n8n webhook/branch/error/dedup/export passed; fixture triage only.');
+}catch(error){
+ let logs='';try{logs=await docker(['logs','--tail','100',container]);}catch{/* container might not exist */}
+ for(const secret of [credential,signingKey,inbound,encryption])logs=logs.replaceAll(secret,'[redacted]');
+ let state='unavailable',address='unavailable',inside='unavailable',direct='unavailable';
+ try{state=await docker(['inspect','--format','{{json .State}}',container]);address=(await docker(['inspect','--format','{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}',container])).trim();inside=await docker(['exec',container,'node','-e','fetch("http://127.0.0.1:5678/healthz").then(r=>console.log(r.status)).catch(()=>{console.log("unreachable");process.exitCode=1})']);direct=String((await fetch('http://'+address+':5678/healthz',{signal:AbortSignal.timeout(2000)})).status);}catch{/* bounded best-effort diagnostics */}
+ await mkdir('evidence',{recursive:true});await writeFile('evidence/phase17-n8n-failure.json',JSON.stringify({image,error:error instanceof Error?error.message:'runtime_failure',state,address,inside,direct,publishedPort:'127.0.0.1:5679',logs,actualHumanApproval:false,classification:'n8n runtime/bootstrap evidence, not model quality'},null,2)+'\n');
+ throw error;
 }finally{
  await app?.close();await db?.close();await docker(['rm','-f','-v',container]).catch(()=>{});await docker(['network','rm',network]).catch(()=>{});await rm(dir,{recursive:true,force:true});
 }
