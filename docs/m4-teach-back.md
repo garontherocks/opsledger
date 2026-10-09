@@ -1,4 +1,4 @@
-# Consolidated M4 Teach-Back — pending actual learner answers
+# Consolidated M4 Teach-Back — completed user checkpoint
 
 One milestone checkpoint, not separate phase interviews. M1–M3 answers/results are preserved and will not be reused as new M4 demonstrations.
 
@@ -23,4 +23,18 @@ Choose two: failed required check remains blocked despite convincing model text;
 - A reviewed report's approval is valid, but HEAD changed and a manager asks to reuse it for the new SHA. Explain the binding, invalidation and required new checks/review; never promote a historical receipt into a current verdict.
 - A proposed graph/n8n integration promises automatic repair/merge and persistent free-text memory. Explain what measured orchestration need might justify experimentation, which boundaries remain in TypeScript, and why neither a workflow nor a Skill grants authority.
 
-Evidence: [Phase 14](phase14-report.md), [Phase 15](phase15-report.md), [Phase 16](phase16-report.md), [engineering/acceptance](m4-engineering-report.md). Actual understanding remains pending until the user supplies answers; no model quality or human approval inferred from fixtures.
+Evidence: [Phase 14](phase14-report.md), [Phase 15](phase15-report.md), [Phase 16](phase16-report.md), [engineering/acceptance](m4-engineering-report.md). The user explicitly reports the completed results below; no model quality or human approval is inferred from fixtures.
+
+## Actual learner checkpoint — 2026-10-09
+
+| Checkpoint item | User-reported result |
+|---|---|
+| Questions 1–7 | Passed |
+| Architecture Flow A | Passed |
+| Architecture Flow B | Passed |
+| Controlled failure: failed required check cannot be overridden by model output | Passed |
+| Controlled failure: approval expiry across the TOCTOU window | Passed |
+| Senior/Staff SHA-binding scenario | Passed |
+| Senior/Staff graph-runtime/n8n authority-boundary scenario | Passed |
+
+These are the user's supplied completion results. Detailed learner answers or transcripts were not supplied in this checkpoint and are not reconstructed. The questions and scenario prompts above are retained as the checkpoint rubric, not newly invented learner explanations. No Teach-Back was repeated. [Structured record](../evidence/m4-human-checkpoint.json).

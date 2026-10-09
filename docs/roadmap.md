@@ -1175,3 +1175,9 @@ M4 engineering boundary reached. Actual M4 human/desktop/Teach-Back remains pend
 ## M4 final expiry correction — 2026-10-09
 
 Final review reopened the Phase 16 engineering gate for approval expiry during an asynchronous SHA check. Corrective code e1fb584b4c3808ae8371f514d0678cd4d0841d20 passed all required lanes in [run 37962926938](https://github.com/garontherocks/opsledger/actions/runs/37962926938), including native application/DB-clock denial tests. Earlier receipts remain historical; [corrective receipt](../evidence/phase16-expiry-ci-receipt.json) supersedes that gate. Final docs-only head retains its own required CI. Actual M4 human/desktop/Teach-Back remains pending; PR #6 unmerged, stop before Phase 17/M5. No phase scope, DoD, threshold or authority change.
+
+## Formal limited-scope M4 acceptance — 2026-10-09
+
+The user completed the final M4 human checkpoint: 16 live desktop generations, zero provider/contract failures, six explicit semantic judgments, limited-scope HITL acceptance and all consolidated Teach-Back items passed. [Actual checkpoint](../evidence/m4-human-checkpoint.json), [formal acceptance](m4-acceptance-check.md). Provenance worked mechanically; retrieval did not reliably improve semantic reasoning and remains experimental/not adopted by default. No percentage, promotion or product-value claim.
+
+All unchanged phase DoD and milestone requirements are satisfied within the limited M4 lab scope; formal acceptance is recorded with required CI on the resulting docs/evidence-only head. Failed final-head gates must reopen acceptance. No scope/threshold waiver or executable change. Earlier pending annotations are preserved history, superseded by this checkpoint. M3 9/9 turn_budget/zero drafts and original Windows/lifecycle/expiry failures remain preserved. PR #6 must not be merged. Phase 17/M5 is not authorized; stop at M4.
