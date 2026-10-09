@@ -19,3 +19,7 @@ The user explicitly ordered PR #3 merge and Phase 12 start. PR #3 merged with bo
 ## Authorization update — 2026-10-08 Phase 13 / M3 gate
 
 The user reviewed PR #4 and explicitly ordered merge plus Phase 13. PR #4 current-head CI run 37854227994 succeeded; merge commit 95caf7486c0380a22bebe5c2c55a24419fcdf239 preserves both parents and all branches. Implement Phase 13 above that main state. Stop at the M3 milestone human gate after its engineering DoD: consolidated Teach-Back, selected material review, one desktop bundle and an honest acceptance report. No Phase 14/M4 is authorized. Actual human/desktop outcomes remain pending until supplied by the user; M2 answers must not be copied into M3 as new answers.
+
+## M3 corrective authorization — 2026-10-09
+
+The user reported a real Windows Node --import startup defect at handoff 544f22edf55c4abd806751e693162d936c0aa7e0, before all nine agent runs, and explicitly authorized cross-platform launcher fixes, diagnostic/regression coverage, full deterministic CI, evidence preservation and a new handoff for one desktop rerun. This is not a model/provider/MCP quality result. Corrective work stays on feat/m3-skills-http / PR #5 with existing pins, fixed launch allowlists and egress boundaries. Actual M3 desktop/human acceptance remains pending. No PR #5 merge, Phase 14 or M4 start is authorized.

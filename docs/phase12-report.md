@@ -25,3 +25,7 @@ Official sources checked 2026-10-08:
 - https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28
 - https://ts.sdk.modelcontextprotocol.io/v2/serving/legacy-clients
 Installed package declarations and actual wire output are checked alongside documentation; no latest-version behavior is assumed from an SDK name.
+
+## Corrective engineering acceptance — 2026-10-09
+
+The Windows launcher defect is corrected on cf4c6f0c2a97bcc494eaeb2b2d5a39dcc16ea1d2. Actual CI run 37867155568 passed all three lanes: Windows Node 24.19.0 (8 MCP + 7 M3 tests, zero failures/skips), Linux API (48 units, 8 MCP + 7 M3 tests, 8 agent fixtures, 114 AI regressions, zero unexpected egress, 82 native integrations with zero skips, restore/baseline) and all nine browser flows; lint/types/build/audit green. [Exact receipt](../evidence/m3-windows-correction-ci-receipt.json), [correction/security review](m3-windows-launcher-correction.md). This supersedes the reopened engineering blocker, without replacing the failed desktop evidence or claiming successful local model runs. The final handoff successor changes documentation/evidence only; its executable code matches the tested corrective SHA. M3 desktop, human semantic sampling and Teach-Back remain pending; M3 is not formally accepted. Stop before Phase 14/M4.

@@ -1,0 +1,54 @@
+{
+  "codeCommit": "cf4c6f0c2a97bcc494eaeb2b2d5a39dcc16ea1d2",
+  "runId": 37867155568,
+  "url": "https://github.com/garontherocks/opsledger/actions/runs/37867155568",
+  "source": "actual GitHub Actions job conclusions and decoded logs",
+  "jobs": [
+    {
+      "id": 113616497034,
+      "name": "acceptance (browser)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 113616497126,
+      "name": "acceptance (api)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 113616497201,
+      "name": "windows-launchers",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "results": {
+    "node": "24.19.0",
+    "windows": {
+      "mcpTests": 8,
+      "m3Tests": 7,
+      "failures": 0,
+      "skips": 0
+    },
+    "linux": {
+      "units": 48,
+      "mcpTests": 8,
+      "m3Tests": 7,
+      "agentFixtures": 8,
+      "aiRegression": 114,
+      "unexpectedEgress": 0,
+      "nativeIntegrations": 82,
+      "nativeSkips": 0,
+      "browserFlows": 9,
+      "lint": "passed",
+      "types": "passed",
+      "build": "passed",
+      "audit": "zero vulnerabilities",
+      "restoreAndBaseline": "passed"
+    }
+  },
+  "desktopModelQuality": "not tested by this deterministic CI; new actual desktop run pending",
+  "preservedFailedAttempt": "evidence/m3-windows-startup-failure.json",
+  "noPhase14": true
+}

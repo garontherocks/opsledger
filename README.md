@@ -121,3 +121,7 @@ See [report](docs/phase12-report.md), [security and compatibility](docs/phase12-
 PR #4 is merged at `95caf7486c0380a22bebe5c2c55a24419fcdf239`. `npm run m3:test` exercises the bounded agent over real MCP stdio and Streamable HTTP, progressive reviewed skill loading, reusable MCP prompt and the local credential/security matrix. The lab listener binds only `127.0.0.1`; grants are minted by the trusted in-process operator, never by an HTTP token endpoint. No private incident data or operational authority is added.
 
 See [Phase 13 report](docs/phase13-report.md), [security](docs/phase13-security.md), [M3 engineering report](docs/m3-engineering-report.md), [consolidated checkpoint](docs/m3-teach-back.md) and [one Desktop Validation Bundle](docs/m3-desktop-validation.md). Desktop/live results and human answers are pending. This milestone is not formally human-accepted yet. Stop before M4 / Phase 14.
+
+## M3 Windows corrective handoff
+
+The original Windows attempt at 544f22edf55c4abd806751e693162d936c0aa7e0 failed before all nine agent runs; this is preserved as launcher/platform evidence, not model quality. Corrective code cf4c6f0c2a97bcc494eaeb2b2d5a39dcc16ea1d2 passed full Linux and new Windows CI. See [correction review](docs/m3-windows-launcher-correction.md), [actual CI receipt](evidence/m3-windows-correction-ci-receipt.json) and [one desktop rerun](docs/m3-desktop-validation.md). Keep approved runtime/model pins. Actual M3 human/desktop gate remains pending; no Phase 14/M4.
