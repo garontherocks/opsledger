@@ -37,6 +37,7 @@
     "mcp:test": "node --import ./scripts/mcp-egress.mjs --experimental-strip-types --test tests/qa-mcp.integration.test.ts",
     "m3:test": "node --import ./scripts/m3-egress.ts --experimental-strip-types --test tests/qa-m3.integration.test.ts",
     "m4:context-test": "node --import ./scripts/mcp-egress.mjs --experimental-strip-types --test tests/qa-context.unit.test.ts",
+    "m4:state-test": "node --experimental-strip-types --test tests/qa-state.integration.test.ts",
     "ai:m3-desktop": "node --env-file=.env --import ./scripts/m3-egress.ts --experimental-strip-types scripts/m3-desktop.ts"
   },
   "dependencies": {

@@ -1,0 +1,10 @@
+{
+ "runtime":"@langchain/langgraph","version":"1.4.21","installation":"isolated /tmp, ignored scripts, 22 packages; not a project dependency",
+ "actual":{"firstInterrupted":true,"resumedApproved":true,"nodeEntries":2,"newMemorySaverRetainedState":false,"operationalAuthority":false},
+ "scope":"actual one-node interrupt/resume probe without model or tracing; not a PostgresSaver comparison or production runtime benchmark",
+ "decision":"retain direct TypeScript controller and explicit PostgreSQL transactions for this bounded linear workflow",
+ "reason":"Framework can checkpoint/interrupt, but restarted node still needs application idempotency/auth and RAM saver is not durable. No demonstrated additional capability needed by the current four-step workflow; a durable saver would still require our security boundaries.",
+ "limitations":"No latency, local-model compatibility, general quality or superiority claim. Reconsider if durable graph branching becomes a measured need.",
+ "officialDocsChecked":"2026-10-09",
+ "sources":["https://docs.langchain.com/oss/javascript/langgraph/persistence","https://docs.langchain.com/oss/javascript/langgraph/interrupts","https://www.postgresql.org/docs/18/explicit-locking.html"]
+}

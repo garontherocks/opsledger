@@ -35,6 +35,9 @@ jobs:
         name: Native lifecycle lock-overlap regression
         run: node --experimental-strip-types --test tests/lifecycle-outbox.integration.test.ts
       - if: matrix.lane == 'api'
+        name: Native QA state and independent process recovery
+        run: npm run m4:state-test
+      - if: matrix.lane == 'api'
         run: npm run m3:test
       - if: matrix.lane == 'api'
         run: npm run mcp:test
