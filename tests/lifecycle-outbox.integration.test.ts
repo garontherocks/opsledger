@@ -24,7 +24,8 @@ test('native reopen and outbox dispatch preserve progress under controlled lock 
   await store.act('north-lead',NORTH,incident.id,{action:'resolve',resolutionSummary:'Synthetic recovery before recurrence',expectedRevision:4});
   await store.act('north-lead',NORTH,incident.id,{action:'close',expectedRevision:5});
   await db.pool.query('UPDATE domain_outbox SET dispatched=true WHERE incident_id<>$1 OR revision<>6',[incident.id]);
-  const actorLocked=Promise.withResolvers<void>(),workspaceLocked=Promise.withResolvers<void>();
+  function barrier(){let resolve!:()=>void;const promise=new Promise<void>(ready=>{resolve=ready;});return {promise,resolve};}
+  const actorLocked=barrier(),workspaceLocked=barrier();
   const events:string[]=[];
   const overlapped=new Proxy(db.pool,{get(pool,key){
    if(key==='connect')return async()=>{
