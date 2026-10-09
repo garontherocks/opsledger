@@ -9,9 +9,9 @@ Phases preserved: 11 direct bounded QA agent, 12 MCP stdio fundamentals, 13 Skil
 | Phase 13 knowledge/HTTP | reviewed progressive skill, checked prompt, agent consumes MCP; local credential/security matrix; engineering complete; full branch CI green on 4510690 |
 | Prior regressions | unconditional lint/types/build/audit/unit/native/AI/browser lanes retained; green: 48 units, 7 M3 + 6 MCP suites, 8 agent fixtures, 114 AI evals, 82 native integrations and 9 browser flows; [exact receipt](../evidence/phase13-ci-receipt.json) |
 | Evidence | synthetic run traces, raw protocol transcript, context snapshot, HTTP matrix; no tokens/private traces committed |
-| Learning | per-phase materials accumulated; one M3 consolidated checkpoint prepared, actual answers pending |
-| Desktop | one actual pinned-provider direct/stdio/HTTP bundle prepared; hardware run pending |
-| Human semantic review | selected material samples only; actual judgments pending |
+| Learning | per-phase materials accumulated; completed; seven actual learner answers and architecture/scenario explanations recorded |
+| Desktop | completed at 52b1f56; 9 runs / 54 calls / 9 turn_budget blocks / 0 drafts / 0 provider errors |
+| Human semantic review | complete: blocked run accepted as safe denial; final draft review not applicable |
 | M4 authorization | absent; stop before Phase 14 |
 
 Architecture/current state:
@@ -54,3 +54,9 @@ The user attempted handoff 544f22edf55c4abd806751e693162d936c0aa7e0 on Windows /
 ## Corrective engineering acceptance — 2026-10-09
 
 The Windows launcher defect is corrected on cf4c6f0c2a97bcc494eaeb2b2d5a39dcc16ea1d2. Actual CI run 37867155568 passed all three lanes: Windows Node 24.19.0 (8 MCP + 7 M3 tests, zero failures/skips), Linux API (48 units, 8 MCP + 7 M3 tests, 8 agent fixtures, 114 AI regressions, zero unexpected egress, 82 native integrations with zero skips, restore/baseline) and all nine browser flows; lint/types/build/audit green. [Exact receipt](../evidence/m3-windows-correction-ci-receipt.json), [correction/security review](m3-windows-launcher-correction.md). This supersedes the reopened engineering blocker, without replacing the failed desktop evidence or claiming successful local model runs. The final handoff successor changes documentation/evidence only; its executable code matches the tested corrective SHA. M3 desktop, human semantic sampling and Teach-Back remain pending; M3 is not formally accepted. Stop before Phase 14/M4.
+
+## Actual M3 milestone checkpoint and acceptance check — 2026-10-09
+
+The user completed the desktop/human checkpoint at 52b1f567766a0098313c5637e4ec6f00c7d54c0d: 9 agent runs, 54 provider calls, 0 provider errors, 0 drafts; all 9 safely blocked at six-turn turn_budget across direct/stdio/HTTP. Representative blocked run: Accept as safe controller denial. Final draft review: not applicable. Seven learner answers, two architecture flows, controlled failures and both Senior/Staff scenarios are recorded in [actual checkpoint](m3-human-checkpoint.md); no additional answers or judgments inferred. No desktop/Teach-Back rerun or model/prompt/budget change.
+
+The 9/9 bounded blockage is poor/inconclusive live model quality, not transport failure or successful task completion. It does not violate the Phase 11–13 foundations DoD by itself; provisional tool-selection release quality is not demonstrated. Formal M3 acceptance is nevertheless **blocked** by the later required browser lifecycle CI failure on this handoff (run 37867546978), despite API/Windows passing and earlier corrective CI being green. [Formal acceptance check](m3-acceptance-check.md) distinguishes this engineering blocker from model debt. Earlier pending-human notices are historical and superseded; actual checkpoint is complete, milestone acceptance remains pending engineering resolution. PR #5 unmerged; no Phase 14/M4 authorization.

@@ -1,4 +1,6 @@
-# Consolidated M3 Teach-Back — actual answers pending
+# Consolidated M3 Teach-Back — completed 2026-10-09
+
+Actual user explanations are recorded in [M3 human checkpoint](m3-human-checkpoint.md). All seven questions, both architecture flows, controlled failures and both Senior/Staff scenarios were supplied by the user; none were inferred. The questions below remain as historical learning material, not a new request.
 
 Answer briefly in your own words; no per-phase checkpoint and no assumed learner responses.
 
@@ -18,4 +20,4 @@ Senior/Staff scenarios (pick one or cover both briefly):
 - A team wants to enable Bash because a skill lists allowed-tools. Explain the separate executor/approval/isolation decision and why metadata is insufficient.
 - A new MCP server claims read-only capability and returns convincing cited text. Explain trusted-server onboarding, result validation, tenant/source lifecycle boundaries and why evidence cannot acquire operational authority.
 
-Actual answers and judgments must be recorded later, not inferred from M2 answers or CI outcomes.
+Actual M3 answers and judgments are now recorded in m3-human-checkpoint.md, independently of M2 answers and CI outcomes. No repeated checkpoint is requested.
