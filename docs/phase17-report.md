@@ -1,4 +1,4 @@
-# Phase 17 — signed n8n orchestration, tested engineering gate complete
+# Phase 17 — tested code green; final-head CI blocked
 
 Base: accepted M4 merge 7cd2ca0ba226c2979a887a5f987874208ce6a279. Separate optional TypeScript service over the existing QaWorkflow; main incident/UI behavior is untouched. n8n 2.42.6 Community is an infrastructure runtime, not a product dependency or new authority source. Official webhook/security/CLI/license docs and exact release checked 2026-10-09; references are in lab/n8n/README.md.
 
@@ -33,3 +33,9 @@ Run 37988055068 showed readiness was necessary but did not fix registration: the
 Full required CI run [37989092756](https://github.com/garontherocks/opsledger/actions/runs/37989092756) passed API, browser and Windows on tested code 76bfc256ecfe5a378308c55c118b75f3ec2e280e (actual checkout ba49cf0528142baedc6f402635085538d2c19d59). [Receipt](../evidence/phase17-ci-receipt.json). Native bridge 10/10, existing durable workflow 14/14 and product integration 83/83 passed without failures/skips. Actual n8n imported credentials/workflow, published through its default outbox path, denied unauthorized delivery/forged signatures, returned unverified review state, deduplicated one triage invocation and committed one report effect through the existing approval fixture. The actual exported JSON and runtime receipt are in the linked CI artifact (7-day retention); the reviewed import workflow is tracked in lab/n8n/qa-report.json. Triage, checks and approval inputs are fixtures. No live reasoning, actual human approval, semantic value, exactly-once delivery or operational/release authority is inferred.
 
 Phase 17 implementation, security cases, reproduction/license guide, controlled failure/recovery evidence and learning material are complete on the tested code. The documentation successor retains its own full CI before Phase 18 begins. M5 acceptance is still pending Phase 18/19 and the actual consolidated milestone checkpoint. PR #7 remains unmerged; no M6/Phase 20.
+
+## Final-head external blocker
+
+Documentation/evidence head aad62a4b64b7e3ac74e45c1927c191431e3658a4 failed required API CI run 37989722571 (checkout 524377f5feb4250c639b0d80faa982f9280f104c): Docker Hub returned HTTP 429 Too Many Requests while resolving postgres:18.6 in the existing DB image build. The API lane did not reach application tests. This does not invalidate the real successful runtime evidence at 76bfc256ecfe5a378308c55c118b75f3ec2e280e, but it prevents accepting the resulting PR head or advancing Phase 18. Windows passed; browser result is checked separately in CI. No retry-to-green, skipped native test, image/version substitution, altered gate or quota workaround.
+
+The successor records this observed blocker and requires its own CI. Phase 17 final-head closure and M5 acceptance remain pending until required CI succeeds. Phase 18/19 have not begun; PR #7 remains unmerged.
