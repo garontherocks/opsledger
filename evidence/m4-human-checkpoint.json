@@ -1,0 +1,106 @@
+{
+  "milestone": "M4 — Agentic QA",
+  "phases": [
+    14,
+    15,
+    16
+  ],
+  "date": "2026-10-09",
+  "source": "explicit user final human checkpoint",
+  "implementationHandoffSha": "12f60cc2d8e8d9ad757127931bfa06aafadb3a47",
+  "implementationUnchanged": true,
+  "desktopBundleRerun": false,
+  "desktopBundleTuned": false,
+  "desktop": {
+    "completed": true,
+    "fixture": false,
+    "generations": 16,
+    "providerErrors": 0,
+    "contractFailures": 0,
+    "automaticQualityAcceptance": false,
+    "defaultRetrievalAdoption": false,
+    "model": "qwen3:8b-q4_K_M",
+    "expectedOllamaRuntime": "0.34.0",
+    "corpusSha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4"
+  },
+  "semanticReview": [
+    {
+      "sample": "reopen-en baseline",
+      "judgment": "Edit"
+    },
+    {
+      "sample": "reopen-en retrieval",
+      "judgment": "Reject"
+    },
+    {
+      "sample": "isolation-es baseline",
+      "judgment": "Edit"
+    },
+    {
+      "sample": "isolation-es retrieval",
+      "judgment": "Reject"
+    },
+    {
+      "sample": "poison-en retrieval",
+      "judgment": "Accept"
+    },
+    {
+      "sample": "absent-es retrieval",
+      "judgment": "Accept"
+    }
+  ],
+  "interpretation": {
+    "retrievalProvenanceIntegrity": "worked mechanically",
+    "semanticReasoning": "Correct retrieval did not reliably produce better semantic reasoning",
+    "defaultRetrievalAdoption": false,
+    "semanticPercentageClaimed": false,
+    "productValueClaimed": false,
+    "modelPromotion": false
+  },
+  "teachBack": {
+    "questions1Through7": "passed",
+    "architectureFlowA": "passed",
+    "architectureFlowB": "passed",
+    "failedRequiredCheckCannotBeOverridden": "passed",
+    "approvalExpiryAcrossToctou": "passed",
+    "shaBindingScenario": "passed",
+    "graphRuntimeN8nAuthorityBoundaryScenario": "passed",
+    "detailedAnswersInvented": false,
+    "repeated": false
+  },
+  "humanHitlSecurityJudgment": {
+    "judgment": "Accepted for the limited M4 scope",
+    "failedRequiredCheckCannotBeApproved": true,
+    "approvalBindings": [
+      "action",
+      "receipt",
+      "SHA",
+      "identity",
+      "expiry"
+    ],
+    "oneTimeConsumable": true,
+    "onlyAuthorizedEffect": "store one local report",
+    "mergeAuthority": false,
+    "releaseAuthority": false,
+    "actualUiApprovalOrReportWriteClaimed": false
+  },
+  "acceptance": {
+    "scope": "limited M4 Agentic QA lab, Phases 14–16",
+    "engineeringAndHumanGatesSatisfied": true,
+    "currentFinalHeadCiRequired": true,
+    "phase14Exit": "rejected default adoption",
+    "criteriaChanged": false,
+    "remainingRequiredBlockersAtReview": [],
+    "m5Authorized": false,
+    "pr6MergeAuthorized": false
+  },
+  "preserved": {
+    "m3LiveRuns": 9,
+    "m3TurnBudgetBlocks": 9,
+    "m3Drafts": 0,
+    "originalWindowsFailure": true,
+    "originalLifecycleDeadlockFailure": true,
+    "phase16ExpiryFailure": true,
+    "existingArchitecturalCaveats": true
+  }
+}

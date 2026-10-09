@@ -1,0 +1,12 @@
+{
+ "source":"actual local Work development executions",
+ "backend":"pglite-socket",
+ "command":"node --experimental-strip-types --test tests/qa-workflow.integration.test.ts",
+ "reproductions":2,
+ "failure":"Connection terminated unexpectedly on the next scenario after intentionally denying DELETE from the immutable approval ledger",
+ "rootEvidence":"pg-pool query callback calls client.release(err); error connection is discarded. Single-client PGlite socket rejected the immediate reconnect while prior closure was in flight.",
+ "correction":"Expected SQL denials run on one borrowed client in BEGIN/ROLLBACK, retaining a usable connection; require exact trigger SQLSTATE P0001",
+ "noRetriesSleepsOrWeakerAssertions":true,
+ "classification":"test-harness synchronization, not AI/provider/MCP quality",
+ "postCorrection":"local workflow assertions and native required CI pass; original failed attempts are retained here"
+}

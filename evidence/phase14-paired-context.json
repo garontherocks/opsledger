@@ -1,0 +1,126 @@
+{
+  "version": "qa-context-eval-v1",
+  "kind": "deterministic-plumbing-only",
+  "paired": [
+    {
+      "query": "revision",
+      "expected": "packages/contracts/src/lifecycle.ts",
+      "baselineHasEvidence": false,
+      "retrievedHasEvidence": true,
+      "sources": [
+        {
+          "path": "docs/m3-lifecycle-remediation.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "15489c67b7e139eff5691d2d991f99e0e87b34cb23692ae4d84b07120ef63f42"
+        },
+        {
+          "path": "docs/m3-lifecycle-remediation.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "15489c67b7e139eff5691d2d991f99e0e87b34cb23692ae4d84b07120ef63f42"
+        },
+        {
+          "path": "packages/contracts/src/lifecycle.ts",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "a6f0ec245c76c8690949413752e752528af480b7d0ed2a4e1f65b90d8289797a"
+        }
+      ]
+    },
+    {
+      "query": "workspace",
+      "expected": "docs/phase1-contract.md",
+      "baselineHasEvidence": false,
+      "retrievedHasEvidence": true,
+      "sources": [
+        {
+          "path": "docs/phase1-contract.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "429789598d34c7fbd5ba076f141a6780a51c1ed33473d4b6106b17859cb42a99"
+        },
+        {
+          "path": "docs/phase1-contract.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "429789598d34c7fbd5ba076f141a6780a51c1ed33473d4b6106b17859cb42a99"
+        },
+        {
+          "path": "docs/phase1-contract.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "429789598d34c7fbd5ba076f141a6780a51c1ed33473d4b6106b17859cb42a99"
+        }
+      ]
+    },
+    {
+      "query": "deadlock",
+      "expected": "docs/m3-lifecycle-remediation.md",
+      "baselineHasEvidence": false,
+      "retrievedHasEvidence": true,
+      "sources": [
+        {
+          "path": "docs/m3-lifecycle-remediation.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "15489c67b7e139eff5691d2d991f99e0e87b34cb23692ae4d84b07120ef63f42"
+        },
+        {
+          "path": "docs/adr/007-ai-separation.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "1aaea4a939f81564c145fbf893180154444445371505c6365cc8e8abc15a9619"
+        },
+        {
+          "path": "docs/m3-lifecycle-remediation.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "15489c67b7e139eff5691d2d991f99e0e87b34cb23692ae4d84b07120ef63f42"
+        }
+      ]
+    },
+    {
+      "query": "authority",
+      "expected": "docs/adr/007-ai-separation.md",
+      "baselineHasEvidence": false,
+      "retrievedHasEvidence": true,
+      "sources": [
+        {
+          "path": "docs/phase13-report.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "2af397dd523afbe9be514cbd9673d485938de3299eb7b2c5fa4c82e6c6238aad"
+        },
+        {
+          "path": "docs/adr/007-ai-separation.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "1aaea4a939f81564c145fbf893180154444445371505c6365cc8e8abc15a9619"
+        },
+        {
+          "path": "docs/m3-lifecycle-remediation.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "15489c67b7e139eff5691d2d991f99e0e87b34cb23692ae4d84b07120ef63f42"
+        }
+      ]
+    },
+    {
+      "query": "audience",
+      "expected": "docs/phase13-report.md",
+      "baselineHasEvidence": false,
+      "retrievedHasEvidence": true,
+      "sources": [
+        {
+          "path": "docs/adr/007-ai-separation.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "1aaea4a939f81564c145fbf893180154444445371505c6365cc8e8abc15a9619"
+        },
+        {
+          "path": "docs/m3-lifecycle-remediation.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "15489c67b7e139eff5691d2d991f99e0e87b34cb23692ae4d84b07120ef63f42"
+        },
+        {
+          "path": "docs/phase13-report.md",
+          "sha": "c55eee55fcfeb4c31e0b252a1573156e2a9d41b4",
+          "digest": "2af397dd523afbe9be514cbd9673d485938de3299eb7b2c5fa4c82e6c6238aad"
+        }
+      ]
+    }
+  ],
+  "baselineEvidenceCoverage": 0,
+  "retrievalEvidenceCoverage": 1,
+  "adoption": "rejected-pending-live-paired-semantic-benefit",
+  "productionQuality": false,
+  "modelQualityImprovement": false
+}

@@ -1,0 +1,9 @@
+import {test,expect} from '@playwright/test';
+test('QA local review shows bound checks, resumes after reload and stores one non-operational report',async({page})=>{
+ await page.goto('/');await page.getByLabel('Email',{exact:true}).fill('north-lead@example.test');await page.getByLabel('Password',{exact:true}).fill(process.env.E2E_PASSWORD!);await page.getByRole('button',{name:'Sign in',exact:true}).click();
+ await page.getByRole('button',{name:'Open QA lab',exact:true}).click();await page.getByRole('button',{name:'Create QA run',exact:true}).click();const panel=page.getByRole('region',{name:'QA lab'});await expect(panel).toContainText('Stage: created');const id=await page.getByLabel('QA run ID').inputValue();
+ await page.getByRole('button',{name:'Prepare context checkpoint',exact:true}).click();await page.getByRole('button',{name:'Run registered QA checks',exact:true}).click();await expect(panel).toContainText('Stage: awaiting_review');await expect(panel.getByRole('table')).toContainText('domain_policy');await expect(panel.getByRole('table').getByRole('row')).toHaveCount(5);
+ await page.reload();await page.getByRole('button',{name:'Open QA lab',exact:true}).click();await page.getByLabel('QA run ID').fill(id);await page.getByRole('button',{name:'Load QA run',exact:true}).click();await expect(panel).toContainText('Stage: awaiting_review');
+ await page.getByRole('button',{name:'Approve local report',exact:true}).click();await expect(panel).toContainText('Stage: approved');await page.getByRole('button',{name:'Store reviewed QA report',exact:true}).click();await expect(panel).toContainText('Stage: complete');await expect(panel).toContainText('"operationalAuthority": false');await expect(panel).toContainText('"releaseAuthority": false');await expect(page.getByRole('button',{name:'Store reviewed QA report',exact:true})).toHaveCount(0);
+ await page.screenshot({path:'evidence/phase16-qa-review.png',fullPage:true});
+});

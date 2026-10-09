@@ -50,7 +50,7 @@ Work may progress autonomously through consecutive phases inside the explicitly 
 
 Stop automatically at the milestone boundary. Never enter the next milestone without explicit user authorization. Stop earlier for a failed required deterministic gate, serious security issue, architecture/product decision requiring human judgment, or unresolved blocker materially affecting the next phase. Resolve ordinary technical problems autonomously.
 
-**Current authorization:** Phase 6 is human-reviewed and closed. Complete Phase 7's remaining engineering/evals, then Phase 8 → Phase 9 → Phase 10. Stop at M2 — AI Product. Phase 11 and M3 are not authorized.
+**Current authorization (2026-10-09):** M4 — Agentic QA, Phases 14–16, explicitly authorized from accepted M3 main c55eee55fcfeb4c31e0b252a1573156e2a9d41b4. Engineering boundary reached; actual consolidated human/desktop checkpoint pending. Stop before Phase 17/M5. Earlier phase authorization annotations are historical; phase scopes, DoD and thresholds remain unchanged.
 
 ### Consolidated milestone Teach-Back
 
@@ -1163,3 +1163,21 @@ The 9/9 bounded blockage is poor/inconclusive live model quality, not transport 
 M3 is formally accepted for the limited Agent Foundations lab scope at tested code a55fbe29bcfb5e78fdee4dc4c54b5cdca44be479. Full CI run 37953380880 passed API/browser/Windows; controlled native evidence changes from mutation SQLSTATE 40P01 to both handlers committed under identical lock overlap. Five targeted native lifecycle browser runs and all nine full browser flows passed, along with 83 native integrations without skips and unchanged security/AI checks. [Acceptance](m3-acceptance-check.md), [causal remediation](m3-lifecycle-remediation.md), [exact receipt](../evidence/m3-lifecycle-remediation-ci-receipt.json).
 
 This supersedes the previously unresolved lifecycle blocker. Original failure evidence and actual human checkpoint remain preserved. The desktop outcome is still 9/9 safe turn_budget blocks, zero drafts: poor/inconclusive live quality, not promoted model quality or product benefit; provisional release targets remain unproven. No desktop/Teach-Back repeat or AI changes. No required M3 blocker remains; non-blocking limited-lab debt stays documented. PR #5 remains open/unmerged. Recommendation: M4 only after explicit authorization; no Phase 14/M4 has begun. This update changes no roadmap phase scope, DoD or threshold.
+
+## M4 authorized execution and engineering boundary — 2026-10-09
+
+The user explicitly accepted M3/merged PR #5 to main c55eee55fcfeb4c31e0b252a1573156e2a9d41b4 and authorized M4 Phases 14 → 15 → 16. This supersedes earlier historical authorization/status annotations; phase scopes, DoD and thresholds remain unchanged. Each phase passed its own full engineering gate before the next began. Phase 14 default retrieval adoption is rejected for lack of demonstrated live strategy/value benefit (ADR 009), while its scoped context experiment remains available. Phase 15 persists signed typed state/history/reviewed expiring memory. Phase 16 implements fixed bounded checks, durable fenced recovery and SHA/action/identity/expiry HITL for a single local report effect. Full CI run 37960577739 is green on tested code e3426f234e6d4dbed9fb5811ae68cef61fcf85c3; exact branch/checkout identity and evidence are in docs/m4-engineering-report.md and evidence/phase16-ci-receipt.json.
+
+M4 engineering boundary reached. Actual M4 human/desktop/Teach-Back remains pending; no answers or judgments inferred. Actual M3 9/9 turn_budget/zero drafts and original Windows/lifecycle failures remain preserved. No PR #6 merge, Phase 17/M5 start, model/prompt promotion or operational authority. One consolidated checkpoint/bundle is ready. See docs/m4-acceptance-check.md.
+
+
+
+## M4 final expiry correction — 2026-10-09
+
+Final review reopened the Phase 16 engineering gate for approval expiry during an asynchronous SHA check. Corrective code e1fb584b4c3808ae8371f514d0678cd4d0841d20 passed all required lanes in [run 37962926938](https://github.com/garontherocks/opsledger/actions/runs/37962926938), including native application/DB-clock denial tests. Earlier receipts remain historical; [corrective receipt](../evidence/phase16-expiry-ci-receipt.json) supersedes that gate. Final docs-only head retains its own required CI. Actual M4 human/desktop/Teach-Back remains pending; PR #6 unmerged, stop before Phase 17/M5. No phase scope, DoD, threshold or authority change.
+
+## Formal limited-scope M4 acceptance — 2026-10-09
+
+The user completed the final M4 human checkpoint: 16 live desktop generations, zero provider/contract failures, six explicit semantic judgments, limited-scope HITL acceptance and all consolidated Teach-Back items passed. [Actual checkpoint](../evidence/m4-human-checkpoint.json), [formal acceptance](m4-acceptance-check.md). Provenance worked mechanically; retrieval did not reliably improve semantic reasoning and remains experimental/not adopted by default. No percentage, promotion or product-value claim.
+
+All unchanged phase DoD and milestone requirements are satisfied within the limited M4 lab scope; formal acceptance is recorded with required CI on the resulting docs/evidence-only head. Failed final-head gates must reopen acceptance. No scope/threshold waiver or executable change. Earlier pending annotations are preserved history, superseded by this checkpoint. M3 9/9 turn_budget/zero drafts and original Windows/lifecycle/expiry failures remain preserved. PR #6 must not be merged. Phase 17/M5 is not authorized; stop at M4.

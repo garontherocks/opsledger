@@ -14,7 +14,7 @@ test('Phase 5 server flags and graceful outage boundaries',async t=>{
   const headers={origin:settings.BASE_URL,cookie:login.cookies.map(c=>c.name+'='+c.value).join('; ')};
   const base='/api/v1/workspaces/'+NORTH;
   await t.test('capabilities are server-derived; no AI capability',async()=>{
-   const response=await app.inject({url:'/api/v1/me',headers});assert.deepEqual(response.json().features,{readOnly:true,knowledge:false,async:false,ai:false,embeddings:false});assert.equal(response.headers['cache-control'],'no-store');
+   const response=await app.inject({url:'/api/v1/me',headers});assert.deepEqual(response.json().features,{readOnly:true,knowledge:false,async:false,ai:false,embeddings:false,qaLab:false});assert.equal(response.headers['cache-control'],'no-store');
   });
   await t.test('maintenance rejects direct writes without domain mutations',async()=>{
    const before=(await db.pool.query('SELECT count(*) FROM incidents')).rows[0].count;
@@ -34,3 +34,4 @@ test('Phase 5 server flags and graceful outage boundaries',async t=>{
   await t.test('sign out remains available during maintenance',async()=>{assert.equal((await app.inject({method:'POST',url:'/api/auth/sign-out',headers,payload:{}})).statusCode,200);assert.equal((await app.inject({url:'/api/v1/me',headers})).statusCode,401);});
  }finally{await app.close();await db.close();}
 });
+

@@ -1,0 +1,14 @@
+{
+ "source":"actual Work controlled regression before correction",
+ "beforeCodeSha":"e3426f234e6d4dbed9fb5811ae68cef61fcf85c3",
+ "previousFullCI":"37960577739 (passed known tests; did not cover expiry during target recheck)",
+ "command":"node --experimental-strip-types --test --test-name-pattern='Phase 16' tests/qa-workflow.integration.test.ts",
+ "case":"approval expiry during asynchronous target recheck denies the report write",
+ "control":"One-second approval; mocked Date advances two seconds during the second authoritative SHA check; no sleeps or retries",
+ "before":"Missing expected rejection: consume succeeded after approval expiry",
+ "rootCause":"Expiry was checked before awaiting the final target verification, leaving an async validation/write gap",
+ "effectScope":"One local QA report, no incident/model/MCP/merge/release authority",
+ "correction":"Recheck run/approval expiry after target verification and enforce both timestamps with clock_timestamp at the transactional INSERT itself",
+ "actualHumanApproval":false,
+ "fullCorrectiveCI":"recorded after correction; no previous green run substituted as proof"
+}

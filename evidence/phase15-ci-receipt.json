@@ -1,0 +1,27 @@
++{
+  "phase": 15,
+  "sha": "7018867f64b058c08026b808085e8254214a7bb3",
+  "run": 37957661131,
+  "url": "https://github.com/garontherocks/opsledger/actions/runs/37957661131",
+  "jobs": [
+    {
+      "id": 113912178934,
+      "name": "windows-launchers",
+      "conclusion": "success"
+    },
+    {
+      "id": 113912179288,
+      "name": "acceptance (api)",
+      "conclusion": "success"
+    },
+    {
+      "id": 113912179324,
+      "name": "acceptance (browser)",
+      "conclusion": "success"
+    }
+  ],
+  "stateTests": 7,
+  "actualIndependentNodeRecovery": true,
+  "nativeProof": "Actual independent Node child rehydrated native checkpoint revision=2, history=2, operationalAuthority=false",
+  "phase16StartedOnlyAfterAllJobsPassed": true
+}

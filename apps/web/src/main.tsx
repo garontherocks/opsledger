@@ -7,7 +7,8 @@ import {IncidentDetail} from './IncidentDetail.tsx';
 import {AsyncPanel,NotificationsPanel} from './AsyncPanel.tsx';
 import {SummaryPanel} from './SummaryPanel.tsx';
 import {KnowledgePanel} from './KnowledgePanel.tsx';
-type Identity={features:{readOnly:boolean,knowledge:boolean,async:boolean,ai:boolean,embeddings:boolean},user:{name:string,email:string},workspaces:{id:string,name:string,role:string}[]};
+import {QaPanel} from './QaPanel.tsx';
+type Identity={features:{readOnly:boolean,knowledge:boolean,async:boolean,ai:boolean,embeddings:boolean,qaLab:boolean},user:{name:string,email:string},workspaces:{id:string,name:string,role:string}[]};
 type Service={id:string,name:string};
 function App(){
   const [reload,setReload]=useState(0);
@@ -55,7 +56,7 @@ function App(){
       })}>Sign out</button></nav>
       {!identity.workspaces.length?<p>No active workspace access.</p>:<>
       <label htmlFor="workspace">Workspace</label><select id="workspace" disabled={busy} value={workspace} onChange={e=>setWorkspace(e.target.value)}>{identity.workspaces.map(w=><option key={w.id} value={w.id}>{w.name}</option>)}</select>
-      <nav aria-label="Workspace views"><button onClick={()=>setView('incidents')}>Open incidents</button>{identity.features.knowledge&&<button onClick={()=>setView('knowledge')}>Open knowledge</button>}{identity.features.async&&<button onClick={()=>setView('notifications')}>Open notifications</button>}</nav>
+      <nav aria-label="Workspace views"><button onClick={()=>setView('incidents')}>Open incidents</button>{identity.features.knowledge&&<button onClick={()=>setView('knowledge')}>Open knowledge</button>}{identity.features.async&&<button onClick={()=>setView('notifications')}>Open notifications</button>}{identity.features.qaLab&&<button onClick={()=>setView('qa')}>Open QA lab</button>}</nav>
       {identity.features.readOnly&&<p role="status">Maintenance mode: workspace writes are paused. Existing queued work can finish.</p>}
       {view==='incidents'&&<div className="columns"><section><h2>Report incident</h2><form onSubmit={create}><fieldset disabled={identity.features.readOnly}>
         <label>Title<input name="title" minLength={5} maxLength={120} required/></label>
@@ -75,8 +76,10 @@ function App(){
         </section></div>}
       {view==='notifications'&&identity.features.async&&<NotificationsPanel key={workspace} workspace={workspace} readOnly={identity.features.readOnly} onOpen={id=>void action(async()=>{setDetail(await api<IncidentDTO>('/api/v1/workspaces/'+workspace+'/incidents/'+id));setView('incidents');})}/>}
       {view==='knowledge'&&identity.features.knowledge&&<KnowledgePanel aiEnabled={identity.features.ai} semanticEnabled={identity.features.embeddings} key={workspace} workspace={workspace} readOnly={identity.features.readOnly} role={identity.workspaces.find(w=>w.id===workspace)?.role??''} services={services}/>}
+      {view==='qa'&&identity.features.qaLab&&<QaPanel key={workspace} workspace={workspace} readOnly={identity.features.readOnly} role={identity.workspaces.find(w=>w.id===workspace)?.role??''}/>}
       </>}
       </>}
       <footer>OpsLedger · {identity?.features.ai?'Local lab · AI drafts require review':'Deterministic v1 · No AI assistance'}</footer></main></>;
 }
 const element=document.getElementById('root');if(!element)throw new Error('Missing root');createRoot(element).render(<App/>);
+

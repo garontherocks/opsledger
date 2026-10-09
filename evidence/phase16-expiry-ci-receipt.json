@@ -1,0 +1,40 @@
+{
+  "phase": 16,
+  "correction": "approval expiry during target recheck and DB write",
+  "branchSha": "e1fb584b4c3808ae8371f514d0678cd4d0841d20",
+  "actualCheckoutSha": "3b79497ef63480a2695b24125c390c9f680bbc80",
+  "branchTree": "db40a87ad9486286b7fc7b7f8a48755c04c71d0a",
+  "checkoutTree": "db40a87ad9486286b7fc7b7f8a48755c04c71d0a",
+  "treesIdentical": true,
+  "run": 37962926938,
+  "url": "https://github.com/garontherocks/opsledger/actions/runs/37962926938",
+  "jobs": [
+    {
+      "id": 113930028200,
+      "name": "acceptance (api)",
+      "conclusion": "success"
+    },
+    {
+      "id": 113930028418,
+      "name": "acceptance (browser)",
+      "conclusion": "success"
+    },
+    {
+      "id": 113930028573,
+      "name": "windows-launchers",
+      "conclusion": "success"
+    }
+  ],
+  "nativeWorkflowTests": 14,
+  "nativeWorkflowSkips": 0,
+  "coreNativeIntegrations": 83,
+  "requiredExpiryCases": [
+    "application time advances during second target check; denied with zero reports",
+    "native DB clock denies expired approval despite application clock five seconds behind"
+  ],
+  "previousGreenNotProofOfNewCase": true,
+  "desktopUserResults": "pending",
+  "actualHumanApproval": false,
+  "m3LiveHistoryUnchanged": true,
+  "m5Started": false
+}

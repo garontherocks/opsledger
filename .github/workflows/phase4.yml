@@ -1,4 +1,4 @@
-name: M2 deterministic product and AI boundaries
+name: OpsLedger deterministic product and AI/QA boundaries
 on: [push, pull_request]
 defaults:
   run:
@@ -29,10 +29,20 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run lint && npm run typecheck && npm run build
       - run: npm run test:unit
+      - run: npm run m4:context-test
       - run: npm audit --audit-level=moderate
       - if: matrix.lane == 'api'
         name: Native lifecycle lock-overlap regression
         run: node --experimental-strip-types --test tests/lifecycle-outbox.integration.test.ts
+      - if: matrix.lane == 'api'
+        name: Native QA state and independent process recovery
+        run: npm run m4:state-test
+      - if: matrix.lane == 'api'
+        name: Native bounded QA workflow, crash boundaries and actual registered suite
+        run: npm run m4:workflow-test
+      - if: matrix.lane == 'api'
+        name: M4 desktop bundle plumbing (fixture, not model-quality evidence)
+        run: M4_BUNDLE_FIXTURE=true npm run ai:m4-harness
       - if: matrix.lane == 'api'
         run: npm run m3:test
       - if: matrix.lane == 'api'
@@ -58,6 +68,9 @@ jobs:
           done
       - if: matrix.lane == 'browser'
         run: npm run test:e2e | tee evidence/phase10-ci-e2e.log
+      - if: matrix.lane == 'browser'
+        name: QA approval UI (fixture checks; real session, API and DB)
+        run: E2E_FLOW=qa npx playwright test tests/browser/qa.spec.ts
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
@@ -65,6 +78,10 @@ jobs:
           path: |
             evidence/phase13-*
             evidence/m3-*
+            evidence/phase14-*
+            evidence/phase15-*
+            evidence/phase16-*
+            evidence/m4-*
             evidence/phase12-*
             evidence/phase11-*
             evidence/phase10-*
@@ -88,3 +105,7 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run mcp:test
       - run: npm run m3:test
+      - run: npm run m4:context-test
+      - name: Windows reviewed fixed executable and cross-platform import URLs
+        run: node --experimental-strip-types --test tests/qa-runner.integration.test.ts
+

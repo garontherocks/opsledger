@@ -19,12 +19,16 @@ export function config(env: NodeJS.ProcessEnv = process.env) {
     KNOWLEDGE_ENABLED:z.enum(['true','false']).default('true'),
     ASYNC_ENABLED:z.enum(['true','false']).default('true'),
     LAB_MODE:z.enum(['true','false']).default('false'),
+    QA_LAB_ENABLED:z.enum(['true','false']).default('false'),
+    QA_TARGET_SHA:z.string().regex(/^[a-f0-9]{40}$/).optional(),
   }).parse(env);
   if(settings.NODE_ENV==='production' && settings.LAB_MODE==='true') throw new Error('Lab mode is forbidden in production');
   if(settings.NODE_ENV==='production' && new URL(settings.BASE_URL).protocol!=='https:') throw new Error('HTTPS required in production');
   if(settings.NODE_ENV==='production'&&!env.STORAGE_DIR)throw new Error('Explicit private STORAGE_DIR required in production');
   if(settings.AI_ENABLED==='true'&&(settings.LAB_MODE!=='true'||settings.NODE_ENV==='production'||!settings.OLLAMA_DIGEST))throw new Error('Phase 6 AI requires nonproduction synthetic lab mode and a pinned local model digest');
   if(settings.EMBEDDINGS_ENABLED==='true'&&(settings.LAB_MODE!=='true'||settings.NODE_ENV==='production'||!settings.EMBEDDING_DIGEST))throw new Error('Embeddings require a nonproduction synthetic lab and pinned digest');
+  if(settings.QA_LAB_ENABLED==='true'&&(settings.LAB_MODE!=='true'||settings.NODE_ENV==='production'||settings.BIND_HOST!=='127.0.0.1'||!settings.QA_TARGET_SHA))throw new Error('QA requires a loopback nonproduction lab and explicit reviewed checkout SHA');
   return settings;
 }
 export type Settings=ReturnType<typeof config>;
+

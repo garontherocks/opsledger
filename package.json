@@ -36,6 +36,11 @@
     "mcp:server": "node --import ./scripts/mcp-egress.mjs --experimental-strip-types scripts/qa-mcp-server.ts",
     "mcp:test": "node --import ./scripts/mcp-egress.mjs --experimental-strip-types --test tests/qa-mcp.integration.test.ts",
     "m3:test": "node --import ./scripts/m3-egress.ts --experimental-strip-types --test tests/qa-m3.integration.test.ts",
+    "m4:context-test": "node --import ./scripts/mcp-egress.mjs --experimental-strip-types --test tests/qa-context.unit.test.ts",
+    "m4:state-test": "node --experimental-strip-types --test tests/qa-state.integration.test.ts",
+    "m4:workflow-test": "node --experimental-strip-types --test --test-concurrency=1 tests/qa-workflow.integration.test.ts tests/qa-crash.integration.test.ts tests/qa-api.integration.test.ts tests/qa-runner.integration.test.ts",
+    "ai:m4-desktop": "node --env-file=.env --import ./scripts/m3-egress.ts --experimental-strip-types scripts/m4-desktop.ts",
+    "ai:m4-harness": "node --import ./scripts/m3-egress.ts --experimental-strip-types scripts/m4-desktop.ts",
     "ai:m3-desktop": "node --env-file=.env --import ./scripts/m3-egress.ts --experimental-strip-types scripts/m3-desktop.ts"
   },
   "dependencies": {

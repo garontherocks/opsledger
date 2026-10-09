@@ -1,0 +1,26 @@
++{
+  "phase": 14,
+  "sha": "5628a6bb1bfc3891bcc9050237b375edeb490fa8",
+  "run": 37956355456,
+  "url": "https://github.com/garontherocks/opsledger/actions/runs/37956355456",
+  "jobs": [
+    {
+      "id": 113907748968,
+      "name": "acceptance (api)",
+      "conclusion": "success"
+    },
+    {
+      "id": 113907749259,
+      "name": "windows-launchers",
+      "conclusion": "success"
+    },
+    {
+      "id": 113907749263,
+      "name": "acceptance (browser)",
+      "conclusion": "success"
+    }
+  ],
+  "contextTests": 3,
+  "adoption": "rejected-pending-live-semantic-benefit",
+  "phase15StartedOnlyAfterAllJobsPassed": true
+}

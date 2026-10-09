@@ -1,0 +1,68 @@
+# M4 — Agentic QA engineering handoff
+
+Initial Phase 16 gates passed on e3426f234e6d4dbed9fb5811ae68cef61fcf85c3, with required Linux API/browser and Windows CI green at [run 37960577739](https://github.com/garontherocks/opsledger/actions/runs/37960577739). Actual CI checkout d19fed05c2e5822a5a100aaf61b0eb0af733e318 has exactly the same tree as the branch code commit; [receipt](../evidence/phase16-ci-receipt.json) records both identities. The initial handoff was superseded by the expiry correction below; a final documentation/evidence successor requires its own head checks.
+
+**Milestone boundary reached; final engineering review identified an expiry/write TOCTOU gap not covered by the earlier green run. A controlled red test reproduces it. Correction rechecks expiry after asynchronous target verification and at the transactional INSERT via the DB clock; corrective full CI passed on e1fb584b4c3808ae8371f514d0678cd4d0841d20 / [37962926938](https://github.com/garontherocks/opsledger/actions/runs/37962926938), all three lanes green. The user completed the final human/desktop checkpoint; M4 is formally accepted for the limited lab scope, with required final-head CI and all caveats retained. No M5 started; PR #6 unmerged.**
+
+## Individual phase boundaries
+
+| Phase | Scope / decision | Required phase engineering gate |
+|---|---|---|
+| 14 | Separate QA index, pinned space, bounded provenance, scoped/stale/poisoned context tests; reject default adoption because mechanical coverage is not measured live strategy/value benefit | 5628a6bb1bfc3891bcc9050237b375edeb490fa8 / [37956355456](https://github.com/garontherocks/opsledger/actions/runs/37956355456), all three lanes green before Phase 15 |
+| 15 | Typed PostgreSQL checkpoints, immutable history, reviewed expiring risk memory; retain direct runtime after isolated comparison; native independent-process recovery | 7018867f64b058c08026b808085e8254214a7bb3 / [37957661131](https://github.com/garontherocks/opsledger/actions/runs/37957661131), all three lanes green before Phase 16 |
+| 16 | Bounded durable registered check workflow, fenced recovery, SHA/action/identity/expiry HITL and one transactional local report effect | e3426f234e6d4dbed9fb5811ae68cef61fcf85c3 / [37960577739](https://github.com/garontherocks/opsledger/actions/runs/37960577739), all three lanes green |
+
+Reports: [14](phase14-report.md), [15](phase15-report.md), [16](phase16-report.md). Decisions: [QA context](adr/009-qa-context-adoption.md), [durability/runtime](adr/010-qa-durable-state.md). [Current architecture/data flow](m4-architecture.md).
+
+## Actual validation
+
+| Layer | Actual observed result |
+|---|---|
+| Existing domain/provider/controller units | 48 passed |
+| QA context / provenance / paired mechanics | 3 passed; 5/5 known mechanical evidence needs found, no semantic/value inference |
+| Native Phase 15 state/history/memory | 7 tests passed; independent Node child recovered committed revision 2 |
+| Native Phase 16 workflow/API/crash/real runner | 14 tests passed, zero skips after expiry correction |
+| Abrupt native child crash modes | context, claim, receipt, approval, report, after_report: all recovered; one stored report each |
+| Actual fixed registered suite | all four gates passed on Linux and Windows, bound to actual checkout SHA |
+| Existing native product integrations | 83 passed, zero skips; lifecycle lock-overlap regression also passed |
+| Existing MCP / Skill / agent fixtures | 8 MCP, 7 M3, 8 agent fixtures passed |
+| Existing AI regression / egress | 114 deterministic regressions passed; zero unexpected egress; M2 fixture bundle passed |
+| Browser | all nine existing flows + QA review flow; five fresh lifecycle runs, no retries |
+| Build / static / dependencies | lint, strict typecheck, build, audit passed; zero reported vulnerabilities |
+| M4 desktop harness in Work | 16 fixture abstentions, zero provider/contract errors; not live generation or human acceptance |
+
+Commands are in [.github/workflows/phase4.yml](../.github/workflows/phase4.yml). Local supplemental PGlite/Chromium 153 UI checks passed, but native PostgreSQL and CI-pinned Playwright/Chromium remain the required evidence. [Exact receipt](../evidence/phase16-ci-receipt.json); artifact uploads preserve generated native/Windows/browser results. [Development failures](../evidence/phase16-development-failures.json) and [initial PGlite child limitation](../evidence/phase15-development-failure.json) remain honest records.
+
+## Security / evaluation summary
+
+Authorization and workspace/owner isolation, current SHA/provenance/expiry, immutable receipt integrity and approval identity/action/replay/TOCTOU checks are deterministic. Invalid proposals cannot supply executable paths/commands or required-check outcomes. Fixed suite execution releases the DB connection, then revalidates membership/target; revoked access discards its result. A lease allows at most two read-only attempts and rejects late fenced completions. Atomic unique report insertion prevents duplicate effects after rollback or lost acknowledgement. Memory stores reviewed risk codes and citation metadata, not raw secrets/transcripts/instructions.
+
+AI remains optional/unverified with no operational authority. QA retrieval is experimental and rejected for default adoption; the desktop bundle is a known-case paired generation/interpretation experiment, not model promotion. Valid hashes/quotes establish integrity/reference validity, not truth. Direct reading is still the baseline. Existing M2 calibrated bilingual promotion threshold/policy is unchanged; no product-value claim. Full CI is independent of the four local lab checks and cannot be bypassed by approval/model prose.
+
+## Preserved M1–M3 facts
+
+Base main c55eee55fcfeb4c31e0b252a1573156e2a9d41b4 is the user's PR #5 merge of formally accepted M3. Original Windows --import failure and lifecycle deadlock failure/correction remain versioned. Actual M3 live result remains 9/9 turn_budget, 54 provider calls, zero errors, zero drafts. No prompt/model/budget change or historical rewrite; no desktop/Teach-Back repeat. M1/M2 behavior and all required deterministic gates remain intact.
+
+## Remaining acceptance work versus debt
+
+The required milestone human gates are complete: the user reports one live desktop bundle, six semantic judgments, limited-scope HITL acceptance and all consolidated Teach-Back items passed. [Actual checkpoint](../evidence/m4-human-checkpoint.json), [judgments](m4-human-review.md), [learning results](m4-teach-back.md). Fixture approvals never count as human judgments or actual UI approval. No required acceptance blocker remains on the tested implementation; this documentation-only final head must also pass required CI.
+
+Non-blocking limited-lab debt: fresh calibrated bilingual QA-plan/value evidence; M3 live tool-selection failure; no default retrieval adoption; reviewed repository corpus rather than dynamic tenant ingestion; no automatic model/memory-to-executor wiring; same-owner reviewer rather than four-eyes approval; one-hour runs/short metadata with no long-term retention/purge policy; process/JS guards rather than an OS/native sandbox; trusted checkout/dependencies/secret and local PATH Git assumptions; cooperative cancellation cannot roll back arbitrary external effects (none authorized here); no production HTTP/TLS/OAuth/release workflow. HMACs do not protect against a compromised application secret or DB owner who can alter enforcement. Existing main protection plan limitation remains procedural, not claimed enforced.
+
+## Recommendation
+
+M4's single human/desktop checkpoint is complete and limited-scope acceptance is recorded. Any M5 decision requires separate explicit authorization. Recommend M5 only as a bounded learning/comparison experiment with a concrete orchestration need; there is no evidence yet to adopt n8n/specialists or grant operational authority. Keep the direct deterministic workflow as the comparison baseline and retain rejection/inconclusive outcomes as valid results. Do not start Phase 17 automatically.
+
+## Final expiry hard-gate correction
+
+The prior green run did not prove expiry remained valid during the final asynchronous target check. [Preserved actual red regression](../evidence/phase16-expiry-toctou-regression.json) records the gap and local report-only impact. The controller now rejects elapsed application expiry after that check, and the INSERT independently enforces approval/run expiry using PostgreSQL clock_timestamp. Added controlled async expiry and independent native DB/application-clock cases. Full corrective CI passed on e1fb584b4c3808ae8371f514d0678cd4d0841d20: native workflow 14 tests, no skips; 83 product integrations, Windows, nine existing browser flows, QA UI and five lifecycle runs passed. [Corrective receipt](../evidence/phase16-expiry-ci-receipt.json). PostgreSQL [current-time documentation](https://www.postgresql.org/docs/18/functions-datetime.html) was checked on 2026-10-09: clock_timestamp changes during statement execution, unlike transaction-start current_timestamp.
+
+## Actual final human/desktop checkpoint — 2026-10-09
+
+The user reports completed=true, fixture=false, generations=16, providerErrors=0, contractFailures=0, automaticQualityAcceptance=false and defaultRetrievalAdoption=false. Model: qwen3:8b-q4_K_M; expected Ollama runtime: 0.34.0; corpus SHA: c55eee55fcfeb4c31e0b252a1573156e2a9d41b4. This is live desktop evidence distinct from the historical Work fixture row above. No additional runtime/hardware/digest measurement is invented.
+
+Human judgments: reopen-en baseline Edit / retrieval Reject; isolation-es baseline Edit / retrieval Reject; poison-en retrieval Accept; absent-es retrieval Accept. Mechanical provenance/integrity worked, but correct retrieval did not reliably improve semantic reasoning. Default retrieval adoption remains rejected. No semantic percentage or product-value claim follows; contract validity and accepted security/abstention samples do not prove generalization or successful model tool selection.
+
+The user reports questions 1–7, architecture flows A/B, both selected controlled failures and both Senior/Staff scenarios passed. HITL is accepted for the limited report-only scope, with failed checks authoritative and one-time SHA/action/receipt/identity/expiry binding. These are supplied checkpoint outcomes, not reconstructed learner answers or a newly executed UI approval/report.
+
+[Formal acceptance](m4-acceptance-check.md) records no required blocker, unchanged criteria and all non-blocking debt. Required CI runs for the resulting final PR head; exact SHA/run/result are recorded in PR #6/checks. No desktop rerun/tuning, executable changes, merge or M5 start.
