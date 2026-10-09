@@ -50,7 +50,7 @@ jobs:
       - if: matrix.lane == 'browser'
         run: npx playwright install --with-deps chromium
       - if: matrix.lane == 'browser'
-        name: Targeted lifecycle diagnosis (five fresh server lifetimes, no retries)
+        name: Targeted lifecycle regression (five fresh server lifetimes, no retries)
         run: |
           for trial in 1 2 3 4 5; do
             E2E_FLOW=lifecycle npx playwright test tests/browser/lifecycle.spec.ts
