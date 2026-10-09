@@ -1,5 +1,14 @@
 import {test,expect} from '@playwright/test';
-test('lead moves incident through lifecycle; stale second tab must refresh',async({page,context})=>{
+import {mkdir,writeFile} from 'node:fs/promises';
+test('lead moves incident through lifecycle; stale second tab must refresh',async({page,context},testInfo)=>{
+ const actions:unknown[]=[];
+ page.on('request',request=>{if(request.method()==='POST'&&request.url().endsWith('/actions')){const data=request.postDataJSON();actions.push({kind:'request',action:data.action,expectedRevision:data.expectedRevision,reason:data.reason??null});} }finally{
+  actions.push({kind:'final-ui',detail:await page.getByRole('article',{name:'Incident detail'}).innerText().catch(()=>null),alerts:await page.getByRole('alert').allTextContents()});
+  await mkdir('evidence',{recursive:true});await writeFile('evidence/m3-lifecycle-diagnostic-'+testInfo.repeatEachIndex+'.json',JSON.stringify({syntheticOnly:true,actions},null,2)+'\n');
+ }
+});
+ page.on('response',async response=>{if(response.request().method()==='POST'&&response.url().endsWith('/actions')){const data=await response.json().catch(()=>({}));actions.push({kind:'response',action:response.request().postDataJSON().action,status:response.status(),state:data.state??null,revision:data.revision??null,error:data.error?.code??data.error?.message??null});}});
+ try{
  await page.goto('/');
  await page.getByLabel('Email',{exact:true}).fill('north-lead@example.test');
  await page.getByLabel('Password',{exact:true}).fill(process.env.E2E_PASSWORD!);
@@ -34,6 +43,7 @@ test('lead moves incident through lifecycle; stale second tab must refresh',asyn
  await expect(detail.locator('dl dd').first()).toHaveText('closed');
  await expect(detail.locator('dl dd').nth(2)).toHaveText('6');
  await page.getByLabel('Reopen reason',{exact:true}).fill('The timeout returned after the initial recovery');
+ actions.push({kind:'before-reopen',form:await page.getByLabel('Reopen reason',{exact:true}).evaluate(element=>({value:(element as HTMLTextAreaElement).value,valid:(element as HTMLTextAreaElement).validity.valid,name:(element as HTMLTextAreaElement).name,formValid:(element as HTMLTextAreaElement).form?.checkValidity()}))});
  await page.getByRole('button',{name:'Reopen',exact:true}).click();
  await expect(page.getByLabel('Resolution summary',{exact:true})).toBeVisible();
  await expect(detail).toContainText('Revision 7');

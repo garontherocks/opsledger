@@ -47,6 +47,13 @@ jobs:
       - if: matrix.lane == 'browser'
         run: npx playwright install --with-deps chromium
       - if: matrix.lane == 'browser'
+        name: Targeted lifecycle diagnosis (five fresh server lifetimes, no retries)
+        run: |
+          for trial in 1 2 3 4 5; do
+            E2E_FLOW=lifecycle npx playwright test tests/browser/lifecycle.spec.ts
+            cp evidence/m3-lifecycle-diagnostic-0.json evidence/m3-lifecycle-diagnostic-trial-$trial.json
+          done
+      - if: matrix.lane == 'browser'
         run: npm run test:e2e | tee evidence/phase10-ci-e2e.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
