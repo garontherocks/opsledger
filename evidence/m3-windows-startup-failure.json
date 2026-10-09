@@ -1,0 +1,22 @@
+{
+  "source": "actual user-reported desktop reproduction",
+  "handoff": "544f22edf55c4abd806751e693162d936c0aa7e0",
+  "branch": "feat/m3-skills-http",
+  "environment": {
+    "os": "Windows",
+    "node": "24.19.0",
+    "ollamaAndModel": "unchanged from approved M2 baseline"
+  },
+  "completed": false,
+  "agentRuns": 0,
+  "stage": "stdio MCP bootstrap before server/discover negotiation",
+  "symptom": "SdkError: Version negotiation failed: the connection closed during the server/discover probe",
+  "rootCause": "Node --import received a Windows filesystem path with c: protocol instead of a file:// ESM URL",
+  "independentReproduction": {
+    "filesystemPath": "ERR_UNSUPPORTED_ESM_URL_SCHEME",
+    "fileUrl": "IMPORT_OK"
+  },
+  "classification": "cross-platform launcher defect; not model/provider/MCP quality evidence",
+  "milestoneAccepted": false,
+  "phase14Authorized": false
+}

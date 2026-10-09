@@ -25,3 +25,7 @@ Material human sampling only:
 Report the console summary, actual environment and those selected judgments. Raw files contain fixed synthetic sources, but still review before sharing; never upload .env, bearer grants, secrets or unrelated private evidence. If all runs block, report that inconclusive live tool-selection result; engineering gates are not replaced by a semantic quality score.
 
 Complete the [seven-question consolidated Teach-Back](m3-teach-back.md) and architecture/scenario explanations in the same milestone checkpoint. Then record actual human/desktop outcomes and perform formal M3 acceptance. No repeated M2 desktop bundle or old Teach-Back is required. Stop before M4/Phase 14 until explicit authorization.
+
+## Preserved first Windows attempt and corrective handoff
+
+The first desktop attempt at 544f22edf55c4abd806751e693162d936c0aa7e0 failed during stdio startup with zero agent runs. It is preserved in evidence/m3-windows-startup-failure.json and is not a model/provider/quality trial. A corrective handoff will be supplied only after full Linux CI and Windows launcher/M3 integration CI pass. Pull that exact successor once, retain the approved runtime/model pins, and rerun this bundle once. Do not rewrite the failed attempt as completed; actual new desktop results remain pending.

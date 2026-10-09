@@ -1,16 +1,32 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
-import {spawn} from 'node:child_process';
+import {spawn,spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import net from 'node:net';
 import {Client} from '@modelcontextprotocol/client';
 import {StdioClientTransport} from '@modelcontextprotocol/client/stdio';
-import {connectOwnedQa,discoverOwned,verifyMcpResult} from '../scripts/qa-mcp-host.ts';
+import {connectOwnedQa,connectStdioWithDiagnostics,discoverOwned,verifyMcpResult} from '../scripts/qa-mcp-host.ts';
+import {nodeImportSpecifier,summarizeChildStderr} from '../scripts/node-launch.ts';
 import {registry,hash,type Manifest} from '../apps/api/src/qa-agent.ts';
 const data=JSON.parse(await readFile(new URL('./fixtures/phase11-agent-v1.json',import.meta.url),'utf8')) as {manifest:Manifest};
 const manifest={...data.manifest,sources:data.manifest.sources.map(s=>({...s,sha256:hash(s.text)}))};
-const guard=fileURLToPath(new URL('../scripts/mcp-egress.mjs',import.meta.url));
+const guard=nodeImportSpecifier(new URL('../scripts/mcp-egress.mjs',import.meta.url));
+test('Node import specifiers preserve Windows drive/UNC, POSIX and escaped paths',()=>{
+ for(const href of ['file:///C:/Users/test%20user/guard.mjs','file://server/share/guard.mjs','file:///tmp/test%20user/guard.mjs'])assert.equal(nodeImportSpecifier(new URL(href)),href);
+ for(const href of ['https://example.com/guard.mjs','file:///tmp/guard.mjs?extra','file:///tmp/guard.mjs#extra'])assert.throws(()=>nodeImportSpecifier(new URL(href)),/file_url_required/);
+});
+test('bootstrap failure reports actual child error code, keeps cause and closes child',async()=>{
+ const client=new Client({name:'startup-regression',version:'1.0.0'},{versionNegotiation:{mode:{pin:'2026-07-28'}}});
+ const args=['--import',nodeImportSpecifier(new URL('./fixtures/nonexistent-preloader.mjs',import.meta.url)),'-e',''];
+ const transport=new StdioClientTransport({command:process.execPath,args,stderr:'pipe',env:{}});
+ await assert.rejects(connectStdioWithDiagnostics(client,transport,()=>spawnSync(process.execPath,args,{encoding:'utf8',timeout:1500,maxBuffer:8192,windowsHide:true}).stderr??''),(error:unknown)=>{
+  assert.ok(error instanceof Error);assert.match(error.message,/bootstrap failed.*ERR_MODULE_NOT_FOUND/);assert.ok(error.cause);assert.doesNotMatch(error.message,/nonexistent-preloader|Users|workspace/);return true;
+ });
+ assert.equal(transport.pid,null);
+ assert.equal(summarizeChildStderr('token=private-value\nERR_UNSUPPORTED_ESM_URL_SCHEME\nOn Windows, absolute paths must be valid file:// URLs. Received protocol c:'),'ERR_UNSUPPORTED_ESM_URL_SCHEME; Windows absolute paths must be valid file:// URLs');
+ assert.equal(summarizeChildStderr('secret without a known diagnostic'),'stderr captured; unrecognized content withheld');
+});
 test('stdio host process denies HTTP and socket egress including loopback',()=>{
  assert.throws(()=>fetch('https://example.com'),/MCP_EGRESS_DENIED/);
  assert.throws(()=>net.connect({host:'127.0.0.1',port:11434}),/MCP_EGRESS_DENIED/);
@@ -36,7 +52,7 @@ test('real SDK stdio host discovers exact scope; every tool/resource matches dir
    const source=manifest.sources.find(s=>s.id===resource.name)!;
    assert.deepEqual(JSON.parse(item.text),direct.invoke(source.tool,{id:source.id}));
   }
-  assert.match(host.diagnostics(),/synthetic read-only/);
+  assert.equal(host.diagnostics(),'stderr captured; unrecognized content withheld');
  }finally{await host.close();}
  assert.equal(host.transport.pid,null);
  }

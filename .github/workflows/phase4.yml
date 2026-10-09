@@ -66,3 +66,15 @@ jobs:
             evidence/phase5-*
             evidence/phase4-*
           retention-days: 7
+
+  windows-launchers:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24.19.0
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run mcp:test
+      - run: npm run m3:test
