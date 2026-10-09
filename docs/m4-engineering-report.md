@@ -1,8 +1,8 @@
 # M4 — Agentic QA engineering handoff
 
-Engineering complete for Phases 14–16 on e3426f234e6d4dbed9fb5811ae68cef61fcf85c3, with required Linux API/browser and Windows CI green at [run 37960577739](https://github.com/garontherocks/opsledger/actions/runs/37960577739). Actual CI checkout d19fed05c2e5822a5a100aaf61b0eb0af733e318 has exactly the same tree as the branch code commit; [receipt](../evidence/phase16-ci-receipt.json) records both identities. The final handoff successor adds documentation/evidence only and retains its own required checks.
+Initial Phase 16 gates passed on e3426f234e6d4dbed9fb5811ae68cef61fcf85c3, with required Linux API/browser and Windows CI green at [run 37960577739](https://github.com/garontherocks/opsledger/actions/runs/37960577739). Actual CI checkout d19fed05c2e5822a5a100aaf61b0eb0af733e318 has exactly the same tree as the branch code commit; [receipt](../evidence/phase16-ci-receipt.json) records both identities. The final handoff successor adds documentation/evidence only and retains its own required checks.
 
-**Milestone boundary reached. Formal M4 acceptance remains pending actual human/desktop outcomes. No Phase 17/M5 started. PR #6 is not merged.**
+**Milestone boundary reached; final engineering review identified an expiry/write TOCTOU gap not covered by the earlier green run. A controlled red test reproduces it. Correction rechecks expiry after asynchronous target verification and at the transactional INSERT via the DB clock; corrective full CI is pending. Formal M4 acceptance remains pending actual human/desktop outcomes. No M5 started; PR #6 unmerged.**
 
 ## Individual phase boundaries
 
@@ -52,3 +52,7 @@ Non-blocking limited-lab debt: fresh calibrated bilingual QA-plan/value evidence
 ## Recommendation
 
 Finish the single M4 human/desktop checkpoint, then decide M5 explicitly. Recommend M5 only as a bounded learning/comparison experiment with a concrete orchestration need; there is no evidence yet to adopt n8n/specialists or grant operational authority. Keep the direct deterministic workflow as the comparison baseline and retain rejection/inconclusive outcomes as valid results. Do not start Phase 17 automatically.
+
+## Final expiry hard-gate correction
+
+The prior green run did not prove expiry remained valid during the final asynchronous target check. [Preserved actual red regression](../evidence/phase16-expiry-toctou-regression.json) records the gap and local report-only impact. The controller now rejects elapsed application expiry after that check, and the INSERT independently enforces approval/run expiry using PostgreSQL clock_timestamp. Added controlled async expiry and independent native DB/application-clock cases. Full corrective CI must pass before engineering handoff.

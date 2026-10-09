@@ -49,10 +49,20 @@ test('Phase 16 durable workflow and SHA/action/identity/expiry approval boundary
    try{await assert.rejects(flow.consume(owner,r2.state.id,consume(a2)));}finally{await db.pool.query('DROP TRIGGER qa_report_crash ON qa_reports');await db.pool.query('DROP FUNCTION qa_report_crash()');}
    assert.equal((await flow.read(owner,r2.state.id)).workflow!.stage,'approved');await new QaWorkflow(store,runner).consume(owner,r2.state.id,consume(a2));assert.equal((await db.pool.query('SELECT count(*) FROM qa_reports WHERE run_id=$1',[r2.state.id])).rows[0].count,'1');passed++;
   });
+  await t.test('approval expiry during asynchronous target recheck denies the report write',async()=>{
+   const r=await ready(),a=await approval(r,1);let checked=0;
+   t.mock.timers.enable({apis:['Date'],now:Date.now()});const delayed=new QaWorkflow(store,{...runner,currentSha:async()=>{if(++checked===2)t.mock.timers.tick(2000);return sha;}});
+   try{await assert.rejects(delayed.consume(owner,r.state.id,consume(a)));assert.equal((await db.pool.query('SELECT count(*) FROM qa_reports WHERE run_id=$1',[r.state.id])).rows[0].count,'0');}finally{t.mock.timers.reset();}passed++;
+  });
   await t.test('revocation during registered checks discards receipt; no authorization lock during execution',async()=>{
    const run=await store.create(owner);await store.checkpoint(owner,run.id,1,randomUUID());let entered!:()=>void,release!:()=>void;const started=new Promise<void>(r=>entered=r),hold=new Promise<void>(r=>release=r);
    const held=new QaWorkflow(store,{...runner,run:async()=>{entered();await hold;return runner.run(sha,new AbortController().signal);}});const pending=held.checks(owner,run.id);await started;
    await db.pool.query('UPDATE memberships SET active=false WHERE user_id=$1 AND workspace_id=$2',[owner.userId,NORTH]);release();await assert.rejects(pending);await db.pool.query('UPDATE memberships SET active=true WHERE user_id=$1 AND workspace_id=$2',[owner.userId,NORTH]);assert.equal((await db.pool.query('SELECT count(*) FROM qa_checks WHERE run_id=$1',[run.id])).rows[0].count,'0');passed++;
+  });
+  await t.test('native DB clock rejects an expired approval even if the application clock is behind',async()=>{
+   if(db.backend!=='postgresql-server'){t.diagnostic('Independent DB/application clock assertion is mandatory in native CI, not claimed by PGlite');return;}
+   t.mock.timers.enable({apis:['Date'],now:Date.now()-5000});
+   try{const r=await ready(),a=await approval(r,1);await assert.rejects(flow.consume(owner,r.state.id,consume(a)));assert.equal((await db.pool.query('SELECT count(*) FROM qa_reports WHERE run_id=$1',[r.state.id])).rows[0].count,'0');t.diagnostic('Native INSERT clock_timestamp denied already expired approval despite behind application clock');}finally{t.mock.timers.reset();}passed++;
   });
   await t.test('expired execution lease recovers within two attempts; late old result cannot commit',async()=>{
    const run=await store.create(owner);await store.checkpoint(owner,run.id,1,randomUUID());let entered!:()=>void,release!:()=>void;const started=new Promise<void>(r=>entered=r),hold=new Promise<void>(r=>release=r);

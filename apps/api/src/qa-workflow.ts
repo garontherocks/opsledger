@@ -57,7 +57,7 @@ export class QaWorkflow{
    if(!w||w.stage!=='awaiting_review'||state.revision!==body.expectedRevision||body.sha!==state.sha||body.actionHash!==w.actionHash||!w.receiptHash)throw fail();const receipt=await this.receipt(c,id);if(hash(JSON.stringify(receipt))!==w.receiptHash||this.action(state,w.receiptHash)!==body.actionHash)throw fail();
    // Latest authoritative SHA and membership are checked within the committing
    // transaction. Approval cannot override a failed receipt or change its action.
-   await this.target();const approval=Approval.parse({id:randomUUID(),runId:id,workspaceId:state.workspaceId,ownerId:state.ownerId,reviewerId:identity.userId,sha:state.sha,action:'store_reviewed_qa_report',actionHash:body.actionHash,receiptHash:w.receiptHash,contextHash:state.contextHash,expiresAt:Math.min(state.expiresAt,Date.now()+body.ttlSeconds*1000),decision:body.decision,operationalAuthority:false});
+   await this.target();if(state.expiresAt<=Date.now())throw fail();const approval=Approval.parse({id:randomUUID(),runId:id,workspaceId:state.workspaceId,ownerId:state.ownerId,reviewerId:identity.userId,sha:state.sha,action:'store_reviewed_qa_report',actionHash:body.actionHash,receiptHash:w.receiptHash,contextHash:state.contextHash,expiresAt:Math.min(state.expiresAt,Date.now()+body.ttlSeconds*1000),decision:body.decision,operationalAuthority:false});
    await c.query('INSERT INTO qa_approvals VALUES($1,$2,$3,$4)',[approval.id,id,approval,this.store.mac(approval)]);
    const next=await this.save(c,state,{...w,stage:body.decision==='approve'?'approved':'denied',approvalId:approval.id},body.key,hash(JSON.stringify(body)));return {state:next,approval};
   });
@@ -68,8 +68,11 @@ export class QaWorkflow{
    const a=await c.query('SELECT * FROM qa_approvals WHERE id=$1 AND run_id=$2',[body.approvalId,id]);if(!a.rowCount)throw fail();const approval=Approval.parse(a.rows[0].approval);
    if(!this.store.validMac(approval,a.rows[0].approval_mac)||approval.decision!=='approve'||approval.reviewerId!==identity.userId||approval.workspaceId!==state.workspaceId||approval.ownerId!==state.ownerId||approval.sha!==body.sha||approval.actionHash!==body.actionHash||approval.contextHash!==state.contextHash||approval.receiptHash!==w.receiptHash||approval.expiresAt<=Date.now())throw fail();
    const receipt=await this.receipt(c,id);if(hash(JSON.stringify(receipt))!==approval.receiptHash||this.action(state,approval.receiptHash)!==approval.actionHash)throw fail();await this.target();
+   if(approval.expiresAt<=Date.now()||state.expiresAt<=Date.now())throw fail();
    const report=Report.parse({version:'qa-report-v1',runId:id,testedSha:state.sha,receiptHash:approval.receiptHash,checks:receipt.checks,scope:receipt.scope,reviewerId:identity.userId,approvalId:approval.id,qualityVerified:false,operationalAuthority:false,releaseAuthority:false});
-   await c.query('INSERT INTO qa_reports VALUES($1,$2,$3,$4)',[id,approval.id,report,this.store.mac(report)]);
+   // Enforce expiry at the DB write, too: no asynchronous target check or
+   // queued statement can consume an approval that elapsed after parsing.
+   const written=await c.query('INSERT INTO qa_reports(run_id,approval_id,report,report_mac) SELECT $1,$2,$3::jsonb,$4 WHERE clock_timestamp() < to_timestamp($5::double precision/1000) AND clock_timestamp() < to_timestamp($6::double precision/1000)',[id,approval.id,report,this.store.mac(report),approval.expiresAt,state.expiresAt]);if(written.rowCount!==1)throw fail();
    const next=await this.save(c,state,{...w,stage:'complete'},body.key,hash(JSON.stringify(body)));return {state:next,report};
   });
  }

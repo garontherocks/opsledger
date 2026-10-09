@@ -1,4 +1,6 @@
-# Formal M4 acceptance check — engineering ready, human gate pending
+# Formal M4 acceptance check — corrective expiry gate, human checkpoint pending
+
+Final review after the initial green implementation reproduced approval expiry during the asynchronous target check. The local report-only gap is corrected with a post-check revalidation and DB-clock INSERT predicate, plus two new deterministic cases. Corrective full CI is pending; earlier green receipts below remain historical evidence and are not proof of this missing case. See [preserved red regression](../evidence/phase16-expiry-toctou-regression.json).
 
 | Gate | Status | Evidence / qualification |
 |---|---|---|
