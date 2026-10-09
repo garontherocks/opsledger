@@ -1,0 +1,2 @@
+# Review digests must match on Windows and Linux checkouts.
+skills/** text eol=lf

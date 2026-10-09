@@ -122,7 +122,7 @@ test('Phase 2 lifecycle, permission, rollback and concurrent-write acceptance',a
    let waitingPids:number[]=[];
    try{
     for(let attempt=0;attempt<250;attempt++){
-     const waiting=await db.pool.query("SELECT pid FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND query=$1",['SELECT * FROM incidents WHERE workspace_id=$1 AND id=$2 FOR UPDATE']);
+     const waiting=await db.pool.query("SELECT pid FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND query=$1",['SELECT * FROM incidents WHERE workspace_id=$1 AND id=$2 FOR NO KEY UPDATE']);
      waitingPids=waiting.rows.map(row=>row.pid as number);if(waitingPids.length===2)break;
      await new Promise(resolve=>setTimeout(resolve,20));
     }
@@ -135,3 +135,4 @@ test('Phase 2 lifecycle, permission, rollback and concurrent-write acceptance',a
   });
  }finally{await app.close();await db.close();}
 });
+

@@ -1,19 +1,36 @@
 import {Client} from '@modelcontextprotocol/client';
 import {StdioClientTransport} from '@modelcontextprotocol/client/stdio';
 import {fileURLToPath} from 'node:url';
+import {spawnSync} from 'node:child_process';
+import {getDefaultEnvironment} from '@modelcontextprotocol/client/stdio';
 import {z} from 'zod';
 import {MCP_OUTPUT} from '../apps/api/src/qa-mcp.ts';
 import {registry,hash,TOOL_NAMES} from '../apps/api/src/qa-agent.ts';
+import {nodeImportSpecifier,summarizeChildStderr} from './node-launch.ts';
+
+export async function connectStdioWithDiagnostics(client:Client,transport:StdioClientTransport,startupProbe?:()=>string){
+ let diagnostics='';transport.stderr?.on('data',chunk=>{diagnostics=(diagnostics+String(chunk)).slice(-8000);});
+ try{await client.connect(transport,{timeout:5000});}
+ catch(error){
+  try{await transport.close();}catch{/* Preserve the bootstrap cause even if cleanup fails. */}
+  // SDK 2.3.1 discards stderr on its disposable negotiation sibling. If no
+  // session stderr exists, diagnose startup separately without changing eras.
+  const diagnostic=diagnostics?'child stderr: '+summarizeChildStderr(diagnostics):startupProbe?'diagnostic startup probe: '+summarizeChildStderr(startupProbe()):'no child stderr captured';
+  throw new Error('MCP stdio bootstrap failed; '+diagnostic,{cause:error});
+ }
+ return ()=>summarizeChildStderr(diagnostics);
+}
 
 export async function connectOwnedQa(era:'modern'|'legacy'='modern'){
  z.enum(['modern','legacy']).parse(era);
  const client=new Client({name:'opsledger-owned-qa-host',version:'1.0.0'},{versionNegotiation:{mode:era==='modern'?{pin:'2026-07-28'}:'legacy'}});
  // Allowlist is executable + one fixed script, never discovered/model-selected commands.
- const transport=new StdioClientTransport({command:process.execPath,args:['--import',fileURLToPath(new URL('./mcp-egress.mjs',import.meta.url)),'--experimental-strip-types',fileURLToPath(new URL('./qa-mcp-server.ts',import.meta.url))],stderr:'pipe',env:{}});
- let diagnostics='';transport.stderr?.on('data',chunk=>{diagnostics=(diagnostics+String(chunk)).slice(-2000);});
- try{await client.connect(transport,{timeout:5000});}
- catch(error){await transport.close();throw error;}
- return {client,transport,diagnostics:()=>diagnostics,close:()=>client.close()};
+ const args=['--import',nodeImportSpecifier(new URL('./mcp-egress.mjs',import.meta.url)),'--experimental-strip-types',fileURLToPath(new URL('./qa-mcp-server.ts',import.meta.url))];
+ const transport=new StdioClientTransport({command:process.execPath,args,stderr:'pipe',env:{}});
+ // Fixed allowlisted command only, stdin immediately closed; never model-supplied.
+ // One bounded diagnostic launch on failure, not protocol fallback or retry.
+ const diagnostics=await connectStdioWithDiagnostics(client,transport,()=>spawnSync(process.execPath,args,{input:'',encoding:'utf8',timeout:1500,maxBuffer:8192,windowsHide:true,env:getDefaultEnvironment()}).stderr??'');
+ return {client,transport,diagnostics,close:()=>client.close()};
 }
 export function verifyMcpResult(input:unknown,name:string,args:unknown,result:unknown){
  const envelope=z.object({isError:z.boolean().optional(),structuredContent:z.unknown(),content:z.array(z.object({type:z.literal('text'),text:z.string().max(12000)})).length(1)}).parse(result);

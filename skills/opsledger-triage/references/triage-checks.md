@@ -1,0 +1,1 @@
+Check authorization/workspace isolation, source publication/revision freshness, exact evidence IDs and absent/conflicting evidence. Distinguish a proposed test from an executed result. Keep short-timeline direct reading as the baseline; do not infer product value from convincing model text.

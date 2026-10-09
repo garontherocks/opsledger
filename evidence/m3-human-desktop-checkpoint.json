@@ -1,0 +1,61 @@
+{
+  "source": "actual user-observed results explicitly supplied in milestone checkpoint",
+  "handoff": "52b1f567766a0098313c5637e4ec6f00c7d54c0d",
+  "branch": "feat/m3-skills-http",
+  "environment": {
+    "os": "Windows",
+    "node": "v24.19.0",
+    "ollamaExpected": "0.34.0",
+    "ollamaRuntime": "0.34.0",
+    "model": "qwen3:8b-q4_K_M",
+    "digest": "sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "cpu": "AMD Ryzen 7 7800X3D",
+    "cores": 8,
+    "logicalProcessors": 16,
+    "gpu": "NVIDIA GeForce RTX 4070 Ti SUPER",
+    "secondaryGpu": "AMD Radeon Graphics",
+    "measuredNvidiaVram": null,
+    "adapterRamUsedAsVram": false
+  },
+  "dependencyInstall": {
+    "command": "npm ci --ignore-scripts",
+    "completed": true,
+    "vulnerabilities": 0
+  },
+  "bundle": {
+    "command": "npm run ai:m3-desktop",
+    "completed": true,
+    "agentRuns": 9,
+    "providerCalls": 54,
+    "drafts": 0,
+    "blocked": 9,
+    "providerErrors": 0,
+    "automaticQualityAcceptance": false,
+    "lanes": {
+      "direct": 3,
+      "stdio": 3,
+      "http": 3
+    },
+    "allRuns": {
+      "status": "blocked",
+      "reason": "turn_budget",
+      "turns": 6
+    },
+    "representativeBehavior": "read_change_snapshot(change-a) repeated for all six turns; no progression to other mandatory sources or valid finish",
+    "quality": "inconclusive/poor live tool-selection/finalization on this fixed task; no successful live completion"
+  },
+  "humanReview": {
+    "blockedRun": "Accept as safe controller denial",
+    "finalDraft": "Not applicable; no final drafts"
+  },
+  "teachBack": {
+    "completed": true,
+    "actualAnswers": "docs/m3-human-checkpoint.md",
+    "architectureFlows": 2,
+    "controlledFailureExplanations": 2,
+    "seniorStaffScenarios": 2
+  },
+  "preservedFailure": "evidence/m3-windows-startup-failure.json",
+  "independentlyReprocessedRawDesktopTraces": false,
+  "noGeneralizationOrProductValueClaim": true
+}

@@ -63,7 +63,9 @@ export class Store {
       await client.query('BEGIN');
       const membership=await client.query('SELECT role FROM memberships WHERE workspace_id=$1 AND user_id=$2 AND active=true FOR SHARE',[workspaceId,userId]);
       if(!membership.rowCount)throw new HttpError(404,'not_found','Resource not found');
-      const found=await client.query('SELECT * FROM incidents WHERE workspace_id=$1 AND id=$2 FOR UPDATE',[workspaceId,id]);
+      // Actions change non-key columns. Serialize competing actions while allowing
+      // outbox/notification FK checks to take KEY SHARE without a workspace cycle.
+      const found=await client.query('SELECT * FROM incidents WHERE workspace_id=$1 AND id=$2 FOR NO KEY UPDATE',[workspaceId,id]);
       if(!found.rowCount)throw new HttpError(404,'not_found','Resource not found');
       const role:string=membership.rows[0].role;
       const privileged=['resolve','close','reopen'].includes(input.action);
@@ -114,3 +116,4 @@ export class Store {
     return {items,nextCursor};
   }
 }
+

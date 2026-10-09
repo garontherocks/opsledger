@@ -1,0 +1,53 @@
+{
+  "syntheticOnly": true,
+  "originalFailure": {
+    "run": 37867546978,
+    "head": "52b1f567766a0098313c5637e4ec6f00c7d54c0d",
+    "failure": "Resolution summary missing after Reopen",
+    "preservedReceipt": "evidence/m3-handoff-ci-failure.json"
+  },
+  "reproducedBrowser": {
+    "run": 37952011139,
+    "head": "99cd2120a2b76c63ea61b4cb17548e06f69143a9",
+    "job": 113892920458,
+    "reopen": {
+      "expectedRevision": 6,
+      "requestSubmitted": true,
+      "status": 500,
+      "error": "internal_error"
+    },
+    "finalUi": {
+      "state": "closed",
+      "revision": 6,
+      "errorVisible": true
+    },
+    "source": "actual instrumented native browser CI log"
+  },
+  "controlledNative": {
+    "run": 37952941824,
+    "head": "971b1447f133bf6d794388359b6e073866846cd0",
+    "job": 113896126674,
+    "backend": "postgresql-server",
+    "events": [
+      "mutation incident row locked",
+      "dispatcher workspace row locked"
+    ],
+    "outcomes": [
+      {
+        "status": "rejected",
+        "code": "40P01"
+      },
+      {
+        "status": "fulfilled"
+      }
+    ]
+  },
+  "conclusion": "reopen submitted but transaction failed; native controlled overlap proves SQLSTATE 40P01 deadlock",
+  "historicalLimits": "Original run did not archive test-results and test NODE_ENV disables backend logger. Historical per-request SQLSTATE cannot be reconstructed; reproduced browser phenotype and deterministic native lock proof establish the defect, not a later green rerun.",
+  "artifactAccess": {
+    "artifactId": 11589405532,
+    "metadataInspected": true,
+    "archiveFetch": "download reference obtained, scratch download returned HTTP 403",
+    "workflowUploadedPaths": "evidence/* only; failed Playwright trace/screenshot paths were under test-results/"
+  }
+}

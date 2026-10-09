@@ -31,6 +31,11 @@ jobs:
       - run: npm run test:unit
       - run: npm audit --audit-level=moderate
       - if: matrix.lane == 'api'
+        name: Native lifecycle lock-overlap regression
+        run: node --experimental-strip-types --test tests/lifecycle-outbox.integration.test.ts
+      - if: matrix.lane == 'api'
+        run: npm run m3:test
+      - if: matrix.lane == 'api'
         run: npm run mcp:test
       - if: matrix.lane == 'api'
         run: npm run agent:eval
@@ -45,12 +50,21 @@ jobs:
       - if: matrix.lane == 'browser'
         run: npx playwright install --with-deps chromium
       - if: matrix.lane == 'browser'
+        name: Targeted lifecycle regression (five fresh server lifetimes, no retries)
+        run: |
+          for trial in 1 2 3 4 5; do
+            E2E_FLOW=lifecycle npx playwright test tests/browser/lifecycle.spec.ts
+            cp evidence/m3-lifecycle-diagnostic-0.json evidence/m3-lifecycle-diagnostic-trial-$trial.json
+          done
+      - if: matrix.lane == 'browser'
         run: npm run test:e2e | tee evidence/phase10-ci-e2e.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: phase10-${{ matrix.lane }}-${{ github.sha }}
           path: |
+            evidence/phase13-*
+            evidence/m3-*
             evidence/phase12-*
             evidence/phase11-*
             evidence/phase10-*
@@ -62,3 +76,15 @@ jobs:
             evidence/phase5-*
             evidence/phase4-*
           retention-days: 7
+
+  windows-launchers:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24.19.0
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run mcp:test
+      - run: npm run m3:test

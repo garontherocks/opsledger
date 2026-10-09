@@ -1,0 +1,44 @@
+{
+  "source": "actual GitHub Actions GET and decoded job logs inspected during formal M3 acceptance",
+  "handoff": "52b1f567766a0098313c5637e4ec6f00c7d54c0d",
+  "run": {
+    "runId": 37867546978,
+    "status": "completed",
+    "conclusion": "failure",
+    "headSha": "52b1f567766a0098313c5637e4ec6f00c7d54c0d",
+    "url": "https://github.com/garontherocks/opsledger/actions/runs/37867546978"
+  },
+  "jobs": [
+    {
+      "id": 113617805984,
+      "name": "windows-launchers",
+      "conclusion": "success"
+    },
+    {
+      "id": 113617806093,
+      "name": "acceptance (browser)",
+      "conclusion": "failure"
+    },
+    {
+      "id": 113617806126,
+      "name": "acceptance (api)",
+      "conclusion": "success"
+    }
+  ],
+  "failure": {
+    "file": "tests/browser/lifecycle.spec.ts",
+    "line": 38,
+    "action": "after clicking Reopen",
+    "assertion": "getByLabel('Resolution summary', {exact:true}) toBeVisible",
+    "timeoutMs": 5000,
+    "symptom": "element not found",
+    "rootCause": "not established from logs"
+  },
+  "classification": "unresolved required deterministic CI gate; blocking formal M3 acceptance",
+  "previousCorrectiveCI": {
+    "runId": 37867155568,
+    "conclusion": "success"
+  },
+  "desktopCheckpoint": "complete; no rerun requested",
+  "waived": false
+}
