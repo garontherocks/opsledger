@@ -36,7 +36,7 @@ export class QaOrchestration{
    const inserted=await c.query("INSERT INTO qa_dispatches(event_id,run_id,request_hash,lease_id,lease_until) VALUES($1,$2,$3,$4,clock_timestamp()+interval '60 seconds') ON CONFLICT DO NOTHING RETURNING event_id",[body.eventId,body.runId,requestHash,lease]);
    if(inserted.rowCount)return {owned:true,cached:null};
    const row=(await c.query('SELECT * FROM qa_dispatches WHERE event_id=$1 FOR UPDATE',[body.eventId])).rows[0];if(row.request_hash!==requestHash||row.run_id!==body.runId)throw deny();
-   if(row.result){const cached=Outcome.parse(row.result);if(!this.flow.store.validMac(cached,row.result_mac))throw deny();return {owned:false,cached};}
+   if(row.result){const cached=Outcome.parse(row.result);if(!this.flow.store.validMac(cached,row.result_mac)||cached.eventId!==body.eventId||cached.runId!==body.runId||cached.sha!==body.sha)throw deny();return {owned:false,cached};}
    const recovered=await c.query("UPDATE qa_dispatches SET lease_id=$2,lease_until=clock_timestamp()+interval '60 seconds' WHERE event_id=$1 AND lease_until<=clock_timestamp() RETURNING event_id",[body.eventId,lease]);return {owned:!!recovered.rowCount,cached:null};
   });
   if(claim.cached)return claim.cached;
@@ -46,7 +46,7 @@ export class QaOrchestration{
    let snapshot=await this.flow.read(identity,body.runId);let triage:z.infer<typeof TriageDraft>|null=null;
    if(body.operation==='store_report'){
     if(snapshot.report){const report=snapshot.report as {approvalId:string};if(report.approvalId!==body.approvalId)throw deny();}
-    else{const a=snapshot.approval;if(!a||a.id!==body.approvalId)throw deny();await this.flow.consume(identity,body.runId,{key:body.eventId,expectedRevision:snapshot.state.revision,approvalId:a.id,sha:body.sha,actionHash:a.actionHash});snapshot=await this.flow.read(identity,body.runId);}
+    else{const a=snapshot.approval;if(!a||a.id!==body.approvalId)throw deny();await this.flow.consume(identity,body.runId,{key:body.eventId,expectedRevision:snapshot.state.revision,approvalId:a.id,sha:body.sha,actionHash:a.actionHash},Math.min(this.grant.expiresAt,body.issuedAt+60000));snapshot=await this.flow.read(identity,body.runId);}
    }else if(snapshot.workflow?.stage==='awaiting_review'){
     const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),this.triageDeadlineMs);
     try{triage=TriageDraft.parse(await Promise.race([this.triage(controller.signal),new Promise<never>((_,reject)=>controller.signal.addEventListener('abort',()=>reject(new Error('triage_timeout')),{once:true}))]));}catch{triage=null;}finally{clearTimeout(timer);}

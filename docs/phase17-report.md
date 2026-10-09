@@ -13,3 +13,7 @@ Development evidence: an initial native Node run rejected TS constructor paramet
 Threat/limitations: current trusted source/dependencies/secret and same-owner approval assumptions remain. Native self-hosted n8n is not an OS sandbox; the actual CI container uses an internal-only network with excluded risky nodes and no telemetry. HTTP node retries are bounded/idempotent, not exactly-once delivery. Signed event MACs do not protect against compromised service/signing/application keys. Community license/features and privileged workflow editing are recorded; no SaaS claim.
 
 Phase 18 must wait for this phase's full required gates. M5 authorization covers Phases 17–19; stop before Phase 20/M6. Accumulate learning and one material desktop/human checkpoint at M5.
+
+## New service expiry boundary
+
+Controlled regression reproduced a denied response after a report write when the new service grant expired during the final SHA await. [Actual red evidence](../evidence/phase17-delegation-expiry-regression.json). The server-only delegated deadline now joins approval/event-window expiry at the transactional INSERT and after-await check. It is not a model/request field; default M4 consumption is unchanged. Revalidation only after writing is insufficient. Native/full correction CI remains required.
