@@ -25,3 +25,8 @@ Distinguish retrieval mechanics, relevant evidence coverage and actual decision 
 ## Next phase
 
 Only after required phase CI passes, continue Phase 15 under the user's explicit M4 authorization. Stop after Phase 16, before M5.
+
+## Actual engineering closure
+
+All required API/browser/Windows lanes passed on 5628a6bb1bfc3891bcc9050237b375edeb490fa8, run 37956355456, before Phase 15 started. [Receipt](../evidence/phase14-ci-receipt.json). [ADR 009](adr/009-qa-context-adoption.md) formalizes the same default-adoption rejection documented at the Phase 14 boundary; no later claim of semantic benefit is substituted.
+

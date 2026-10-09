@@ -2,7 +2,7 @@
 
 The user-approved amendment in [roadmap.md](roadmap.md#authorized-milestone-execution) governs execution. Individual phase scopes and engineering DoD remain unchanged. Finish each phase before starting the next, preserve phase reports/evidence and coherent history, and fix ordinary technical problems autonomously.
 
-Current authorization: Phase 6 human-reviewed/closed; complete Phase 7, then 8 → 9 → 10. Stop at **M2 — AI Product**. Do not start Phase 11/M3 without explicit authorization. Other milestones remain M1 0–5, M3 11–13, M4 14–16, M5 17–19 and M6 20.
+Current authorization: **M4 — Agentic QA, Phases 14–16**, explicitly authorized on 2026-10-09 from accepted/merged M3 main c55eee55fcfeb4c31e0b252a1573156e2a9d41b4. Engineering boundary reached; stop before Phase 17/M5. Earlier authorization annotations below are history, superseded by the latest M4 update. No automatic merge/deployment authority.
 
 Human gates are consolidated at milestone boundaries: practical 5–8-question Teach-Back, architecture/data flow, selected failures/security/interview scenarios, material semantic review samples and one Desktop Validation Bundle. Generate per-phase learning materials without assuming answers. Do not repeat deterministic validation on the desktop without a specific reason.
 
@@ -39,4 +39,9 @@ This supersedes the previously unresolved lifecycle blocker. Original failure ev
 ## M4 authorization — 2026-10-09
 
 The user explicitly authorized M4 Phases 14 → 15 → 16 from merged main c55eee55fcfeb4c31e0b252a1573156e2a9d41b4. PR #5 is merged and M3 formally accepted. Preserve each individual phase DoD, security review, evidence and commits; proceed autonomously only after each engineering gate passes. Consolidate material human review, desktop checks and Teach-Back at M4. Stop before Phase 17/M5; no merge/release authority is granted. Preserve actual M3 9/9 turn_budget / zero drafts and both original Windows startup and lifecycle failures.
+
+
+## M4 engineering boundary reached — 2026-10-09
+
+Phases 14–16 each completed their engineering scope and separate gate/report before the next began. Tested Phase 16 code e3426f234e6d4dbed9fb5811ae68cef61fcf85c3 passed all Linux API/browser and Windows lanes in run 37960577739. Exact receipts and scope/debt are in [M4 engineering report](m4-engineering-report.md). Default QA retrieval adoption remains rejected; model quality/value/promotion remains unproven. Actual M3 results and all failures remain preserved. One desktop bundle, selected material review and consolidated Teach-Back await actual user outcomes. Formal M4 acceptance is pending that milestone checkpoint. PR #6 remains unmerged. Stop before Phase 17/M5; no additional milestone authorization granted.
 

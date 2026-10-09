@@ -1,0 +1,11 @@
+{
+ "source":"actual local Work execution before native CI",
+ "backend":"pglite-socket",
+ "command":"node --experimental-strip-types --test tests/qa-state.integration.test.ts",
+ "failure":"Independent Node probe: Connection terminated unexpectedly before rehydration",
+ "cause":"The PGlite socket harness permits one client; the parent pool's active/idle connection occupied it when the independent child connected",
+ "classification":"local harness limitation, not model/MCP quality",
+ "correction":"Keep native PostgreSQL child recovery as required CI; local evidence explicitly does not claim actual child recovery",
+ "resolvedNativeEvidence":"phase15-ci-receipt.json",
+ "originalM3EvidenceUnchanged":true
+}

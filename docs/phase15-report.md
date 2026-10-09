@@ -21,3 +21,8 @@ Authorization locks serialize revocation with committed DB effects. No model-sel
 ## Learning / interview defense / next
 
 Explain why history cannot substitute for current state, why memory is scoped reviewed data, and why a framework's resume does not guarantee exactly-once side effects. Learning accumulates for M4. Continue Phase 16 only after this phase's deterministic CI gates pass; no Phase 17/M5.
+
+## Actual engineering closure
+
+Native state tests (7), independent Node recovery and all required API/browser/Windows lanes passed on 7018867f64b058c08026b808085e8254214a7bb3, run 37957661131, before Phase 16 started. [Receipt](../evidence/phase15-ci-receipt.json). Local single-client failure remains in [development evidence](../evidence/phase15-development-failure.json). Phase 16 strengthens expected SQL-trigger denials to exact P0001 on an explicit borrowed-client transaction; scope and state semantics are unchanged.
+

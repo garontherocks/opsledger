@@ -27,3 +27,8 @@ Exact phase/final CI receipts are recorded after completion. The M4 desktop harn
 ## Trade-offs / learning / next
 
 Small linear workflow, bounded evidence metadata and reviewed risk codes; no broad agent graph, arbitrary executable tests or autonomous operations. Explain lease fencing versus cancellation, read-only replay versus atomic effects, approval versus quality, and lab checks versus full CI. M4 human/desktop/Teach-Back pending until the user supplies actual outcomes. Stop before Phase 17/M5 regardless of engineering success.
+
+## Actual engineering closure
+
+All required Linux API/browser and Windows gates passed on branch code e3426f234e6d4dbed9fb5811ae68cef61fcf85c3, run 37960577739. Actual checkout d19fed05c2e5822a5a100aaf61b0eb0af733e318 has the identical tree. Native workflow tests: 12 passed, zero skipped; all six SIGKILL boundaries recovered with one stored report. Real registered suite passed on Linux and Windows; all nine existing browser flows plus QA review and five lifecycle runs passed. [Exact receipt](../evidence/phase16-ci-receipt.json). Final successor changes docs/evidence only; actual M4 desktop/human/Teach-Back is pending. Stop before Phase 17/M5.
+

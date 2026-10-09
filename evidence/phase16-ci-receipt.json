@@ -1,0 +1,117 @@
+{
+  "phase": 16,
+  "branchSha": "e3426f234e6d4dbed9fb5811ae68cef61fcf85c3",
+  "actualCheckoutSha": "d19fed05c2e5822a5a100aaf61b0eb0af733e318",
+  "checkoutTree": "7942a60054091cf19d61098c545bf12deaacd23f",
+  "branchTree": "7942a60054091cf19d61098c545bf12deaacd23f",
+  "treesIdentical": true,
+  "run": 37960577739,
+  "url": "https://github.com/garontherocks/opsledger/actions/runs/37960577739",
+  "jobs": [
+    {
+      "id": 113922085479,
+      "name": "acceptance (api)",
+      "conclusion": "success"
+    },
+    {
+      "id": 113922085886,
+      "name": "windows-launchers",
+      "conclusion": "success"
+    },
+    {
+      "id": 113922085906,
+      "name": "acceptance (browser)",
+      "conclusion": "success"
+    }
+  ],
+  "validation": {
+    "units": 48,
+    "qaContext": 3,
+    "nativeState": 7,
+    "nativeWorkflow": 12,
+    "nativeWorkflowSkips": 0,
+    "coreNativeIntegrations": 83,
+    "coreNativeSkips": 0,
+    "aiRegression": 114,
+    "unexpectedEgress": 0,
+    "existingBrowserFlows": 9,
+    "qaBrowserFlows": 1,
+    "targetedLifecycleRuns": 5,
+    "dependencyVulnerabilities": 0
+  },
+  "actualRegisteredSuite": {
+    "version": "qa-lab-checks-v1",
+    "sha": "d19fed05c2e5822a5a100aaf61b0eb0af733e318",
+    "checks": [
+      {
+        "name": "domain_policy",
+        "passed": true
+      },
+      {
+        "name": "qa_context",
+        "passed": true
+      },
+      {
+        "name": "mcp_boundary",
+        "passed": true
+      },
+      {
+        "name": "skill_http",
+        "passed": true
+      }
+    ],
+    "scope": "registered-lab-checks-only",
+    "operationalAuthority": false
+  },
+  "actualNativeCrashRecovery": [
+    {
+      "mode": "context",
+      "terminated": "SIGKILL",
+      "recovered": true,
+      "reports": 1
+    },
+    {
+      "mode": "claim",
+      "terminated": "SIGKILL",
+      "recovered": true,
+      "reports": 1
+    },
+    {
+      "mode": "receipt",
+      "terminated": "SIGKILL",
+      "recovered": true,
+      "reports": 1
+    },
+    {
+      "mode": "approval",
+      "terminated": "SIGKILL",
+      "recovered": true,
+      "reports": 1
+    },
+    {
+      "mode": "report",
+      "terminated": "SIGKILL",
+      "recovered": true,
+      "reports": 1
+    },
+    {
+      "mode": "after_report",
+      "terminated": "SIGKILL",
+      "recovered": true,
+      "reports": 1
+    }
+  ],
+  "desktop": {
+    "runInWork": false,
+    "fixtureHarnessGenerations": 16,
+    "fixtureErrors": 0,
+    "userResults": "pending"
+  },
+  "actualHumanApproval": false,
+  "m3LiveResultPreserved": {
+    "runs": 9,
+    "blocked": 9,
+    "reason": "turn_budget",
+    "drafts": 0
+  }
+}

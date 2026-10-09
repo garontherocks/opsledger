@@ -1,6 +1,6 @@
-# OpsLedger — M2 AI Product
+# OpsLedger — deterministic app and bounded AI / QA lab
 
-Authenticated incidents, versioned knowledge, durable in-app notifications, private exports and bounded text attachments. Every action requires the current revision. Optional pinned local structured assistance, semantic retrieval and grounded runbook answers. Current baseline: `main`. M2 was formally accepted for its optional, unverified, non-operational lab scope and merged through PR #1 at `8fd90c6e6521e5c6c4083141f41f9bc2e85e68f9`. No production deployment or Phase 11/M3 authorization is implied.
+Authenticated incidents, versioned knowledge, durable notifications, private files and optional pinned local AI/RAG. Current accepted main includes M2/M3 at c55eee55fcfeb4c31e0b252a1573156e2a9d41b4. M4 Phases 14–16 are engineering-complete on feat/m4-agentic-qa / PR #6, with separate phase gates, scoped QA context, PostgreSQL durability and bound local-report approval. M4 human acceptance is pending; no production deployment, autonomous operational authority or M5 authorization is implied.
 
 ## Native local startup
 
@@ -137,3 +137,15 @@ The 9/9 bounded blockage is poor/inconclusive live model quality, not transport 
 M3 is formally accepted for the limited Agent Foundations lab scope at tested code a55fbe29bcfb5e78fdee4dc4c54b5cdca44be479. Full CI run 37953380880 passed API/browser/Windows; controlled native evidence changes from mutation SQLSTATE 40P01 to both handlers committed under identical lock overlap. Five targeted native lifecycle browser runs and all nine full browser flows passed, along with 83 native integrations without skips and unchanged security/AI checks. [Acceptance](docs/m3-acceptance-check.md), [causal remediation](docs/m3-lifecycle-remediation.md), [exact receipt](evidence/m3-lifecycle-remediation-ci-receipt.json).
 
 This supersedes the previously unresolved lifecycle blocker. Original failure evidence and actual human checkpoint remain preserved. The desktop outcome is still 9/9 safe turn_budget blocks, zero drafts: poor/inconclusive live quality, not promoted model quality or product benefit; provisional release targets remain unproven. No desktop/Teach-Back repeat or AI changes. No required M3 blocker remains; non-blocking limited-lab debt stays documented. PR #5 remains open/unmerged. Recommendation: M4 only after explicit authorization; no Phase 14/M4 has begun. This update changes no roadmap phase scope, DoD or threshold.
+
+
+## M4 — Agentic QA engineering handoff
+
+Start with [consolidated report / acceptance](docs/m4-engineering-report.md), [architecture](docs/m4-architecture.md), [one desktop bundle](docs/m4-desktop-validation.md), [selected samples](docs/m4-human-review.md) and [one Teach-Back](docs/m4-teach-back.md). Branch feat/m4-agentic-qa, PR #6 against main; exact tested source/CI identities are in evidence/phase16-ci-receipt.json. Do not repeat M3 desktop/checkpoint. Actual M3 9/9 turn_budget with zero drafts and the original Windows/lifecycle failures remain preserved.
+
+QA retrieval remains experimental and rejected for default adoption; fixture retrieval coverage is not live planning/value evidence. The optional M4 desktop command (`npm run ai:m4-desktop`) runs one paired generation/embedding bundle with the existing pinned local models and full digests. No API/database needed for that hardware-only experiment; outputs stay in ignored evidence/desktop-private. Semantic/human acceptance remains pending.
+
+For integrated local QA inspection, migrate with `node --env-file=.env --experimental-strip-types scripts/migrate.ts`, set QA_LAB_ENABLED=true and QA_TARGET_SHA to your exact reviewed `git rev-parse HEAD` in private .env, build, and start with `node --env-file=.env --experimental-strip-types apps/api/src/server.ts`. Keep LAB_MODE=true, nonproduction and IPv4 loopback binding. Sign in using the existing synthetic lead/admin password and Open QA lab. Inspect provenance/checks/SHA/action before approval; approval permits one local report write and expires after five minutes. Save/load the run ID across restarts. Four registered lab checks are not full CI or release authority. Keep QA_LAB_ENABLED=false for normal product use. No arbitrary generated tests/commands, incident mutations, auto-merge/release, n8n or specialists.
+
+The M4 boundary is reached; actual desktop/sampling/learner results must be supplied by the user. Stop before Phase 17/M5. PR #6 is not automatically merged.
+
