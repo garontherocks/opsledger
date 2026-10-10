@@ -59,6 +59,9 @@ jobs:
         name: Actual n8n Community signed webhook, error branch and scrubbed export
         run: npm run m5:n8n-smoke
       - if: matrix.lane == 'api'
+        name: Bounded specialist contracts and paired fixture comparison (not live semantics)
+        run: npm run m5:specialist-test && npm run m5:specialist-fixture
+      - if: matrix.lane == 'api'
         name: M4 desktop bundle plumbing (fixture, not model-quality evidence)
         run: M4_BUNDLE_FIXTURE=true npm run ai:m4-harness
       - if: matrix.lane == 'api'
@@ -104,6 +107,7 @@ jobs:
             evidence/m3-*
             evidence/phase14-*
             evidence/phase15-*
+            evidence/phase18-*
             evidence/phase17-*
             evidence/phase16-*
             evidence/m4-*
