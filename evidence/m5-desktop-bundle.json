@@ -1,0 +1,24 @@
+{
+  "version": "m5-desktop-v1",
+  "sha": "15dba1139bfd8291500a87aecb6510ad99797a75",
+  "completed": true,
+  "fixture": false,
+  "status": "awaiting_human_review",
+  "checks": [
+    "actual approved Qwen specialist comparison"
+  ],
+  "comparison": "m5-specialist-comparison.json",
+  "requiredCIIncluded": false,
+  "actualHumanReview": false,
+  "automaticSemanticAcceptance": false,
+  "defaultSpecialistAdoption": false,
+  "defaultRetrievalAdoption": false,
+  "operationalAuthority": false,
+  "releaseAuthority": false,
+  "limitations": [
+    "No M4 rerun or retuning",
+    "No inference from fixture semantic labels",
+    "No merge/release authority",
+    "Human semantic/security/teach-back checkpoint still required"
+  ]
+}

@@ -29,3 +29,7 @@ Full required CI on this phase's resulting head remains the advancement gate. Ev
 ## Learning and architecture
 
 Calling a specialist as a tool retains parent control and accumulates opinions. Handoff changes which prior opinion is visible but must preserve the parent evidence and identity tuple. Hash equality detects transport/context changes, not factual truth. Deterministic checks dominate all model outputs. More roles mean more untrusted input, failure points and latency; roles alone are not evidence of quality.
+
+## Consolidated M5 checkpoint closure
+
+The subsequent actual desktop/human checkpoint is complete on implementation SHA 15dba1139bfd8291500a87aecb6510ad99797a75. This supersedes earlier pending-checkpoint notes above without rewriting their historical status. Preserve actual artifacts in evidence/m5-desktop-bundle.json and m5-specialist-comparison-desktop.json; human outcomes are separate in evidence/m5-human-checkpoint.json. All three modes retain material reopening/isolation/audience failures; missing evidence is correctly handled. Reject default specialist adoption, retain no default retrieval adoption, and infer no calibrated quality/product-value claim. Phase 19 actual registered execution passed CI 38010338598; the checkpoint documentation/evidence successor still requires its own full CI. PR #7 remains unmerged/draft; no Phase 20/M6.
