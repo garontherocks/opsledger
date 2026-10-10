@@ -50,7 +50,7 @@
     "websiteBranchAutoDeploymentDisabled": true,
     "publicDeploymentPerformed": false,
     "repositoryVisibilityChanged": false,
-    "originalSourceAccess": "Both repositories private; source access required, explicitly labeled",
+    "originalSourceAccess": "Canonical OpsLedger source/docs/evidence intended public after final M6 acceptance and PR #8 merge; still private during preparation. Website source remains private; launch copy targets that later public state.",
     "containerProvenance": "Existing version tags unchanged, mutable; no immutable digest guarantee",
     "transportExactlyOnceClaim": false,
     "osSandboxClaim": false
@@ -66,5 +66,19 @@
   "finalHeadCI": "Required proof is the exact final PR head/run/checks; no historical green substituted",
   "formalM6Acceptance": false,
   "humanTruthfulnessClaritySecurityReview": "pending",
-  "publicationAuthorization": "not granted; no merge or deployment"
+  "publicationAuthorization": "OpsLedger source/docs/evidence publication decision approved; visibility change, merge and website deployment not authorized in this preparation",
+  "publicationDecision": {
+    "OpsLedger repository publication": "approved",
+    "OpsLedger public runtime/service deployment": "not approved / not planned",
+    "victor-aller-sdet-site source visibility": "remain private",
+    "separate public evidence repository": "rejected as unnecessary",
+    "executionSequenceAfterFinalHumanAuthorization": [
+      "merge OpsLedger PR #8",
+      "make OpsLedger public",
+      "merge website PR #18",
+      "verify Vercel production deployment"
+    ],
+    "opsledgerStillPrivateDuringPreparation": true,
+    "formalM6AcceptanceFromPublicationDecision": false
+  }
 }

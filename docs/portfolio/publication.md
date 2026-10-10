@@ -1,6 +1,6 @@
 # Portfolio publication threat review
 
-Phase 20 presents evidence and synthetic examples; it adds no OpsLedger runtime endpoint or inference service. The coordinated website source is [victor-aller-sdet-site](https://github.com/garontherocks/victor-aller-sdet-site). OpsLedger and the website source are currently private. Original evidence/CI links need repository access; the website explicitly labels this and embeds a bounded historical summary. Visibility or a separately public evidence export requires later user authorization. Separate feature branches/PRs are required; neither may be merged or deployed by this assignment.
+Phase 20 presents evidence and synthetic examples; it adds no OpsLedger runtime endpoint or inference service. The coordinated website source is [victor-aller-sdet-site](https://github.com/garontherocks/victor-aller-sdet-site). The user approved publication of the canonical OpsLedger repository as source/docs/evidence only, after final M6 acceptance and merge of PR #8. The website source remains private. No separate public evidence repository will be created. OpsLedger remains private during this preparation; this assignment authorizes no visibility change, merge or deployment. Recruiter-facing website copy targets the later public-source state and must not launch before OpsLedger is public.
 
 | Surface | Review and constraint |
 |---|---|
@@ -14,6 +14,19 @@ Phase 20 presents evidence and synthetic examples; it adds no OpsLedger runtime 
 | Local URLs/paths | Loopback URLs in reproduction are intentional examples, not public services. No personal desktop paths in new presentation material. Canonical historical evidence is not relabeled/silently rewritten. |
 | Website publication | Block automated deployment for the M6 feature branch using Vercel's branch-specific `git.deploymentEnabled=false`. No Vercel CLI deployment, merge or production alias change. Deployment requires later explicit authorization. |
 | New attack surface | Documentation/static diagrams and read-only case-study copy only. No browser-use agent, backend, admin interface or GPU service added for presentation. |
+
+## Final publication decision and execution boundary
+
+| Human decision | Recorded status |
+|---|---|
+| OpsLedger repository publication | approved |
+| OpsLedger public runtime/service deployment | not approved / not planned |
+| victor-aller-sdet-site source visibility | remain private |
+| separate public evidence repository | rejected as unnecessary |
+
+Intended later sequence, only after final human authorization: **merge OpsLedger PR #8 → make OpsLedger public → merge website PR #18 → verify Vercel production deployment**. Publication exposes source, documentation and evidence, not an OpsLedger service/control plane. The canonical repository itself provides deep technical evidence. No automatic execution of this sequence is authorized now. Publication approval alone is not formal M6 acceptance; resulting exact-head CI and final human truthfulness/clarity/security review remain mandatory.
+
+Historical M1–M5 evidence is preserved without rewriting or sanitizing it merely for visibility. An actual secret/private-data publication blocker must be reported and execution stopped, rather than silently altering accepted evidence.
 
 ## Public demo decision
 

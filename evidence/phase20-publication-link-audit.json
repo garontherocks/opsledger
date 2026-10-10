@@ -1,0 +1,98 @@
+{
+  "version": "phase20-publication-link-audit-v1",
+  "scope": "Narrow final publication adjustment; no visibility/merge/deployment",
+  "canonicalRepository": "https://github.com/garontherocks/opsledger",
+  "artifactSnapshotSha": "5d0198847e228b525073f54dd06b880cac08f20c",
+  "artifactLinks": [
+    {
+      "path": "evidence/m3-human-desktop-checkpoint.json",
+      "url": "https://github.com/garontherocks/opsledger/blob/5d0198847e228b525073f54dd06b880cac08f20c/evidence/m3-human-desktop-checkpoint.json",
+      "authenticatedRead": "confirmed",
+      "originalShaAndContext": "retained in unchanged historical artifact",
+      "purpose": "case-study claim evidence"
+    },
+    {
+      "path": "evidence/m4-human-checkpoint.json",
+      "url": "https://github.com/garontherocks/opsledger/blob/5d0198847e228b525073f54dd06b880cac08f20c/evidence/m4-human-checkpoint.json",
+      "authenticatedRead": "confirmed",
+      "originalShaAndContext": "retained in unchanged historical artifact",
+      "purpose": "case-study claim evidence"
+    },
+    {
+      "path": "evidence/m5-human-checkpoint.json",
+      "url": "https://github.com/garontherocks/opsledger/blob/5d0198847e228b525073f54dd06b880cac08f20c/evidence/m5-human-checkpoint.json",
+      "authenticatedRead": "confirmed",
+      "originalShaAndContext": "retained in unchanged historical artifact",
+      "purpose": "case-study claim evidence"
+    },
+    {
+      "path": "docs/phase5-report.md",
+      "url": "https://github.com/garontherocks/opsledger/blob/5d0198847e228b525073f54dd06b880cac08f20c/docs/phase5-report.md",
+      "authenticatedRead": "confirmed",
+      "originalShaAndContext": "retained in unchanged historical artifact",
+      "purpose": "case-study claim evidence"
+    },
+    {
+      "path": "docs/m2-engineering-report.md",
+      "url": "https://github.com/garontherocks/opsledger/blob/5d0198847e228b525073f54dd06b880cac08f20c/docs/m2-engineering-report.md",
+      "authenticatedRead": "confirmed",
+      "originalShaAndContext": "retained in unchanged historical artifact",
+      "purpose": "case-study claim evidence"
+    },
+    {
+      "path": "docs/m3-engineering-report.md",
+      "url": "https://github.com/garontherocks/opsledger/blob/5d0198847e228b525073f54dd06b880cac08f20c/docs/m3-engineering-report.md",
+      "authenticatedRead": "confirmed",
+      "originalShaAndContext": "retained in unchanged historical artifact",
+      "purpose": "case-study claim evidence"
+    },
+    {
+      "path": "docs/m4-acceptance-check.md",
+      "url": "https://github.com/garontherocks/opsledger/blob/5d0198847e228b525073f54dd06b880cac08f20c/docs/m4-acceptance-check.md",
+      "authenticatedRead": "confirmed",
+      "originalShaAndContext": "retained in unchanged historical artifact",
+      "purpose": "case-study claim evidence"
+    },
+    {
+      "path": "evidence/phase17-ci-receipt.json",
+      "url": "https://github.com/garontherocks/opsledger/blob/5d0198847e228b525073f54dd06b880cac08f20c/evidence/phase17-ci-receipt.json",
+      "authenticatedRead": "confirmed",
+      "originalShaAndContext": "retained in unchanged historical artifact",
+      "purpose": "case-study claim evidence"
+    },
+    {
+      "path": "docs/adr/0018-specialist-comparison.md",
+      "url": "https://github.com/garontherocks/opsledger/blob/5d0198847e228b525073f54dd06b880cac08f20c/docs/adr/0018-specialist-comparison.md",
+      "authenticatedRead": "confirmed",
+      "originalShaAndContext": "retained in unchanged historical artifact",
+      "purpose": "case-study claim evidence"
+    },
+    {
+      "path": "docs/phase19-report.md",
+      "url": "https://github.com/garontherocks/opsledger/blob/5d0198847e228b525073f54dd06b880cac08f20c/docs/phase19-report.md",
+      "authenticatedRead": "confirmed",
+      "originalShaAndContext": "retained in unchanged historical artifact",
+      "purpose": "case-study claim evidence"
+    }
+  ],
+  "repositoryNavigation": "https://github.com/garontherocks/opsledger",
+  "acceptedCI": {
+    "url": "https://github.com/garontherocks/opsledger/actions/runs/38014060972",
+    "headSha": "2bcc7d6dac7a57451298cff4add89c212fae4aec",
+    "result": "success",
+    "historicalNotCurrentHeadProof": true
+  },
+  "publicAnonymousHTTPValidation": "not attempted as a success claim; OpsLedger remains private until the authorized later sequence",
+  "originalM3M4M5ConclusionsChanged": false,
+  "evidenceClassesPreserved": [
+    "deterministic",
+    "mechanical",
+    "human-reviewed",
+    "live-model observed",
+    "fixture/synthetic",
+    "rejected default adoption"
+  ],
+  "unrelatedPrivateArtifactLinksAdded": false,
+  "historicalEvidenceRewritten": false,
+  "formalM6Acceptance": false
+}
