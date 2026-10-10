@@ -19,6 +19,10 @@ Phase 20 presents evidence and synthetic examples; it adds no OpsLedger runtime 
 
 Do not deploy an OpsLedger runtime for Phase 20: exposing a control plane would add operational/security burden with little extra reviewer value. The existing web portfolio supplies the recruiter-facing summary, and the repository supplies deep evidence. This is not a promise of free-tier availability. No new hosting plan/service was purchased or relied on; a future publication action must check then-current Vercel terms, limits and project settings.
 
+## Selected presentation media
+
+The website PR contains `public/evidence/opsledger-product.png`: an actual local UI/API recording from accepted M5 source, fresh embedded database, synthetic account/incident and AI off. Visual inspection found no credentials, personal paths, customer data or private identifiers. It is not a live deployed service, model-quality observation or native PostgreSQL proof. Website `docs/media/` captures are read-only presentation review assets; the historical provider-call chart reuses accepted numbers. No accepted AI experiment was rerun, no new AI video was created, and existing binary OpsLedger evidence was neither relabeled nor republished without inspection.
+
 ## Final review boundaries
 
 M6 cannot be accepted solely because documentation builds. Both repositories need final-head validation, claims/evidence review, sanitized media inspection and the final human checkpoint. Accepted expensive M3/M4/M5 experiments are reused without rerunning/retuning. Historical limited acceptance remains limited.

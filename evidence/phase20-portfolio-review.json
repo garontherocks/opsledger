@@ -1,0 +1,70 @@
+{
+  "version": "phase20-portfolio-review-v1",
+  "scope": "M6 / Phase 20 coordinated technical package and existing website",
+  "opsledgerBase": "5d0198847e228b525073f54dd06b880cac08f20c",
+  "websiteBase": "1c1e382576cb4099af3c1297a1acf7118e22d78c",
+  "opsledgerPR": "https://github.com/garontherocks/opsledger/pull/8",
+  "websitePR": "https://github.com/garontherocks/victor-aller-sdet-site/pull/18",
+  "historicalEvidenceModified": false,
+  "acceptedModelExperimentsRerun": false,
+  "localValidation": {
+    "freshLockedInstall": true,
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "unit": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0
+    },
+    "embeddedIntegration": {
+      "passed": 81,
+      "failed": 0,
+      "nativeOnlySkipped": 2
+    },
+    "newDocumentationRelativeLinks": {
+      "checked": 94,
+      "broken": 0
+    },
+    "architectureDiagrams": {
+      "parsedAndRendered": 5,
+      "validator": "Mermaid 11.12.0, scratch-only"
+    },
+    "websiteSupplementaryBrowser": {
+      "passed": 17,
+      "failed": 0,
+      "retries": 0,
+      "browser": "scratch-only Chromium 138; does not replace locked CI browser"
+    },
+    "noLocalDockerOrWindowsProof": true
+  },
+  "publicationReview": {
+    "reviewer": "engineering agent; final human judgment pending",
+    "newPrivateKeyTokenPatternHits": 0,
+    "newPersonalPathPatternHits": 0,
+    "selectedMediaVisuallyReviewed": true,
+    "newProductCapture": "Recorded actual local UI/API, fresh embedded test DB, synthetic data, AI off; not live public service or native concurrency proof",
+    "websiteIsReadOnlyCaseStudy": true,
+    "newPublicExecutionEndpoint": false,
+    "newAgentOrModelBackend": false,
+    "websiteBranchAutoDeploymentDisabled": true,
+    "publicDeploymentPerformed": false,
+    "repositoryVisibilityChanged": false,
+    "originalSourceAccess": "Both repositories private; source access required, explicitly labeled",
+    "containerProvenance": "Existing version tags unchanged, mutable; no immutable digest guarantee",
+    "transportExactlyOnceClaim": false,
+    "osSandboxClaim": false
+  },
+  "preservedConclusions": {
+    "m3": "9/9 bounded turn_budget stops, zero drafts; safe but poor/inconclusive live tool selection",
+    "defaultRetrievalAdoption": false,
+    "defaultSpecialistAdoption": false,
+    "m5": "3x provider calls, no demonstrated specialist semantic advantage",
+    "generalizedSemanticPercentageClaim": false,
+    "mergeReleaseAuthority": false
+  },
+  "finalHeadCI": "Required proof is the exact final PR head/run/checks; no historical green substituted",
+  "formalM6Acceptance": false,
+  "humanTruthfulnessClaritySecurityReview": "pending",
+  "publicationAuthorization": "not granted; no merge or deployment"
+}
