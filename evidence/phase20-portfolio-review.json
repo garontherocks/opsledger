@@ -39,7 +39,7 @@
     "noLocalDockerOrWindowsProof": true
   },
   "publicationReview": {
-    "reviewer": "engineering agent; final human judgment pending",
+    "reviewer": "engineering review plus explicit final human judgment",
     "newPrivateKeyTokenPatternHits": 0,
     "newPersonalPathPatternHits": 0,
     "selectedMediaVisuallyReviewed": true,
@@ -63,10 +63,10 @@
     "generalizedSemanticPercentageClaim": false,
     "mergeReleaseAuthority": false
   },
-  "finalHeadCI": "Required proof is the exact final PR head/run/checks; no historical green substituted",
-  "formalM6Acceptance": false,
-  "humanTruthfulnessClaritySecurityReview": "pending",
-  "publicationAuthorization": "OpsLedger source/docs/evidence publication decision approved; visibility change, merge and website deployment not authorized in this preparation",
+  "finalHeadCI": "Both coordinated final heads passed required CI before final human acceptance",
+  "formalM6Acceptance": true,
+  "humanTruthfulnessClaritySecurityReview": "accepted",
+  "publicationAuthorization": "Final human acceptance completed; ordered publication sequence explicitly authorized",
   "publicationDecision": {
     "OpsLedger repository publication": "approved",
     "OpsLedger public runtime/service deployment": "not approved / not planned",
@@ -79,6 +79,8 @@
       "verify Vercel production deployment"
     ],
     "opsledgerStillPrivateDuringPreparation": true,
-    "formalM6AcceptanceFromPublicationDecision": false
+    "formalM6AcceptanceFromPublicationDecision": false,
+    "finalHumanAcceptance": true,
+    "executionAuthorized": true
   }
 }

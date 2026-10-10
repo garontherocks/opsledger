@@ -24,7 +24,7 @@ Phase 20 presents evidence and synthetic examples; it adds no OpsLedger runtime 
 | victor-aller-sdet-site source visibility | remain private |
 | separate public evidence repository | rejected as unnecessary |
 
-Intended later sequence, only after final human authorization: **merge OpsLedger PR #8 → make OpsLedger public → merge website PR #18 → verify Vercel production deployment**. Publication exposes source, documentation and evidence, not an OpsLedger service/control plane. The canonical repository itself provides deep technical evidence. No automatic execution of this sequence is authorized now. Publication approval alone is not formal M6 acceptance; resulting exact-head CI and final human truthfulness/clarity/security review remain mandatory.
+Intended later sequence, only after final human authorization: **merge OpsLedger PR #8 → make OpsLedger public → merge website PR #18 → verify Vercel production deployment**. Publication exposes source, documentation and evidence, not an OpsLedger service/control plane. The canonical repository itself provides deep technical evidence. The user subsequently completed the final human truthfulness/clarity/security review, formally accepted M6, and explicitly authorized this ordered sequence. Publication remains source/docs/evidence only; no OpsLedger runtime/control-plane deployment is authorized.
 
 Historical M1–M5 evidence is preserved without rewriting or sanitizing it merely for visibility. An actual secret/private-data publication blocker must be reported and execution stopped, rather than silently altering accepted evidence.
 
@@ -38,4 +38,4 @@ The website PR contains `public/evidence/opsledger-product.png`: an actual local
 
 ## Final review boundaries
 
-M6 cannot be accepted solely because documentation builds. Both repositories need final-head validation, claims/evidence review, sanitized media inspection and the final human checkpoint. Accepted expensive M3/M4/M5 experiments are reused without rerunning/retuning. Historical limited acceptance remains limited.
+M6 was accepted only after both repositories had final-head validation, claims/evidence review, sanitized media inspection and the final human checkpoint. Accepted expensive M3/M4/M5 experiments were reused without rerunning/retuning. Historical limited acceptance remains limited.

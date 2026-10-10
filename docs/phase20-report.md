@@ -29,19 +29,19 @@ The existing website source was accessible and audited; its main baseline is `1c
 - **victor-aller-sdet-site source visibility: remain private**.
 - **separate public evidence repository: rejected as unnecessary**.
 
-The canonical OpsLedger repository supplies deep technical evidence. Intended later execution, after final human authorization: merge OpsLedger PR #8 → make OpsLedger public → merge website PR #18 → verify Vercel production deployment. This narrow adjustment prepares both draft PRs only. OpsLedger is still private; neither PR is merged and the website is undeployed. Required full CI must pass on the resulting exact heads. This publication decision does not constitute formal M6 acceptance or authorize execution now.
+The canonical OpsLedger repository supplies deep technical evidence. Intended later execution, after final human authorization: merge OpsLedger PR #8 → make OpsLedger public → merge website PR #18 → verify Vercel production deployment. This narrow adjustment prepares both draft PRs only. OpsLedger is still private; neither PR is merged and the website is undeployed. Required full CI must pass on the resulting exact heads. The user subsequently completed the final human truthfulness/clarity/publication-security review, explicitly accepted M6, and authorized execution of the publication sequence. The sequence remains ordered: merge OpsLedger PR #8 → make OpsLedger public → merge website PR #18 → verify Vercel production deployment.
 
 [Canonical case-study link audit](../evidence/phase20-publication-link-audit.json): ten artifact links verified through authenticated reads at the accepted immutable snapshot; original SHA/context retained. The historical CI run binds to checkpoint `2bcc7d6dac7a57451298cff4add89c212fae4aec`, not this preparation head. Anonymous HTTP accessibility cannot be claimed until the later visibility change. No irrelevant/private artifact link was added.
 
-## Compact final human review — pending
+## Final human review — accepted
 
-Review the two final PRs and their exact head CI before answering:
+The user reviewed the coordinated final heads and explicitly accepted M6. Final human judgments:
 
-1. Does the website immediately communicate Senior SDET / Quality Engineer, Playwright + TypeScript and bounded AI/agentic QA—without implying a generic AI-engineer rebrand?
-2. Are OpsLedger's three negative findings clear, correctly bounded and useful evidence of engineering judgment?
-3. Can a reviewer navigate from a public claim to the original artifact and distinguish deterministic, mechanical, live-model, fixture and human-reviewed evidence?
-4. Are synthetic/recorded examples labeled, and do selected assets contain no secrets, private data or personal filesystem paths?
-5. Is it clear that required checks dominate AI, n8n has no policy authority and human approval grants only one bounded local-report effect?
-6. Is the approved source-only publication sequence clear, with execution still pending and no public OpsLedger runtime/control plane planned or exposed?
+1. **Positioning / clarity: Pass.** The website foregrounds Senior SDET / Quality Engineer and Playwright + TypeScript; bounded AI/agentic QA is an extension rather than a generic AI-engineer rebrand.
+2. **Negative findings / engineering judgment: Pass.** M3, M4 and M5 limitations and non-adoption decisions remain prominent and correctly bounded.
+3. **Evidence traceability: Pass.** Public claims map to canonical artifacts and preserve deterministic, mechanical, live-model, fixture/synthetic and human-reviewed distinctions.
+4. **Media / privacy: Pass.** Selected assets are synthetic/recorded where stated and the reviewed publication package contains no discovered secrets, private data or personal filesystem paths.
+5. **Authority / security story: Pass.** Required deterministic checks dominate AI, n8n has no policy authority, and human approval remains limited to one action/receipt/SHA/identity/expiry-bound local-report effect.
+6. **Publication safety: Pass.** OpsLedger publication is source/docs/evidence only; no public OpsLedger runtime/control plane is approved or planned.
 
-Record actual answers/security judgment only after the user reviews. M6 formal acceptance and execution of the approved publication sequence are pending; no additional milestone is invented.
+**Formal M6 acceptance: accepted.** The user explicitly authorized the publication sequence. No additional milestone is invented.

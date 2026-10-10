@@ -94,5 +94,7 @@
   ],
   "unrelatedPrivateArtifactLinksAdded": false,
   "historicalEvidenceRewritten": false,
-  "formalM6Acceptance": false
+  "formalM6Acceptance": true,
+  "finalHumanAcceptance": "accepted",
+  "publicationSequenceAuthorized": true
 }

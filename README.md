@@ -47,7 +47,7 @@ Human approval is action/receipt/SHA/identity/expiry-bound, one-time consumable,
 | M3 · phases 11–13 | Direct tools, registry, MCP and Skills; [acceptance and limitations](docs/m3-acceptance-check.md) |
 | M4 · phases 14–16 | Context, durable state, registered execution and HITL; [limited acceptance](docs/m4-acceptance-check.md) |
 | M5 · phases 17–19 | n8n orchestration, specialist rejection and bounded end-to-end QA; [accepted checkpoint](evidence/m5-human-checkpoint.json) |
-| M6 · phase 20 | Coordinated repository evidence package and existing web portfolio; final human truthfulness/publication checkpoint pending |
+| M6 · phase 20 | Coordinated repository evidence package and existing web portfolio; final human truthfulness/publication checkpoint accepted; publication sequence authorized |
 
 M1–M5 are accepted and merged. This M6 work starts from `5d0198847e228b525073f54dd06b880cac08f20c`; historical receipts retain their original SHAs and contexts. [Original chronological README](README-history.md) and [approved roadmap](docs/roadmap.md) preserve the full development record. Historical authorization annotations are not current instructions.
 
