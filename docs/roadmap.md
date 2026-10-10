@@ -1185,3 +1185,8 @@ All unchanged phase DoD and milestone requirements are satisfied within the limi
 ## M5 authorization and execution — 2026-10-09
 
 The user confirms PR #6 merged and explicitly authorizes M5 — Advanced Agentic QA, Phases 17–19. Verified main merge: 7cd2ca0ba226c2979a887a5f987874208ce6a279. Begin on feat/m5-advanced-qa. Finish each phase's unchanged scope/DoD/security/evidence and full required CI before the next; consolidate desktop/human/Teach-Back at the M5 boundary. Stop before Phase 20/M6. No automatic merge/release or additional operational authority. M4 acceptance, default-retrieval rejection, all historical failures and M3 9/9 turn_budget/zero drafts remain unchanged. Previous M5-not-authorized annotations are preserved history and superseded by this explicit authorization.
+
+
+## 2026-10-10 — M6 / Phase 20 authorization and coordinated scope
+
+The user explicitly accepts M1–M5 as merged and authorizes Phase 20 from exact main `5d0198847e228b525073f54dd06b880cac08f20c`. M6 has two deliverables: the OpsLedger technical evidence package and the existing `garontherocks/victor-aller-sdet-site` web portfolio. Use separate semantic branches/PRs; preserve all accepted evidence/negative conclusions and historical authorization notes. Do not merge or deploy. Final M6 acceptance requires both deliverables, final-head required validation and actual human truthfulness/clarity/publication-security review. This supersedes prior M6-not-authorized status annotations without changing any phase scope or gate.
