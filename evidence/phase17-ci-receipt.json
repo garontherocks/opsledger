@@ -1,0 +1,63 @@
+{
+  "phase": 17,
+  "testedCodeSha": "76bfc256ecfe5a378308c55c118b75f3ec2e280e",
+  "pullRequest": 7,
+  "runId": 37989092756,
+  "checkoutSha": "ba49cf0528142baedc6f402635085538d2c19d59",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 114018377604,
+      "name": "windows-launchers",
+      "conclusion": "success"
+    },
+    {
+      "id": 114018377858,
+      "name": "acceptance (browser)",
+      "conclusion": "success"
+    },
+    {
+      "id": 114018378096,
+      "name": "acceptance (api)",
+      "conclusion": "success"
+    }
+  ],
+  "nativeBridge": {
+    "tests": 10,
+    "failed": 0,
+    "skipped": 0
+  },
+  "nativeExistingWorkflow": {
+    "tests": 14,
+    "failed": 0,
+    "skipped": 0
+  },
+  "nativeProductIntegration": {
+    "tests": 83,
+    "failed": 0,
+    "skipped": 0
+  },
+  "actualN8n": {
+    "image": "n8nio/n8n:2.42.6",
+    "signedHttpWebhook": true,
+    "publication": "authenticated owned activate API; exact imported version/trigger publication status checked",
+    "duplicateTriageCalls": 1,
+    "reportEffects": 1,
+    "exportSecretScan": "passed",
+    "fixtureTriage": true,
+    "fixtureChecks": true,
+    "actualHumanApproval": false,
+    "internalNetwork": true,
+    "releaseAuthority": false
+  },
+  "artifact": {
+    "id": 11643774581,
+    "url": "https://github.com/garontherocks/opsledger/actions/runs/37989092756/artifacts/11643774581",
+    "files": [
+      "evidence/phase17-n8n-runtime.json",
+      "evidence/phase17-n8n-export.json"
+    ],
+    "retentionDays": 7
+  },
+  "milestoneAccepted": false
+}

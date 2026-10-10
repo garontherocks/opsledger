@@ -20,6 +20,18 @@ jobs:
         with:
           node-version: 24.19.0
           cache: npm
+      - name: Authenticate pinned-image pulls to Docker Hub
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          set +x
+          export DOCKER_CONFIG="$RUNNER_TEMP/opsledger-docker-auth"
+          printf 'DOCKER_CONFIG=%s\n' "$DOCKER_CONFIG" >> "$GITHUB_ENV"
+          test -n "$DOCKERHUB_USERNAME" && test -n "$DOCKERHUB_TOKEN"
+          umask 077
+          mkdir -p "$DOCKER_CONFIG"
+          printf '%s' "$DOCKERHUB_TOKEN" | docker login docker.io --username "$DOCKERHUB_USERNAME" --password-stdin
       - name: Build pinned PostgreSQL 18.6 with pgvector 0.8.7
         run: |
           docker build -f infra/Dockerfile.db -t opsledger-ci-db .
@@ -40,6 +52,18 @@ jobs:
       - if: matrix.lane == 'api'
         name: Native bounded QA workflow, crash boundaries and actual registered suite
         run: npm run m4:workflow-test
+      - if: matrix.lane == 'api'
+        name: Native signed QA orchestration and duplicate recovery
+        run: npm run m5:orchestration-test
+      - if: matrix.lane == 'api'
+        name: Actual n8n Community signed webhook, error branch and scrubbed export
+        run: npm run m5:n8n-smoke
+      - if: matrix.lane == 'api'
+        name: Bounded specialist contracts and paired fixture comparison (not live semantics)
+        run: npm run m5:specialist-test && npm run m5:specialist-fixture
+      - if: matrix.lane == 'api'
+        name: Bounded end-to-end QA contracts and actual SHA-bound registered execution
+        run: npm run m5:pipeline-test && npm run m5:pipeline-smoke
       - if: matrix.lane == 'api'
         name: M4 desktop bundle plumbing (fixture, not model-quality evidence)
         run: M4_BUNDLE_FIXTURE=true npm run ai:m4-harness
@@ -71,6 +95,12 @@ jobs:
       - if: matrix.lane == 'browser'
         name: QA approval UI (fixture checks; real session, API and DB)
         run: E2E_FLOW=qa npx playwright test tests/browser/qa.spec.ts
+      - name: Remove disposable Docker authentication
+        if: always()
+        run: |
+          export DOCKER_CONFIG="$RUNNER_TEMP/opsledger-docker-auth"
+          trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+          docker logout docker.io
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
@@ -80,6 +110,9 @@ jobs:
             evidence/m3-*
             evidence/phase14-*
             evidence/phase15-*
+            evidence/phase19-*
+            evidence/phase18-*
+            evidence/phase17-*
             evidence/phase16-*
             evidence/m4-*
             evidence/phase12-*

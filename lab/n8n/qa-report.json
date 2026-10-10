@@ -1,0 +1,212 @@
+{
+  "id": "OpsLedgerQaBridge",
+  "name": "Owned OpsLedger QA report bridge v1",
+  "active": false,
+  "nodes": [
+    {
+      "id": "trigger",
+      "name": "Signed QA webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "opsledger-qa-v1",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "opsledger-qa-v1",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "QaInbound",
+          "name": "Owned QA inbound (configure locally)"
+        }
+      }
+    },
+    {
+      "id": "service",
+      "name": "Scoped TypeScript service",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:3101/events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-qa-signature",
+              "value": "={{ $json.headers[\"x-qa-signature\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 35000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "QaService",
+          "name": "Single-run QA service (configure locally)"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 200,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "branch",
+      "name": "Report actually stored",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "complete",
+              "leftValue": "={{ $json.outcome }}",
+              "rightValue": "complete",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "complete",
+      "name": "Stored report receipt",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        720,
+        -100
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "pending",
+      "name": "No completion claim",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        720,
+        100
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseCode": 202
+        }
+      }
+    },
+    {
+      "id": "error",
+      "name": "Denied or unavailable",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        200
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"outcome\":\"inconclusive\",\"reportStored\":false,\"operationalAuthority\":false,\"releaseAuthority\":false}",
+        "options": {
+          "responseCode": 502
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Signed QA webhook": {
+      "main": [
+        [
+          {
+            "node": "Scoped TypeScript service",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scoped TypeScript service": {
+      "main": [
+        [
+          {
+            "node": "Report actually stored",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Denied or unavailable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Report actually stored": {
+      "main": [
+        [
+          {
+            "node": "Stored report receipt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No completion claim",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "none",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": false
+  },
+  "pinData": {},
+  "tags": []
+}

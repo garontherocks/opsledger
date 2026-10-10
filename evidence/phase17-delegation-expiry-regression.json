@@ -1,0 +1,12 @@
+{
+  "source": "actual Work controlled Phase 17 regression",
+  "beforeSha": "abb924e09212b5fdd4d65d4f3e253897a2873e90",
+  "case": "service grant expiry during target verification prevents the report effect",
+  "control": "Mock Date advances two seconds inside second SHA check; service grant TTL one second; approval TTL sixty seconds",
+  "before": "Request rejected after effect; count was 1 instead of required 0",
+  "rootCause": "Service expiry revalidated after consume, too late to prevent transactional report write",
+  "correction": "Trusted server-only delegated deadline passed to consume and enforced after await and at DB INSERT; model/request schema cannot supply it",
+  "legacyM4ConsumeBehaviorUnchanged": true,
+  "effectScope": "one local report; no incident/merge/release",
+  "notModelQualityEvidence": true
+}

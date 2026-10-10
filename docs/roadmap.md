@@ -50,7 +50,7 @@ Work may progress autonomously through consecutive phases inside the explicitly 
 
 Stop automatically at the milestone boundary. Never enter the next milestone without explicit user authorization. Stop earlier for a failed required deterministic gate, serious security issue, architecture/product decision requiring human judgment, or unresolved blocker materially affecting the next phase. Resolve ordinary technical problems autonomously.
 
-**Current authorization (2026-10-09):** M4 — Agentic QA, Phases 14–16, explicitly authorized from accepted M3 main c55eee55fcfeb4c31e0b252a1573156e2a9d41b4. Engineering boundary reached; actual consolidated human/desktop checkpoint pending. Stop before Phase 17/M5. Earlier phase authorization annotations are historical; phase scopes, DoD and thresholds remain unchanged.
+**Current authorization (2026-10-09):** M5 — Advanced Agentic QA, Phases 17–19, authorized after accepted M4 merge 7cd2ca0ba226c2979a887a5f987874208ce6a279. Engineering phases and actual consolidated human/desktop checkpoint completed on implementation SHA 15dba1139bfd8291500a87aecb6510ad99797a75; formal limited-scope M5 acceptance requires full green CI on its documentation/evidence checkpoint successor (see m5-acceptance-check.md and PR #7). Stop before Phase 20/M6, which is not authorized. Earlier authorization annotations are historical; no phase scope, DoD or threshold is changed.
 
 ### Consolidated milestone Teach-Back
 
@@ -1181,3 +1181,7 @@ Final review reopened the Phase 16 engineering gate for approval expiry during a
 The user completed the final M4 human checkpoint: 16 live desktop generations, zero provider/contract failures, six explicit semantic judgments, limited-scope HITL acceptance and all consolidated Teach-Back items passed. [Actual checkpoint](../evidence/m4-human-checkpoint.json), [formal acceptance](m4-acceptance-check.md). Provenance worked mechanically; retrieval did not reliably improve semantic reasoning and remains experimental/not adopted by default. No percentage, promotion or product-value claim.
 
 All unchanged phase DoD and milestone requirements are satisfied within the limited M4 lab scope; formal acceptance is recorded with required CI on the resulting docs/evidence-only head. Failed final-head gates must reopen acceptance. No scope/threshold waiver or executable change. Earlier pending annotations are preserved history, superseded by this checkpoint. M3 9/9 turn_budget/zero drafts and original Windows/lifecycle/expiry failures remain preserved. PR #6 must not be merged. Phase 17/M5 is not authorized; stop at M4.
+
+## M5 authorization and execution — 2026-10-09
+
+The user confirms PR #6 merged and explicitly authorizes M5 — Advanced Agentic QA, Phases 17–19. Verified main merge: 7cd2ca0ba226c2979a887a5f987874208ce6a279. Begin on feat/m5-advanced-qa. Finish each phase's unchanged scope/DoD/security/evidence and full required CI before the next; consolidate desktop/human/Teach-Back at the M5 boundary. Stop before Phase 20/M6. No automatic merge/release or additional operational authority. M4 acceptance, default-retrieval rejection, all historical failures and M3 9/9 turn_budget/zero drafts remain unchanged. Previous M5-not-authorized annotations are preserved history and superseded by this explicit authorization.

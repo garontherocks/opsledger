@@ -1,0 +1,19 @@
+{
+  "run": 37989722571,
+  "head": "aad62a4b64b7e3ac74e45c1927c191431e3658a4",
+  "checkoutSha": "524377f5feb4250c639b0d80faa982f9280f104c",
+  "jobId": 114020488303,
+  "requiredStep": "Build pinned PostgreSQL 18.6 with pgvector 0.8.7",
+  "classification": "external registry rate limit; application tests not reached in API lane",
+  "httpStatus": 429,
+  "image": "postgres:18.6",
+  "registry": "registry-1.docker.io",
+  "result": "failed",
+  "previousCompleteGreen": {
+    "head": "76bfc256ecfe5a378308c55c118b75f3ec2e280e",
+    "run": 37989092756
+  },
+  "phase18Started": false,
+  "milestoneAccepted": false,
+  "noGateWaiver": true
+}
