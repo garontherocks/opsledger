@@ -13,7 +13,6 @@ jobs:
       matrix:
         lane: [api, browser]
     env:
-      DOCKER_CONFIG: ${{ runner.temp }}/opsledger-docker-auth
       TEST_DATABASE_URL: postgresql://opsledger:disposable-ci-only@127.0.0.1:5432/opsledger_test
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -27,6 +26,8 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           set +x
+          export DOCKER_CONFIG="$RUNNER_TEMP/opsledger-docker-auth"
+          printf 'DOCKER_CONFIG=%s\n' "$DOCKER_CONFIG" >> "$GITHUB_ENV"
           test -n "$DOCKERHUB_USERNAME" && test -n "$DOCKERHUB_TOKEN"
           umask 077
           mkdir -p "$DOCKER_CONFIG"
@@ -91,6 +92,7 @@ jobs:
       - name: Remove disposable Docker authentication
         if: always()
         run: |
+          export DOCKER_CONFIG="$RUNNER_TEMP/opsledger-docker-auth"
           trap 'rm -rf "$DOCKER_CONFIG"' EXIT
           docker logout docker.io
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
