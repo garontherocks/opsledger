@@ -1,0 +1,3 @@
+{"auditReportVersion": 2, "vulnerabilities": {
+  "nested-lib": {"name": "nested-lib", "severity": "moderate", "isDirect": false, "nodes": ["node_modules/nested-lib"], "via": [{"source": 3, "name": "nested-lib", "title": "fixture unexcepted finding", "url": "https://github.com/advisories/GHSA-0000-0000-0003", "severity": "moderate", "range": "<5.0.0"}]}
+}}

@@ -51,3 +51,7 @@ Pinned Promptfoo's telemetry opt-out still tried to send a telemetry-disabled ev
 ## M2 native CI receipt — 2026-10-08
 
 PostgreSQL 18.6 / pgvector 0.8.7 source-hash-verified image builds and all 82 native integration checks pass on validated code c5c7a84078c41555c2c9ae5e13e5559949a9ba02. All nine compatible Chromium flows, including the unchanged golden, pass. See evidence/m2-ci-receipt.json. This supersedes earlier pending build/test observations, not actual least-privilege/native-backup/multi-worker production debt. Desktop model/digest/runtime quality acceptance remains pending.
+
+## Audit gate and patch pins — 2026-11-06
+
+Lockfile-only `npm audit fix` (no --force). Exact patch pins zod 4.6.6, @fastify/static 10.1.10 (glob 14.0.4) and fastify 5.12.8; scoped override @modelcontextprotocol/node → @hono/node-server 2.1.6 (2.1.2 of that package ships identical code and declares ^2.1.3 compatible). Promptfoo stays exact 0.116.7. Remaining dev-only zod/glob (via Promptfoo) and minimatch (via eslint/typescript-eslint/Promptfoo) advisories are scoped, expiring exceptions in security/audit-exceptions.json, enforced by scripts/audit-gate.ts. See ADR 0019.

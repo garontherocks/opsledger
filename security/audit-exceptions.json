@@ -1,0 +1,32 @@
+{
+  "policy": "Scoped, expiring exceptions to the npm audit gate (scripts/audit-gate.ts). See docs/adr/0019-dev-audit-exceptions.md. An entry covers its advisory only while every affected dependency path passes through one of requiredAncestors; any other path fails the gate. Severity is the advisory severity at decision time; a change forces re-review.",
+  "exceptions": [
+    {
+      "id": "GHSA-mrhx-c7xc-m3w5",
+      "package": "zod",
+      "severity": "high",
+      "requiredAncestors": ["promptfoo"],
+      "reason": "Nested zod@3.25.76 copies installed only by dev dependency promptfoo@0.116.7 (promptfoo/node_modules/zod and its @adaline/* provider adapters). The fix requires promptfoo 0.125.1 (breaking); 0.116.7 is kept to preserve reproducibility of accepted Phase 10 / M2 eval evidence. The runtime zod is pinned at the patched 4.6.6. The local eval profile validates only reviewed handwritten fixtures, not untrusted collections.",
+      "decided": "2026-11-06",
+      "expires": "2027-02-06"
+    },
+    {
+      "id": "GHSA-3g3m-2fjr-6pw4",
+      "package": "glob",
+      "severity": "moderate",
+      "requiredAncestors": ["promptfoo"],
+      "reason": "Nested glob@11.1.0 installed only by dev dependency promptfoo@0.116.7. The fix requires promptfoo 0.125.1 (breaking); kept for M2 eval reproducibility. The runtime glob (via @fastify/static 10.1.10) is the patched 14.0.4. The eval profile does not pass AbortSignal-cancelled globs over untrusted directories.",
+      "decided": "2026-11-06",
+      "expires": "2027-02-06"
+    },
+    {
+      "id": "GHSA-g3hv-75wg-m249",
+      "package": "minimatch",
+      "severity": "moderate",
+      "requiredAncestors": ["eslint", "typescript-eslint", "promptfoo"],
+      "reason": "Dev-only minimatch@10.2.6 used by the lint toolchain (eslint 10.12.0, @eslint/config-array, @typescript-eslint/typescript-estree) and by promptfoo's nested glob. No patched 10.x exists and current eslint/typescript-eslint releases still require ^10; forcing 11.x would be a major override of the linter. Patterns come from repository-controlled lint/eval configuration, not untrusted input.",
+      "decided": "2026-11-06",
+      "expires": "2027-02-06"
+    }
+  ]
+}

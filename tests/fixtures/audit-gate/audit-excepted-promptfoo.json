@@ -1,0 +1,5 @@
+{"auditReportVersion": 2, "vulnerabilities": {
+  "deep-lib": {"name": "deep-lib", "severity": "high", "isDirect": false, "nodes": ["node_modules/deep-lib"], "via": [{"source": 1, "name": "deep-lib", "title": "fixture promptfoo-only finding", "url": "https://github.com/advisories/GHSA-0000-0000-0001", "severity": "high", "range": "<2.0.0"}]},
+  "promptfoo": {"name": "promptfoo", "severity": "high", "isDirect": true, "nodes": ["node_modules/promptfoo"], "via": ["deep-lib"]},
+  "nested-lib": {"name": "nested-lib", "severity": "low", "isDirect": false, "nodes": ["node_modules/promptfoo/node_modules/nested-lib"], "via": [{"source": 4, "name": "nested-lib", "title": "fixture low finding below threshold", "url": "https://github.com/advisories/GHSA-0000-0000-0004", "severity": "low", "range": "<4.0.0"}]}
+}}
