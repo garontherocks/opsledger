@@ -1,0 +1,6 @@
+{
+  "exceptions": [
+    {"id": "GHSA-0000-0000-0001", "package": "deep-lib", "severity": "high", "requiredAncestors": ["promptfoo"], "reason": "fixture: dev-only via promptfoo", "decided": "2026-11-06", "expires": "2027-02-06"},
+    {"id": "GHSA-0000-0000-0002", "package": "shared-lib", "severity": "moderate", "requiredAncestors": ["promptfoo"], "reason": "fixture: wrongly assumed promptfoo-only", "decided": "2026-11-06", "expires": "2027-02-06"}
+  ]
+}

@@ -42,7 +42,7 @@ jobs:
       - run: npm run lint && npm run typecheck && npm run build
       - run: npm run test:unit
       - run: npm run m4:context-test
-      - run: npm audit --audit-level=moderate
+      - run: node --experimental-strip-types scripts/audit-gate.ts
       - if: matrix.lane == 'api'
         name: Native lifecycle lock-overlap regression
         run: node --experimental-strip-types --test tests/lifecycle-outbox.integration.test.ts
