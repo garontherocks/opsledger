@@ -1,0 +1,15 @@
+{
+  "name": "audit-gate-fixture",
+  "lockfileVersion": 3,
+  "packages": {
+    "": {"name": "audit-gate-fixture", "workspaces": ["packages/contracts"], "dependencies": {"app-dep": "1.0.0"}, "devDependencies": {"promptfoo": "0.116.7"}},
+    "packages/contracts": {"name": "@fixture/contracts", "version": "0.0.0"},
+    "node_modules/@fixture/contracts": {"resolved": "packages/contracts", "link": true},
+    "node_modules/app-dep": {"version": "1.0.0", "dependencies": {"shared-lib": "^2.0.0"}},
+    "node_modules/promptfoo": {"version": "0.116.7", "dev": true, "dependencies": {"deep-lib": "^1.0.0", "shared-lib": "^2.0.0", "nested-lib": "^3.0.0"}},
+    "node_modules/deep-lib": {"version": "1.0.0", "dev": true},
+    "node_modules/shared-lib": {"version": "2.0.0"},
+    "node_modules/promptfoo/node_modules/nested-lib": {"version": "3.0.0", "dev": true},
+    "node_modules/nested-lib": {"version": "4.0.0"}
+  }
+}
