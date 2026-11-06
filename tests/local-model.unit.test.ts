@@ -5,9 +5,11 @@ import {OllamaProvider} from '../apps/api/src/local-model.ts';
 import {config} from '../apps/api/src/config.ts';
 import {redactText} from '../apps/api/src/assistance.ts';
 const digest='sha256:'+'a'.repeat(64),model='qwen3:0.6b-q4_K_M';
-async function fixture(handler:(req:IncomingMessage,res:ServerResponse)=>void){
+// Generous default deadline: success-path tests make three cold loopback requests that exceeded 100 ms on shared CI runners.
+// Only the deadline test opts into the short budget it asserts.
+async function fixture(handler:(req:IncomingMessage,res:ServerResponse)=>void,timeoutMs='5000'){
  const server=createServer(handler);await new Promise<void>(resolve=>server.listen(0,'127.0.0.1',resolve));const address=server.address();if(!address||typeof address==='string')throw new Error('Missing bound address');
- const settings=config({NODE_ENV:'test',DATABASE_URL:'postgresql://localhost/test',AUTH_SECRET:'secret-is-long-enough-for-test-safety-123',LAB_MODE:'true',AI_ENABLED:'true',OLLAMA_MODEL:model,OLLAMA_DIGEST:digest,OLLAMA_URL:'http://127.0.0.1:'+address.port,AI_TIMEOUT_MS:'100'});
+ const settings=config({NODE_ENV:'test',DATABASE_URL:'postgresql://localhost/test',AUTH_SECRET:'secret-is-long-enough-for-test-safety-123',LAB_MODE:'true',AI_ENABLED:'true',OLLAMA_MODEL:model,OLLAMA_DIGEST:digest,OLLAMA_URL:'http://127.0.0.1:'+address.port,AI_TIMEOUT_MS:timeoutMs});
  return {settings,close:async()=>{server.closeAllConnections();await new Promise<void>(resolve=>server.close(()=>resolve()));}};
 }
 function metadata(req:IncomingMessage,res:ServerResponse){if(req.url==='/api/version'){res.end(JSON.stringify({version:'fixture-only'}));return true;}if(req.url==='/api/tags'){res.end(JSON.stringify({models:[{name:model,digest:digest.slice(7),details:{format:'gguf'}}]}));return true;}return false;}
@@ -20,7 +22,7 @@ test('wrong digest fails before generation',async()=>{
  try{await assert.rejects(new OllamaProvider({...runtime.settings,OLLAMA_DIGEST:'sha256:'+'b'.repeat(64)}).generate('Synthetic'),error=>(error as {code:string}).code==='model_manifest_mismatch');assert.equal(generated,0);}finally{await runtime.close();}
 });
 test('provider deadline cancels a nonresponsive local runtime',async()=>{
- const runtime=await fixture(()=>{});try{await assert.rejects(new OllamaProvider(runtime.settings).generate('Synthetic'),error=>(error as {code:string}).code==='model_timeout');}finally{await runtime.close();}
+ const runtime=await fixture(()=>{},'100');try{await assert.rejects(new OllamaProvider(runtime.settings).generate('Synthetic'),error=>(error as {code:string}).code==='model_timeout');}finally{await runtime.close();}
 });
 test('oversized output is bounded before JSON parsing',async()=>{
  const runtime=await fixture((req,res)=>{if(metadata(req,res))return;res.end('x'.repeat(40000));});try{await assert.rejects(new OllamaProvider(runtime.settings).generate('Synthetic'),error=>(error as {code:string}).code==='model_output_budget');}finally{await runtime.close();}
