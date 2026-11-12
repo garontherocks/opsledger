@@ -50,12 +50,12 @@ test('eval reports expand into one entry per case',()=>{
 test('feed groups results by skill with provenance, lanes and totals',()=>{
   const feed=buildFeed(input({
     nodeTests:[node('rag.integration.test.ts','cites the runbook',['rag']),node('rag.integration.test.ts','rag'),node('qa-mcp.integration.test.ts','lists tools',[],'failed'),node('unknown.test.ts','new thing')],
-    steps:[{lane:'api',step:'audit-gate',status:'passed',durationMs:1000,startedAt:'2026-11-12T00:00:10.000Z'}],
+    steps:[{lane:'api',step:'audit-gate',status:'passed',durationMs:1000,startedAt:'2026-11-12T00:00:10.000Z'},{lane:'api',step:'m2-harness',status:'passed',durationMs:0,startedAt:'2026-11-12T00:00:20.000Z'}],
     lanes:[{lane:'api',startedAt:'2026-11-12T00:00:00.000Z',finishedAt:'2026-11-12T00:01:00.000Z'}],
-    retrieval:{recallAt5:1,mrr:0.5},
+    retrieval:{lane:'api',recallAt5:1,mrr:0.5},
   }));
   assert.equal(feed.schema,FEED_SCHEMA);
-  assert.deepEqual(feed.totals,{tests:4,passed:3,failed:1,skipped:0,flaky:0,durationMs:1015});
+  assert.deepEqual(feed.totals,{tests:5,passed:4,failed:1,skipped:0,flaky:0,durationMs:1015});
   const byId=Object.fromEntries(feed.suites.map(s=>[s.id,s]));
   assert.equal(byId['rag-retrieval']!.provenance,'fixture');
   assert.equal(byId['rag-retrieval']!.tests[0]!.group,'rag');
@@ -67,6 +67,18 @@ test('feed groups results by skill with provenance, lanes and totals',()=>{
   assert.deepEqual(feed.window,{startedAt:'2026-11-12T00:00:00.000Z',finishedAt:'2026-11-12T00:01:00.000Z',wallMs:60000});
   assert.deepEqual(feed.checks.retrieval,{recallAt5:1,mrr:0.5,source:'fixture'});
   assert.equal(feed.reports.history,'./history.json');
+});
+
+test('eval reports and retrieval metrics count only in the lane where their step ran',()=>{
+  const report={results:[{id:'s1',expectedMatched:true}]};
+  const feed=buildFeed(input({
+    steps:[{lane:'api',step:'agent-eval',status:'passed',durationMs:1,startedAt:'2026-11-12T00:00:00.000Z'}],
+    evals:[{step:'agent-eval',lane:'api',report},{step:'agent-eval',lane:'browser',report}],
+    retrieval:{lane:'browser',recallAt5:1,mrr:1},
+  }));
+  const agent=feed.suites.find(s=>s.id==='agent-budgets')!;
+  assert.equal(agent.tests.filter(t=>t.name==='case s1').length,1,'the committed copy in the browser lane is ignored');
+  assert.equal(feed.checks.retrieval,null,'retrieval metrics need the m2-harness step in the same lane');
 });
 
 test('names are single-line and bounded',()=>{

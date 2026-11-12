@@ -88,7 +88,7 @@ function suiteCommand(skill:Skill){
 
 export type RunInfo={id:string|null,number:number|null,attempt:number|null,workflow:string,event:string,branch:string,commit:string|null,repository:string,url:string|null};
 export type RecordedLocal={id:string,title:string,recordedAt:string|null,commit:string|null,model:string|null,runtime:string|null,hardware:string|null,facts:{label:string,value:string}[],finding:string,evidence:string};
-export type BuildInput={nodeTests:NodeRecord[],steps:StepRecord[],browser:{lane:string,report:unknown}[],evals:{step:string,lane:string,report:unknown}[],lanes:{lane:string,startedAt?:string|undefined,finishedAt?:string|undefined}[],retrieval:{recallAt5:number,mrr:number}|null,run:RunInfo,generatedAt:string,node:string,recorded:RecordedLocal[]};
+export type BuildInput={nodeTests:NodeRecord[],steps:StepRecord[],browser:{lane:string,report:unknown}[],evals:{step:string,lane:string,report:unknown}[],lanes:{lane:string,startedAt?:string|undefined,finishedAt?:string|undefined}[],retrieval:{lane:string,recallAt5:number,mrr:number}|null,run:RunInfo,generatedAt:string,node:string,recorded:RecordedLocal[]};
 
 export function buildFeed(input:BuildInput){
   const collected:Collected[]=[];
@@ -100,7 +100,9 @@ export function buildFeed(input:BuildInput){
   for(const s of input.steps){
     collected.push({skill:stepSkill.get(s.step)??OTHER.id,flaky:false,test:{name:clean(STEP_COMMANDS[s.step]??s.step),group:'CI step',target:laneName(s.lane),status:s.status,durationMs:s.durationMs,retries:0}});
   }
-  for(const e of input.evals)for(const test of evalCases(e.step,e.report,e.lane))collected.push({skill:stepSkill.get(e.step)??OTHER.id,flaky:false,test});
+  // An eval report counts only where its step ran: committed copies in other lanes are stale evidence, not results.
+  const ran=(step:string,lane:string)=>input.steps.some(s=>s.step===step&&s.lane===lane);
+  for(const e of input.evals.filter(e=>ran(e.step,e.lane)))for(const test of evalCases(e.step,e.report,e.lane))collected.push({skill:stepSkill.get(e.step)??OTHER.id,flaky:false,test});
   for(const b of input.browser)for(const {flow,test,flaky} of playwrightTests(b.report,b.lane))collected.push({skill:flowSkill.get(flow)??OTHER.id,flaky,test});
 
   const suites=[...SKILLS,OTHER].map(skill=>{
@@ -124,7 +126,7 @@ export function buildFeed(input:BuildInput){
     totals:totalsOf(collected),
     suites,
     environment:{database:'PostgreSQL 18.6 + pgvector 0.8.7',browsers:['Chromium'],runner:'Linux X64 · Windows',node:input.node,pipeline:'GitHub Actions',models:'none in CI · AI contracts run on fixtures'},
-    checks:{retrieval:input.retrieval?{...input.retrieval,source:'fixture'}:null},
+    checks:{retrieval:input.retrieval&&ran('m2-harness',input.retrieval.lane)?{recallAt5:input.retrieval.recallAt5,mrr:input.retrieval.mrr,source:'fixture'}:null},
     reports:{history:'./history.json'},
     recordedLocal:input.recorded,
   };
@@ -177,7 +179,7 @@ const readJson=(file:string):unknown=>existsSync(file)?JSON.parse(readFileSync(f
 export function collectArtifacts(input:string){
   const dirs=readdirSync(input).map(d=>join(input,d)).filter(d=>statSync(d).isDirectory());
   const nodeTests:NodeRecord[]=[],steps:StepRecord[]=[],browser:{lane:string,report:unknown}[]=[],evals:{step:string,lane:string,report:unknown}[]=[],lanes:{lane:string,startedAt?:string|undefined,finishedAt?:string|undefined}[]=[];
-  let retrieval:{recallAt5:number,mrr:number}|null=null;
+  let retrieval:{lane:string,recallAt5:number,mrr:number}|null=null;
   for(const dir of dirs){
     const start=readJson(join(dir,'lane-start.json')) as {lane?:string,startedAt?:string}|null;
     const end=readJson(join(dir,'lane-end.json')) as {finishedAt?:string}|null;
@@ -188,7 +190,7 @@ export function collectArtifacts(input:string){
     for(const f of readdirSync(dir).filter(f=>/^browser-[a-z]+\.json$/.test(f)))browser.push({lane,report:readJson(join(dir,f))});
     for(const [step,file] of [['agent-eval','phase11-agent-eval.json'],['ai-regression','phase10-eval-report.json']] as const){const report=readJson(join(dir,file));if(report)evals.push({step,lane,report});}
     const m2=readJson(join(dir,'m2-bundle-harness.json')) as {retrieval?:{recallAt5?:number,mrr?:number}}|null;
-    if(m2?.retrieval&&asNumber(m2.retrieval.recallAt5)!==null&&asNumber(m2.retrieval.mrr)!==null)retrieval={recallAt5:m2.retrieval.recallAt5!,mrr:m2.retrieval.mrr!};
+    if(m2?.retrieval&&asNumber(m2.retrieval.recallAt5)!==null&&asNumber(m2.retrieval.mrr)!==null&&steps.some(s=>s.step==='m2-harness'&&s.lane===lane))retrieval={lane,recallAt5:m2.retrieval.recallAt5!,mrr:m2.retrieval.mrr!};
   }
   return {nodeTests,steps,browser,evals,lanes,retrieval};
 }
