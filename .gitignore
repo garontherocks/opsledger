@@ -32,3 +32,4 @@ browser-binaries/
 credentials*.json
 evidence/private/
 evidence/desktop-private/
+reports/

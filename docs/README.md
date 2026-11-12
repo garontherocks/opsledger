@@ -18,6 +18,7 @@ was built, milestone by milestone, is in [history](history/README.md).
 | [retrieval-golden.md](retrieval-golden.md) | Retrieval quality golden set: recorded embeddings replayed in CI, and its results |
 | [observability.md](observability.md) | OpenTelemetry GenAI traces of agent runs, model calls, retrieval and tools |
 | [model-contrast.md](model-contrast.md) | Qwen3 8B vs 14B on the same agent tasks, recorded locally and scored from OpenTelemetry spans |
+| [mutation-testing.md](mutation-testing.md) | Stryker mutation testing of the agent gates, the output parser and the trajectory evaluator |
 | [adr/](adr/) | Architecture decision records |
 | [roadmap.md](roadmap.md) | The approved roadmap, its deferred technologies and their triggers |
 | [openapi.json](openapi.json) | Generated API description (`npm run build`) |

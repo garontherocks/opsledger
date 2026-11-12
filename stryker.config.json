@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "Mutation testing of the AI oracles (docs/mutation-testing.md). Runs node:test directly on the TypeScript sources.",
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "node --experimental-strip-types --test --test-reporter=dot tests/qa-agent.unit.test.ts tests/structured-output.unit.test.ts tests/model-contrast.unit.test.ts tests/agent-tracing.unit.test.ts"
+  },
+  "mutate": ["apps/api/src/qa-agent.ts", "apps/api/src/structured-output.ts", "scripts/model-contrast/contrast.ts"],
+  "ignorePatterns": [".local", "dist", "test-results", "playwright-report", "reports"],
+  "coverageAnalysis": "off",
+  "concurrency": 4,
+  "timeoutMS": 30000,
+  "disableTypeChecks": "{apps,scripts}/**/*.ts",
+  "reporters": ["clear-text", "progress", "json"],
+  "jsonReporter": { "fileName": "reports/mutation/mutation.json" },
+  "thresholds": { "high": 80, "low": 60, "break": 75 },
+  "tempDirName": ".local/stryker-tmp",
+  "cleanTempDir": "always"
+}
