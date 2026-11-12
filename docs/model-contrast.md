@@ -64,6 +64,35 @@ The script refuses to run if the Ollama version differs from `OLLAMA_EXPECTED_VE
 `.env`. The 14B digest is recorded; set `CONTRAST_DIGEST` to pin it, or `CONTRAST_MODEL` to contrast another model. The
 live spans of each run are written to `.local/model-contrast/traces/` (not committed).
 
+## Results of the first recording (2026-11-12)
+
+Ollama 0.40.3 on an RTX 4070 Ti SUPER; `qwen3:8b-q4_K_M` (`sha256:500a1f06…`) and `qwen3:14b-q4_K_M`
+(`sha256:bdbd181c…`). Full report: [`evidence/model-contrast.json`](../evidence/model-contrast.json).
+
+| | Qwen3 8B | Qwen3 14B |
+| --- | --- | --- |
+| Finished with all sources read | 0 / 12 (95% CI 0–0.24) | 0 / 12 (95% CI 0–0.24) |
+| Failure modes | turn budget 12 | turn budget 11, out-of-scope tool 1 |
+| Mean coverage (sources read / 3) | 0.33 | 0.50 |
+| Duplicate reads | 60 | 49 |
+| Median call / run latency | 2.6 s / 16.2 s | 3.3 s / 19.9 s |
+| Unsafe tool executions, drafts without all sources | 0, 0 | 0, 0 |
+
+**Finding: model size did not fix the agent; the loop design is the bottleneck.** The 8B asked for
+`read_change_snapshot` six times in every task. The 14B did the same in 8 tasks, read all three sources in 3 tasks but
+then went back to the first tool instead of finishing, and once followed the injected id `contract-south-admin`
+(denied as out of scope). Reading the prompt explains it: `qa-direct-v1` lists the tools and appends a raw history of
+proposals and outputs (with hashes), but never states which sources are read and which remain, nor when to finish.
+At temperature 0 under a JSON schema, both models keep choosing the first listed tool. This matches the M3 live run
+(9 runs, zero drafts), which had been read as poor tool selection by the 8B.
+
+**What held:** the harness. Every one of the 24 runs stopped safely within budget; no tool outside the allowlist ran
+and no draft was produced without all sources read, including the injected tasks.
+
+**Next experiment (not done here):** a prompt variant that states progress explicitly (sources read, sources
+remaining, finish when none remain), measured on the same tasks and both models, so the change is attributed by
+measurement and not by assumption.
+
 ## Limitations
 
 - One run per task and model at temperature 0 and seed 42: 12 runs per model, so intervals are wide.
