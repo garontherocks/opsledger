@@ -1,6 +1,6 @@
 # M2 actual human / desktop checkpoint — 2026-10-08
 
-Executed on `feat/m2-ai-regression` at handoff `4e10225417f4094c939670730f1521ecc9258cef`. These are the user's actual results and judgments, not generated answers. Full model digests and structured record: [evidence](../evidence/m2-human-desktop-validation.json). The supplied raw synthetic report remains private; no raw prompts, .env or hardware traces are added to Git.
+Executed on `feat/m2-ai-regression` at handoff `4e10225417f4094c939670730f1521ecc9258cef`. These are the user's actual results and judgments, not generated answers. Full model digests and structured record: [evidence](../../../evidence/m2-human-desktop-validation.json). The supplied raw synthetic report remains private; no raw prompts, .env or hardware traces are added to Git.
 
 Environment: Node 24.19.0, Ollama 0.34.0, pinned qwen3:8b-q4_K_M and embeddinggemma:300m, PostgreSQL 18.6 / pgvector 0.8.7, RTX 4070 Ti SUPER.
 

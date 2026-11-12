@@ -15,7 +15,7 @@ Retrieval provenance/integrity worked mechanically. Correct retrieval did not re
 
 ## Actual desktop observation
 
-The user reports completed=true, fixture=false, generations=16, providerErrors=0, contractFailures=0, automaticQualityAcceptance=false and defaultRetrievalAdoption=false. Model qwen3:8b-q4_K_M; expected Ollama runtime 0.34.0; corpus SHA c55eee55fcfeb4c31e0b252a1573156e2a9d41b4. Expected runtime is recorded as supplied, without inventing additional runtime, hardware or digest measurements. Zero contract failures do not establish semantic quality. See [checkpoint evidence](../evidence/m4-human-checkpoint.json).
+The user reports completed=true, fixture=false, generations=16, providerErrors=0, contractFailures=0, automaticQualityAcceptance=false and defaultRetrievalAdoption=false. Model qwen3:8b-q4_K_M; expected Ollama runtime 0.34.0; corpus SHA c55eee55fcfeb4c31e0b252a1573156e2a9d41b4. Expected runtime is recorded as supplied, without inventing additional runtime, hardware or digest measurements. Zero contract failures do not establish semantic quality. See [checkpoint evidence](../../../evidence/m4-human-checkpoint.json).
 
 ## Actual human HITL security judgment
 

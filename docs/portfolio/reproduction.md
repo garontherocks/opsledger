@@ -1,6 +1,6 @@
 # Reproduce only the evidence you need
 
-[Entry point](../../README.md) · [CI and evidence detail](../ci-and-evidence.md)
+[Entry point](../../README.md) · [CI and evidence detail](../history/m0/ci-and-evidence.md)
 
 Start from a fresh clone and a reviewed commit. Use Node 24.19.x/npm and the committed lockfile. No credentials, existing database or GPU are needed for deterministic source validation.
 
@@ -38,7 +38,7 @@ npm run build
 node --env-file=.env --experimental-strip-types apps/api/src/server.ts
 ```
 
-In another terminal, run `node --env-file=.env --experimental-strip-types apps/api/src/worker.ts` with the same private storage configuration. Open the local app at `http://localhost:3100`. Seeding writes local synthetic account credentials; do not publish that file or run the seed against shared data. The repeated migration is an idempotency check, not a recovery guarantee. For the native test database setup and Windows launchers follow the existing [CI guide](../ci-and-evidence.md) and workflow, rather than substituting the embedded lane.
+In another terminal, run `node --env-file=.env --experimental-strip-types apps/api/src/worker.ts` with the same private storage configuration. Open the local app at `http://localhost:3100`. Seeding writes local synthetic account credentials; do not publish that file or run the seed against shared data. The repeated migration is an idempotency check, not a recovery guarantee. For the native test database setup and Windows launchers follow the existing [CI guide](../history/m0/ci-and-evidence.md) and workflow, rather than substituting the embedded lane.
 
 ## AI / local-model evidence
 

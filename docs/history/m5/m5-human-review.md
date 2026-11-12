@@ -4,7 +4,7 @@ The actual human/desktop checkpoint is complete on reviewed implementation SHA 1
 
 ## Actual desktop evidence
 
-Original uploaded values are preserved in [bundle](../evidence/m5-desktop-bundle.json) and [comparison](../evidence/m5-specialist-comparison-desktop.json). The bundle remains completed=true, fixture=false, status=awaiting_human_review, actualHumanReview=false and requiredCIIncluded=false: those were its historical generation-time values. The separate [human checkpoint](../evidence/m5-human-checkpoint.json) records the subsequently completed human review; the original artifact is not rewritten into automatic acceptance.
+Original uploaded values are preserved in [bundle](../../../evidence/m5-desktop-bundle.json) and [comparison](../../../evidence/m5-specialist-comparison-desktop.json). The bundle remains completed=true, fixture=false, status=awaiting_human_review, actualHumanReview=false and requiredCIIncluded=false: those were its historical generation-time values. The separate [human checkpoint](../../../evidence/m5-human-checkpoint.json) records the subsequently completed human review; the original artifact is not rewritten into automatic acceptance.
 
 Runtime 0.34.0, qwen3:8b-q4_K_M, digest sha256:500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41; providerFailures=0. All automatic semantic acceptance, default specialist/retrieval adoption and operational/release authority flags remain false.
 

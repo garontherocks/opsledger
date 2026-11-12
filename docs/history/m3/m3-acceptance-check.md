@@ -2,7 +2,7 @@
 
 Decision: **FORMALLY ACCEPTED for the limited Agent Foundations lab scope (Phases 11–13)**. The actual human/desktop checkpoint is complete, and the browser lifecycle blocker has been causally diagnosed and corrected with deterministic native before/after evidence and full required CI. This is not live-model quality promotion, production acceptance or M4 authorization.
 
-Accepted tested code: a55fbe29bcfb5e78fdee4dc4c54b5cdca44be479. Full [CI run 37953380880](https://github.com/garontherocks/opsledger/actions/runs/37953380880), [exact receipt](../evidence/m3-lifecycle-remediation-ci-receipt.json). This acceptance-record successor changes documentation/evidence only; the actual desktop run remains at 52b1f567766a0098313c5637e4ec6f00c7d54c0d. No desktop/Teach-Back repeat is requested.
+Accepted tested code: a55fbe29bcfb5e78fdee4dc4c54b5cdca44be479. Full [CI run 37953380880](https://github.com/garontherocks/opsledger/actions/runs/37953380880), [exact receipt](../../../evidence/m3-lifecycle-remediation-ci-receipt.json). This acceptance-record successor changes documentation/evidence only; the actual desktop run remains at 52b1f567766a0098313c5637e4ec6f00c7d54c0d. No desktop/Teach-Back repeat is requested.
 
 ## Unchanged roadmap / phase gates
 
@@ -25,7 +25,7 @@ Original run 37867546978 failed after Reopen while awaiting Resolution summary. 
 
 Store.act locked incident FOR UPDATE then needed a workspace FK lock; dispatch held workspace FOR UPDATE then needed an incident FK lock. Non-key incident mutation now uses FOR NO KEY UPDATE, preserving conflicting-writer serialization while allowing the reference-only FK check. Real handlers and barrier-controlled lock overlap pass, not merely a later green rerun. Existing concurrent expectedRevision coverage still proves two independent blocked backends, exactly one commit and one revision_conflict. No transaction retries, arbitrary sleeps/timeout increases, assertion removal or AI changes.
 
-Original failed Playwright test-results were not archived by the old evidence-only upload. Artifact metadata/download access and this historical limitation are documented; no original screenshot/trace or historical per-request SQLSTATE is invented. [Focused remediation / security review](m3-lifecycle-remediation.md), [before evidence](../evidence/m3-lifecycle-before-fix.json), [original CI failure](../evidence/m3-handoff-ci-failure.json).
+Original failed Playwright test-results were not archived by the old evidence-only upload. Artifact metadata/download access and this historical limitation are documented; no original screenshot/trace or historical per-request SQLSTATE is invented. [Focused remediation / security review](m3-lifecycle-remediation.md), [before evidence](../../../evidence/m3-lifecycle-before-fix.json), [original CI failure](../../../evidence/m3-handoff-ci-failure.json).
 
 ## Live 9/9 turn_budget classification / quality debt
 

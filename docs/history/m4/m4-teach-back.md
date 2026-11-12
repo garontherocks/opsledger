@@ -37,4 +37,4 @@ Evidence: [Phase 14](phase14-report.md), [Phase 15](phase15-report.md), [Phase 1
 | Senior/Staff SHA-binding scenario | Passed |
 | Senior/Staff graph-runtime/n8n authority-boundary scenario | Passed |
 
-These are the user's supplied completion results. Detailed learner answers or transcripts were not supplied in this checkpoint and are not reconstructed. The questions and scenario prompts above are retained as the checkpoint rubric, not newly invented learner explanations. No Teach-Back was repeated. [Structured record](../evidence/m4-human-checkpoint.json).
+These are the user's supplied completion results. Detailed learner answers or transcripts were not supplied in this checkpoint and are not reconstructed. The questions and scenario prompts above are retained as the checkpoint rubric, not newly invented learner explanations. No Teach-Back was repeated. [Structured record](../../../evidence/m4-human-checkpoint.json).

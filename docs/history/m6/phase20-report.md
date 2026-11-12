@@ -20,7 +20,7 @@ Binary historical OpsLedger screenshots/videos were not downloadable through the
 
 The existing website source was accessible and audited; its main baseline is `1c1e382576cb4099af3c1297a1acf7118e22d78c`. Its positioning now foregrounds Senior SDET / Quality Engineer and OpsLedger while retaining conventional projects/services and professional history. OpsLedger repository publication is now approved for the later post-acceptance/post-merge source/docs/evidence release. OpsLedger remains private for this preparation and the website source will remain private. Website copy targets the future public OpsLedger source; no separate evidence repository or public OpsLedger runtime is planned. No visibility change, merge or deployment is performed here.
 
-[Structured Phase 20 review record](../evidence/phase20-portfolio-review.json). Final run/check evidence belongs to [OpsLedger PR #8](https://github.com/garontherocks/opsledger/pull/8) and [website PR #18](https://github.com/garontherocks/victor-aller-sdet-site/pull/18); no documentation successor is needed solely to record green.
+[Structured Phase 20 review record](../../../evidence/phase20-portfolio-review.json). Final run/check evidence belongs to [OpsLedger PR #8](https://github.com/garontherocks/opsledger/pull/8) and [website PR #18](https://github.com/garontherocks/victor-aller-sdet-site/pull/18); no documentation successor is needed solely to record green.
 
 ## Final publication checkpoint decision
 
@@ -31,7 +31,7 @@ The existing website source was accessible and audited; its main baseline is `1c
 
 The canonical OpsLedger repository supplies deep technical evidence. Intended later execution, after final human authorization: merge OpsLedger PR #8 → make OpsLedger public → merge website PR #18 → verify Vercel production deployment. This narrow adjustment prepares both draft PRs only. OpsLedger is still private; neither PR is merged and the website is undeployed. Required full CI must pass on the resulting exact heads. The user subsequently completed the final human truthfulness/clarity/publication-security review, explicitly accepted M6, and authorized execution of the publication sequence. The sequence remains ordered: merge OpsLedger PR #8 → make OpsLedger public → merge website PR #18 → verify Vercel production deployment.
 
-[Canonical case-study link audit](../evidence/phase20-publication-link-audit.json): ten artifact links verified through authenticated reads at the accepted immutable snapshot; original SHA/context retained. The historical CI run binds to checkpoint `2bcc7d6dac7a57451298cff4add89c212fae4aec`, not this preparation head. Anonymous HTTP accessibility cannot be claimed until the later visibility change. No irrelevant/private artifact link was added.
+[Canonical case-study link audit](../../../evidence/phase20-publication-link-audit.json): ten artifact links verified through authenticated reads at the accepted immutable snapshot; original SHA/context retained. The historical CI run binds to checkpoint `2bcc7d6dac7a57451298cff4add89c212fae4aec`, not this preparation head. Anonymous HTTP accessibility cannot be claimed until the later visibility change. No irrelevant/private artifact link was added.
 
 ## Final human review — accepted
 

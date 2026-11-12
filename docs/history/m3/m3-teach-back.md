@@ -14,7 +14,7 @@ Answer briefly in your own words; no per-phase checkpoint and no assumed learner
 
 Architecture/data-flow: explain (a) reviewed skill metadata → selected body/reference → checked MCP prompt → model proposal → controller checks → scoped reader → unverified draft; (b) HTTP request → endpoint checks → verified local grant/scope/audience → duplicate-ID check → same read-only registry. Use the [M3 diagram](m3-engineering-report.md).
 
-Controlled failures worth defending: [unknown/poisoned proposals](../evidence/phase11-agent-eval.json), [malformed wire recovery](../evidence/phase12-protocol-transcript.json), [hostile skill/forged resource gates](phase13-report.md), [wrong audience/expiry/replay denials](../evidence/phase13-http-security-matrix.json). Explain one execution denial and one HTTP denial rather than reproducing every test.
+Controlled failures worth defending: [unknown/poisoned proposals](../../../evidence/phase11-agent-eval.json), [malformed wire recovery](../../../evidence/phase12-protocol-transcript.json), [hostile skill/forged resource gates](phase13-report.md), [wrong audience/expiry/replay denials](../../../evidence/phase13-http-security-matrix.json). Explain one execution denial and one HTTP denial rather than reproducing every test.
 
 Senior/Staff scenarios (pick one or cover both briefly):
 - A team wants to enable Bash because a skill lists allowed-tools. Explain the separate executor/approval/isolation decision and why metadata is insufficient.
