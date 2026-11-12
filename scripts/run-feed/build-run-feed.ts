@@ -142,6 +142,7 @@ export function mergeHistory(previous:unknown,feed:Feed){
 }
 
 const asNumber=(v:unknown)=>typeof v==='number'&&Number.isFinite(v)?v:null;
+const MODE_LABELS:Record<string,string>={single:'Single call',agent_as_tool:'Agent as tool',handoff:'Handoff'};
 const fmt=(v:unknown,digits=0)=>asNumber(v)===null?'—':(v as number).toFixed(digits);
 
 /** Facts for the committed local-model evidence, read from the files so the page never restates them by hand. */
@@ -164,7 +165,7 @@ export function recordedLocal(root:string):RecordedLocal[]{
     }else if(source.id==='m5-specialists'){
       const modes=(j.aggregate??[]) as {mode:string,pairs:number,exactSyntheticRiskLabelMatches:number,calls:number,wallLatencyMs:number}[];
       out.push({...base,recordedAt:null,commit:j.sha??null,model:null,runtime:j.expectedRuntime?`Ollama ${j.expectedRuntime}`:null,hardware:null,
-        facts:[...modes.map(m=>({label:m.mode.replace(/_/g,' '),value:`${m.exactSyntheticRiskLabelMatches}/${m.pairs} label matches · ${m.calls} calls · ${Math.round(m.wallLatencyMs/1000)} s`})),{label:'Specialists adopted by default',value:j.defaultSpecialistAdoption?'yes':'no'}]});
+        facts:[...modes.map(m=>({label:MODE_LABELS[m.mode]??m.mode.replace(/_/g,' '),value:`${m.exactSyntheticRiskLabelMatches}/${m.pairs} label matches · ${m.calls} calls · ${Math.round(m.wallLatencyMs/1000)} s`})),{label:'Specialists adopted by default',value:j.defaultSpecialistAdoption?'yes':'no'}]});
     }
   }
   return out;

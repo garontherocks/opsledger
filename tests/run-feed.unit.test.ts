@@ -95,8 +95,8 @@ test('local-model evidence is read from the committed files, not restated',()=>{
   assert.ok(m2.facts.some(f=>f.label==='Recall@5'));
   const m5=recorded[2]!;
   assert.equal(m5.recordedAt,null,'the comparison file does not record a date, so none is invented');
-  assert.ok(m5.facts.some(f=>/^single$/.test(f.label)&&/ 8 calls/.test(f.value)));
-  assert.ok(m5.facts.some(f=>/agent as tool/.test(f.label)&&/ 24 calls/.test(f.value)));
+  assert.ok(m5.facts.some(f=>f.label==='Single call'&&/ 8 calls/.test(f.value)));
+  assert.ok(m5.facts.some(f=>f.label==='Agent as tool'&&/ 24 calls/.test(f.value)));
   for(const r of recorded)assert.match(r.evidence,/^https:\/\/github\.com\/garontherocks\/opsledger\/blob\/main\/evidence\//);
 });
 
