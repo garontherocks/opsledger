@@ -15,7 +15,10 @@ export function memoryTracing() {
   }
   exporter.reset();
   const current = exporter;
-  return { spans: () => [...current.getFinishedSpans()].sort((a, b) => nanos(a.startTime) - nanos(b.startTime)) };
+  return {
+    spans: () => [...current.getFinishedSpans()].sort((a, b) => nanos(a.startTime) - nanos(b.startTime)),
+    reset: () => current.reset(),
+  };
 }
 
 const nanos = ([s, ns]: HrTime) => s * 1e9 + ns;
