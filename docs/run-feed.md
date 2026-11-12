@@ -25,6 +25,7 @@ Anything unmapped still appears, under "Other checks", instead of disappearing.
 | Product UI end to end | deterministic | Playwright flows on Chromium, lifecycle regression on five fresh server lifetimes |
 | Structured output contracts | fixture | Strict JSON contracts, refusals, assistance API and UI |
 | RAG, embeddings & citations | fixture | Fixed vectors, citation spans, source versions, M2 harness retrieval metrics |
+| Retrieval quality (golden set) | recorded | Real embeddings of the pinned model replayed through production search: Recall@k, MRR, nDCG, citable span, abstention ([details](retrieval-golden.md)) |
 | Prompt-injection & eval regression | fixture | Promptfoo boundary cases with egress denied, one entry per case |
 | Agent budgets & tool boundaries | fixture | Turn/deadline/token budgets, M3 tool boundaries, agent eval cases |
 | MCP read-only server | deterministic | `opsledger-qa-readonly` over stdio and HTTP, on Linux and Windows |
@@ -37,8 +38,10 @@ Anything unmapped still appears, under "Other checks", instead of disappearing.
 **Provenance** is part of every suite in the feed (`provenance`, `note`):
 
 - `deterministic` — no model is involved.
-- `fixture` — an AI contract is exercised with recorded or synthetic model output. CI has no GPU and never calls a
+- `fixture` — an AI contract is exercised with synthetic or hand-written model output. CI has no GPU and never calls a
   live model, so a green fixture suite proves the contract, schema, boundary or plumbing — not model quality.
+- `recorded` — real output of the pinned local model, recorded on the desktop and replayed exactly in CI. The retrieval
+  golden set uses it to measure embedding quality without a GPU in CI.
 
 ## Live local-model runs are separate
 

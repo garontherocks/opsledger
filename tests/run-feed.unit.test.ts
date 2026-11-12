@@ -6,7 +6,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {SKILLS,STEP_COMMANDS} from '../scripts/run-feed/catalog.ts';
-import {buildFeed,evalCases,leafNodeTests,mergeHistory,playwrightTests,recordedLocal,FEED_SCHEMA,HISTORY_SCHEMA,type BuildInput,type NodeRecord} from '../scripts/run-feed/build-run-feed.ts';
+import {buildFeed,evalCases,goldenCheck,leafNodeTests,mergeHistory,playwrightTests,recordedLocal,FEED_SCHEMA,HISTORY_SCHEMA,type BuildInput,type NodeRecord} from '../scripts/run-feed/build-run-feed.ts';
 
 const root=fileURLToPath(new URL('..',import.meta.url));
 const run={id:'1',number:7,attempt:1,workflow:'ci',event:'push',branch:'main',commit:'abc',repository:'garontherocks/opsledger',url:'https://example.test/run/1'};
@@ -21,7 +21,7 @@ test('every CI test file, browser flow and step belongs to exactly one skill',()
   for(const f of flows)assert.equal(owners(s=>s.flows,f).length,1,`browser flow ${f} must map to exactly one skill`);
   for(const step of Object.keys(STEP_COMMANDS))assert.equal(owners(s=>s.steps,step).length,1,`step ${step} must map to exactly one skill`);
   assert.equal(new Set(SKILLS.map(s=>s.id)).size,SKILLS.length);
-  for(const s of SKILLS)assert.ok(['deterministic','fixture'].includes(s.provenance));
+  for(const s of SKILLS)assert.ok(['deterministic','fixture','recorded'].includes(s.provenance));
 });
 
 test('only leaf tests count: describe blocks and tests with subtests are containers',()=>{
@@ -79,6 +79,18 @@ test('eval reports and retrieval metrics count only in the lane where their step
   const agent=feed.suites.find(s=>s.id==='agent-budgets')!;
   assert.equal(agent.tests.filter(t=>t.name==='case s1').length,1,'the committed copy in the browser lane is ignored');
   assert.equal(feed.checks.retrieval,null,'retrieval metrics need the m2-harness step in the same lane');
+});
+
+test('golden-set metrics replace the fixture retrieval check only when this lane produced them',()=>{
+  const report={at:'2026-11-12T00:05:00.000Z',official:true,dataset:'retrieval-golden-v1',heldOut:{n:23,recallAt1:0.6,recallAt5:0.9,mrr:0.7,ndcg5:0.75,spanHitAt5:0.85,keywordRecallAt5:0.6},abstention:{heldOut:{noAnswerRecall:0.67}},recording:{model:'embeddinggemma:300m',digest:'sha256:'+'f'.repeat(64),recordedAt:'2026-11-12'}};
+  const golden=goldenCheck(report,'2026-11-12T00:00:00.000Z')!;
+  assert.equal(golden.recallAt5,0.9);
+  assert.equal(golden.noAnswerRecall,0.67);
+  assert.equal(goldenCheck(report,'2026-11-12T01:00:00.000Z'),null,'a report older than the lane is a committed copy');
+  assert.equal(goldenCheck({...report,official:false},undefined),null,'synthetic plumbing runs never count');
+  const feed=buildFeed(input({golden,retrieval:{lane:'api',recallAt5:1,mrr:1},steps:[{lane:'api',step:'m2-harness',status:'passed',durationMs:0,startedAt:'2026-11-12T00:00:00.000Z'}]}));
+  assert.equal(feed.checks.retrieval!.source,'recorded');
+  assert.equal(feed.checks.retrieval!.recallAt5,0.9);
 });
 
 test('names are single-line and bounded',()=>{

@@ -1,0 +1,34 @@
+{
+  "version": "retrieval-golden-v1",
+  "digest": "sha256:85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
+  "note": "Measured from the first recording (embeddinggemma:300m, Ollama 0.40.3, RTX 4070 Ti SUPER). Replay is deterministic: any drop is a regression. Update only together with a new recording or a deliberate retrieval change, with the reason in the PR.",
+  "development": {
+    "n": 21,
+    "recallAt1": 1,
+    "recallAt3": 1,
+    "recallAt5": 1,
+    "mrr": 1,
+    "ndcg5": 0.9983,
+    "spanHitAt5": 1,
+    "keywordRecallAt5": 0.8571,
+    "keywordMrr": 0.496
+  },
+  "heldOut": {
+    "n": 23,
+    "recallAt1": 0.9565,
+    "recallAt3": 0.9565,
+    "recallAt5": 1,
+    "mrr": 0.9674,
+    "ndcg5": 0.9752,
+    "spanHitAt5": 1,
+    "keywordRecallAt5": 0.6522,
+    "keywordMrr": 0.4254
+  },
+  "heldOutAbstention": {
+    "abstained": 2,
+    "precision": 0,
+    "noAnswerRecall": 0,
+    "answerableCoverage": 0.913,
+    "balancedAccuracy": 0.4565
+  }
+}
