@@ -5,9 +5,9 @@
   "digest": "sha256:85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
   "dimensions": 768,
   "indexVersion": "chunk-v1-768",
-  "chunkerSha256": "969abbdbf9f20f8c77cb032b9afa4ed5154868e2a382c8a7a04da0a23fafa608",
-  "corpusSha256": "2c5423b676bc30e724b9d1fa49fe4dff5560d4d729c61d6affdc08e6e92f96f0",
-  "queriesSha256": "d53eb10042ce252164b3ac545d43f00548cae216f9be9585d6e15eb3b3eeb93e",
+  "chunkerSha256": "a7e97098b1a7586bfadce37bb3ff17dd3c5d920c2ae615ec0d179010da0e037d",
+  "corpusSha256": "144957cfb5d59f905fb15efe2be582a214d2be2f17b08aa9fe6a809bb69bc27b",
+  "queriesSha256": "d7b44420f57977adcc987da9bf23b054e3001c612ca870e7a0a19cac88dbf5f1",
   "runtime": "Ollama 0.40.3",
   "recordedAt": "2026-11-12T04:28:35.887Z",
   "hardware": "NVIDIA GeForce RTX 4070 Ti SUPER"

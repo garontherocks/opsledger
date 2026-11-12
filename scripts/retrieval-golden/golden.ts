@@ -19,8 +19,12 @@ export type Manifest={version:string,model:string,digest:string,dimensions:numbe
 export type Recording={manifest:Manifest,vectors:Record<string,string>};
 
 const sha256=(text:string|Buffer)=>createHash('sha256').update(text).digest('hex');
+// Hashes ignore line endings and JSON formatting, so a Windows checkout (CRLF) records the same identities as Linux.
+const normalizeNewlines=(text:string)=>text.replace(/\r\n?/g,'\n');
+/** Canonical hash of a dataset file: its parsed content, not its bytes. */
+export const contentSha256=(raw:string|Buffer)=>sha256(JSON.stringify(JSON.parse(raw.toString())));
 /** The chunker is part of the recording: if its code changes, chunk texts and their vectors no longer match. */
-export const chunkerSha256=()=>sha256(chunks.toString()+'\n'+INDEX_VERSION);
+export const chunkerSha256=()=>sha256(normalizeNewlines(chunks.toString())+'\n'+INDEX_VERSION);
 export const embeddingKey=(purpose:Purpose,text:string)=>sha256(purpose+'\n'+text);
 
 export function loadGolden(dir=GOLDEN_DIR){
@@ -29,7 +33,7 @@ export function loadGolden(dir=GOLDEN_DIR){
   return {
     corpus:JSON.parse(corpusRaw.toString('utf8')) as Corpus,
     queries:JSON.parse(queriesRaw.toString('utf8')) as Queries,
-    corpusSha256:sha256(corpusRaw),queriesSha256:sha256(queriesRaw),
+    corpusSha256:contentSha256(corpusRaw),queriesSha256:contentSha256(queriesRaw),
     recording:existsSync(recordingPath)?JSON.parse(readFileSync(recordingPath,'utf8')) as Recording:null,
     baseline:existsSync(baselinePath)?JSON.parse(readFileSync(baselinePath,'utf8')) as Baseline:null,
   };

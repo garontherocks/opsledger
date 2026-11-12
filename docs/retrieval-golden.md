@@ -82,6 +82,31 @@ become `baseline.json`.
 Re-record whenever the corpus, the queries, the chunker or the embedding model changes, and update the baseline in
 the same pull request with the reason.
 
+## Results of the first recording
+
+`embeddinggemma:300m` (`sha256:85462619…`, the same digest as M2), Ollama 0.40.3 — not the 0.34.0 of the M2–M5 runs —
+on an RTX 4070 Ti SUPER. Full per-query results: `evidence/phase21-retrieval-golden.json`.
+
+| Split | Recall@1 | Recall@5 | MRR | nDCG@5 | Citable span@5 | Keyword Recall@5 | Keyword MRR |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| development (21 answerable) | 1.00 | 1.00 | 1.00 | 0.998 | 1.00 | 0.86 | 0.52 |
+| held-out (23 answerable) | 0.96 | 1.00 | 0.97 | 0.975 | 1.00 | 0.61 | 0.44 |
+
+What it shows:
+
+- **Ranking is strong where keywords fail.** All 8 cross-lingual queries rank the answer first (keyword baseline: 0 of 8);
+  paraphrases 12 of 12 first (keyword Recall@5 0.75). Every answer's citable span is in the top 5.
+- **One hard negative ranks wrong.** "a bad migration corrupted rows, roll the database back to just before it" puts
+  the deployment rollback runbook first; the point-in-time database restore is fourth.
+- **The score threshold does not detect out-of-scope questions.** Tuned on development (0.332), it separated
+  development perfectly, but on held-out it abstained on none of the 3 no-answer queries and on 2 answerable ones.
+  Development's no-answer queries were off-domain (a printer, a wallpaper, a domain registration) and scored 0.17–0.28;
+  held-out's were in-domain near misses (SSH host keys, rebooting the cluster, Kafka lag) and scored 0.36–0.42, above
+  the weakest correct answers (0.28). A top-cosine threshold is therefore **not adopted** as an abstention mechanism.
+
+Because the held-out results have now been seen, they must not be used to retune the threshold or the splits. A
+`retrieval-golden-v2` should add in-domain no-answer queries to development and a fresh held-out set.
+
 ## Limitations
 
 - A small synthetic corpus written for this test, not production runbooks; one model, one recording, no confidence

@@ -1,6 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {abstention,datasetIssues,decodeVector,encodeVector,evaluateQuery,embeddingKey,loadGolden,metrics,ndcgAt5,recordingInputs,recordingIssues,regressions,replayProvider,tuneThreshold,chunkerSha256,type Baseline,type Query,type QueryResult,type Recording} from '../scripts/retrieval-golden/golden.ts';
+import {readFileSync} from 'node:fs';
+import {abstention,contentSha256,datasetIssues,decodeVector,encodeVector,evaluateQuery,embeddingKey,loadGolden,metrics,ndcgAt5,recordingInputs,recordingIssues,regressions,replayProvider,tuneThreshold,chunkerSha256,type Baseline,type Query,type QueryResult,type Recording} from '../scripts/retrieval-golden/golden.ts';
 import {DIMENSIONS} from '../apps/api/src/embeddings.ts';
 import {INDEX_VERSION} from '../apps/api/src/retrieval.ts';
 
@@ -84,6 +85,13 @@ test('a stale or incomplete recording is rejected with the reason',()=>{
   const [first]=Object.keys(rec.vectors);
   const partial={...rec,vectors:Object.fromEntries(Object.entries(rec.vectors).filter(([k])=>k!==first))};
   assert.deepEqual(recordingIssues(partial,golden),['1 recorded vectors missing']);
+});
+
+test('dataset and chunker hashes ignore line endings and formatting',()=>{
+  const raw=readFileSync('tests/fixtures/retrieval-golden-v1/corpus.json','utf8');
+  assert.equal(contentSha256(raw.replace(/\n/g,'\r\n')),golden.corpusSha256,'a CRLF checkout hashes the same');
+  assert.equal(contentSha256(JSON.stringify(JSON.parse(raw),null,4)),golden.corpusSha256,'reformatting is not a content change');
+  assert.notEqual(contentSha256(raw.replace('PostgreSQL primary failover','PostgreSQL failover')),golden.corpusSha256);
 });
 
 test('the replay provider returns recorded vectors and never guesses',async()=>{
