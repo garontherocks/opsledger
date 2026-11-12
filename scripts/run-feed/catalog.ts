@@ -116,6 +116,16 @@ export const SKILLS: Skill[] = [
     flows: [],
   },
   {
+    id: 'agent-observability',
+    name: 'Agent observability (OpenTelemetry GenAI)',
+    tool: 'OpenTelemetry · GenAI semantic conventions · trace-based tests',
+    provenance: 'fixture',
+    note: 'Agent runs, model calls, embeddings, retrieval and MCP tool calls emit gen_ai spans; tests assert the trajectory on the spans and that no prompt or source text is exported.',
+    files: ['agent-tracing.unit.test.ts'],
+    steps: [],
+    flows: [],
+  },
+  {
     id: 'context-engineering',
     name: 'Context engineering & provenance',
     tool: 'Budgeted retrieval · SHA-bound sources',

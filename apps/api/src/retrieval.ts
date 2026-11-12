@@ -4,6 +4,7 @@ import type { z } from 'zod';
 import { Knowledge } from './knowledge.ts';
 import { HttpError } from './errors.ts';
 import { vectorValue, type EmbeddingProvider } from './embeddings.ts';
+import { ATTR, inSpan, traceEmbeddings } from './telemetry.ts';
 import { ChunkHit, SemanticQuery, type Hit } from '../../../packages/contracts/src/retrieval.ts';
 export const INDEX_VERSION = 'chunk-v1-768';
 export function chunks(body: string) {
@@ -57,9 +58,11 @@ export class Retrieval {
       // No database connection or transaction is held during inference.
       for (let i = 0; i < parts.length; i += 4) {
         const batch = parts.slice(i, i + 4);
-        const output = await this.provider.embed(
-          batch.map(p => p.text),
-          'document',
+        const output = await traceEmbeddings(this.provider.model, batch.length, 'document', () =>
+          this.provider.embed(
+            batch.map(p => p.text),
+            'document',
+          ),
         );
         if (output.length !== batch.length) throw new HttpError(503, 'embedding_invalid', 'Embedding count mismatch');
         vectors.push(...output.map(vectorValue));
@@ -144,9 +147,23 @@ export class Retrieval {
       client.release();
     }
   }
-  async search(user: string, workspace: string, input: z.infer<typeof SemanticQuery>): Promise<Hit[]> {
+  /** Exact-cosine search inside a `retrieval` span: the query embedding is a child span; only counts are recorded. */
+  search(user: string, workspace: string, input: z.infer<typeof SemanticQuery>): Promise<Hit[]> {
+    return inSpan(
+      'retrieval opsledger-knowledge',
+      { [ATTR.operation]: 'retrieval', [ATTR.dataSource]: 'opsledger-knowledge', [ATTR.topK]: input.limit },
+      async span => {
+        const hits = await this.searchInSpan(user, workspace, input);
+        span.setAttribute('opsledger.retrieval.hits', hits.length);
+        return hits;
+      },
+    );
+  }
+  private async searchInSpan(user: string, workspace: string, input: z.infer<typeof SemanticQuery>): Promise<Hit[]> {
     await this.knowledge.role(user, workspace);
-    const output = await this.provider.embed([input.q], 'query');
+    const output = await traceEmbeddings(this.provider.model, 1, 'query', () =>
+      this.provider.embed([input.q], 'query'),
+    );
     if (output.length !== 1) throw new HttpError(503, 'embedding_invalid', 'Embedding count mismatch');
     const query = vectorValue(output[0]);
     await this.knowledge.role(user, workspace);

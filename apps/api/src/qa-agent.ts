@@ -1,6 +1,8 @@
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
+import type { Span } from '@opentelemetry/api';
 import type { TextProvider, Generation } from './local-model.ts';
+import { ATTR, inSpan, spanEvent, traceGeneration, traceTool } from './telemetry.ts';
 
 export const TOOL_NAMES = ['read_change_snapshot', 'get_contract', 'get_run_evidence'] as const;
 const ToolName = z.enum(TOOL_NAMES);
@@ -90,18 +92,45 @@ export type AgentContext = {
   procedure?: string;
   reader?: { read(name: string, args: { id: string }, signal: AbortSignal): Promise<unknown> };
 };
-export async function runAgent(
+/** Runs the bounded agent inside an `invoke_agent` span; turns, model calls and tool calls are child spans. */
+export function runAgent(
   input: unknown,
   provider: TextProvider,
   overrides: Partial<Budgets> = {},
   context: AgentContext = {},
+): Promise<AgentResult> {
+  return inSpan(
+    'invoke_agent opsledger-qa',
+    { [ATTR.operation]: 'invoke_agent', [ATTR.agentName]: 'opsledger-qa' },
+    async span => {
+      const outcome = await runAgentInSpan(input, provider, overrides, context, span);
+      span.setAttributes({
+        'opsledger.agent.status': outcome.status,
+        'opsledger.agent.stop_reason': outcome.reason,
+        'opsledger.agent.turns': outcome.turns,
+        'opsledger.agent.tokens': outcome.tokens,
+      });
+      return outcome;
+    },
+  );
+}
+
+async function runAgentInSpan(
+  input: unknown,
+  provider: TextProvider,
+  overrides: Partial<Budgets>,
+  context: AgentContext,
+  span: Span,
 ): Promise<AgentResult> {
   const trace: Trace = [];
   let turns = 0,
     tokens = 0,
     totalResponse = 0;
   const start = performance.now();
-  const event = (event: string, data: unknown) => trace.push({ sequence: trace.length + 1, event, data });
+  const event = (event: string, data: unknown) => {
+    trace.push({ sequence: trace.length + 1, event, data });
+    spanEvent(span, `opsledger.agent.${event}`, data);
+  };
   const result = (status: 'draft' | 'blocked', reason: string, analysis: string | null = null): AgentResult => ({
     status,
     reason,
@@ -149,7 +178,7 @@ export async function runAgent(
     try {
       turns++;
       generated = await Promise.race([
-        provider.generate(prompt, PROPOSAL_SCHEMA),
+        traceGeneration(provider, prompt, PROPOSAL_SCHEMA, { 'opsledger.agent.turn': turns }),
         new Promise<never>((_, reject) => {
           timer = setTimeout(() => reject(new Error('deadline')), remaining);
         }),
@@ -216,14 +245,21 @@ export async function runAgent(
       event('stop', { reason: 'finished_unverified' });
       return result('draft', 'finished_unverified', proposal.analysis);
     }
-    try {
-      const output = tools.invoke(proposal.name, proposal.args);
+    const call = proposal;
+    const outcome = await traceTool(call.name, async toolSpan => {
+      let output: ReturnType<typeof tools.invoke>;
+      try {
+        output = tools.invoke(call.name, call.args);
+      } catch {
+        toolSpan.setAttribute(ATTR.errorType, 'tool_scope');
+        return { denied: 'tool_scope' as const };
+      }
       if (context.reader) {
         const abort = new AbortController();
         let readerTimer: ReturnType<typeof setTimeout> | undefined;
         try {
           const actual = await Promise.race([
-            context.reader.read(proposal.name, proposal.args, abort.signal),
+            context.reader.read(call.name, call.args, abort.signal),
             new Promise<never>((_, reject) => {
               readerTimer = setTimeout(
                 () => {
@@ -245,19 +281,21 @@ export async function runAgent(
           if (performance.now() - start >= limits.deadlineMs || JSON.stringify(checked) !== JSON.stringify(output))
             throw new Error('reader_integrity');
         } catch {
-          event('denial', { reason: 'tool_transport' });
-          return result('blocked', 'tool_transport');
+          toolSpan.setAttribute(ATTR.errorType, 'tool_transport');
+          return { denied: 'tool_transport' as const };
         } finally {
           if (readerTimer) clearTimeout(readerTimer);
         }
       }
-      seen.add(output.id);
-      event('tool_result', { name: proposal.name, output });
-      history.push({ proposal, output });
-    } catch {
-      event('denial', { reason: 'tool_scope' });
-      return result('blocked', 'tool_scope');
+      return { output };
+    });
+    if ('denied' in outcome) {
+      event('denial', { reason: outcome.denied });
+      return result('blocked', outcome.denied);
     }
+    seen.add(outcome.output.id);
+    event('tool_result', { name: call.name, output: outcome.output });
+    history.push({ proposal: call, output: outcome.output });
   }
   event('stop', { reason: 'turn_budget' });
   return result('blocked', 'turn_budget');

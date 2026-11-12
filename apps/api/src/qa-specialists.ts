@@ -4,6 +4,7 @@ import { QA_SHA } from './qa-state.ts';
 import { QA_CHECKS, QaReceipt } from './qa-workflow.ts';
 import { TriageDraft } from './qa-orchestration.ts';
 import type { TextProvider, Generation } from './local-model.ts';
+import { traceGeneration } from './telemetry.ts';
 
 // Optional experiment only. No runner, approval, DB, shell or mutation capability.
 export const SpecialistContext = z.strictObject({
@@ -147,7 +148,9 @@ export async function specialistExperiment(
       let generated: Generation;
       try {
         generated = await Promise.race([
-          provider.generate(prompt, z.toJSONSchema(TriageDraft) as Record<string, unknown>),
+          traceGeneration(provider, prompt, z.toJSONSchema(TriageDraft) as Record<string, unknown>, {
+            'opsledger.feature': 'specialist',
+          }),
           new Promise<never>((_, reject) => {
             timer = setTimeout(() => reject(new Error('provider_deadline')), deadlineMs);
           }),
