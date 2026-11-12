@@ -55,9 +55,10 @@ them apart from the CI run. They are never counted in the run totals.
   exit code through and records the step outcome. Agent-eval and Promptfoo reports also expand into one entry per case.
 - **Browser flows** — the Playwright JSON reports in `.local/browser-*.json`.
 
-Each lane uploads a `run-feed-<lane>` artifact; the `publish-run-feed` job builds the feed with
-[`build-run-feed.ts`](../scripts/run-feed/build-run-feed.ts), appends it to the published history and deploys Pages.
-It runs for pushes to `main` only, and also when tests fail, so the published run is the real one.
+Each lane uploads a `run-feed-<lane>` artifact. The `build-run-feed` job builds the feed with
+[`build-run-feed.ts`](../scripts/run-feed/build-run-feed.ts) on every run, pull requests included, and writes a
+per-skill summary to the job summary. On pushes to `main` it first appends the run to the published history, and
+`publish-run-feed` deploys it to Pages — also when tests fail, so the published run is the real one.
 
 Only test names, statuses and durations are published: no assertion messages, logs, prompts or model output.
 
