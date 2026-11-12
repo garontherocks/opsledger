@@ -54,6 +54,7 @@
     "rag:golden:record": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/retrieval-golden/record.ts",
     "contrast:record": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/model-contrast/record.ts",
     "contrast:report": "node --experimental-strip-types scripts/model-contrast/report.ts",
+    "test:mutation": "stryker run",
     "contrast:test": "node --experimental-strip-types --test tests/model-contrast.unit.test.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
@@ -86,6 +87,7 @@
     "@opentelemetry/sdk-trace": "3.1.1",
     "@opentelemetry/semantic-conventions": "1.43.0",
     "@playwright/test": "1.64.1",
+    "@stryker-mutator/core": "10.1.1",
     "@types/node": "26.6.6",
     "@types/pg": "8.23.1",
     "@types/react": "19.3.0",
@@ -100,6 +102,9 @@
     "vite": "8.3.5"
   },
   "overrides": {
+    "typed-rest-client": {
+      "qs": "6.17.1"
+    },
     "@esbuild-kit/core-utils": {
       "esbuild": "0.25.12"
     },

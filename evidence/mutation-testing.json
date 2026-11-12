@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-12T16:16:56.297Z",
+  "tool": "Stryker 10.1.1 (command runner, node:test)",
+  "total": {
+    "mutants": 995,
+    "killed": 769,
+    "timeout": 7,
+    "survived": 219,
+    "noCoverage": 0,
+    "score": 78
+  },
+  "files": {
+    "apps/api/src/qa-agent.ts": {
+      "mutants": 434,
+      "killed": 330,
+      "timeout": 3,
+      "survived": 101,
+      "noCoverage": 0,
+      "score": 76.7
+    },
+    "apps/api/src/structured-output.ts": {
+      "mutants": 111,
+      "killed": 82,
+      "timeout": 4,
+      "survived": 25,
+      "noCoverage": 0,
+      "score": 77.5
+    },
+    "scripts/model-contrast/contrast.ts": {
+      "mutants": 450,
+      "killed": 357,
+      "timeout": 0,
+      "survived": 93,
+      "noCoverage": 0,
+      "score": 79.3
+    }
+  }
+}

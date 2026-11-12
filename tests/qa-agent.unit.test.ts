@@ -164,3 +164,122 @@ test('qa-direct-v3 narrows the decoding schema to the next valid actions; replie
   );
   assert.equal(ignoring.reason, 'turn_budget');
 });
+// Added after mutation testing (docs/mutation-testing.md): each test below kills mutants that survived the suite.
+const last = (r: { trace: { event: string; data: unknown }[] }) => {
+  const e = r.trace.at(-1)!;
+  return `${e.event}:${(e.data as { reason?: string; name?: string }).reason ?? (e.data as { name: string }).name}`;
+};
+test('a tool may only read its own source: a valid id of another tool is out of scope', async () => {
+  const r = await runAgent(fixture(), provider([{ kind: 'tool', name: 'get_contract', args: { id: 'change-a' } }]));
+  assert.equal(r.reason, 'tool_scope');
+  assert.equal(last(r), 'denial:tool_scope');
+  assert.throws(() => registry(fixture()).invoke('get_contract', { id: 'change-a' }), /tool_scope/);
+});
+test('ids must match the whole pattern, not a prefix or a suffix', async () => {
+  for (const id of ['change-a/../evidence-a', '../change-a', 'Change-a', '-change-a'])
+    assert.equal(
+      (await runAgent(fixture(), provider([{ kind: 'tool', name: 'read_change_snapshot', args: { id } }]))).reason,
+      'invalid_proposal',
+      id,
+    );
+  const m = fixture();
+  m.sources[2]!.sha256 = 'x' + m.sources[2]!.sha256;
+  assert.equal((await runAgent(m, provider(valid))).reason, 'mandatory_gate');
+  const n = fixture();
+  n.sources[2]!.sha256 = n.sources[2]!.sha256 + 'a';
+  assert.equal((await runAgent(n, provider(valid))).reason, 'mandatory_gate');
+});
+test('a manifest with a repeated source id is rejected even when the tools differ', async () => {
+  const m = fixture();
+  m.sources[1] = { ...m.sources[1]!, id: 'change-a' };
+  const r = await runAgent(m, provider(valid));
+  assert.equal(r.reason, 'mandatory_gate');
+  assert.deepEqual(r.trace[0], {
+    sequence: 1,
+    event: 'mandatory_gate',
+    data: { name: 'manifest_scope_and_integrity', passed: false },
+  });
+  assert.throws(() => registry(m), /manifest_scope/);
+});
+test('finish must cite three distinct read sources', async () => {
+  const r = await runAgent(
+    fixture(),
+    provider([...valid.slice(0, 3), { ...valid[3], references: ['change-a', 'change-a', 'contract-a'] }]),
+  );
+  assert.equal(r.reason, 'required_sources');
+  assert.equal(last(r), 'mandatory_gate:required_sources_read');
+  const ok = await runAgent(fixture(), provider(valid));
+  assert.deepEqual(
+    ok.trace.filter(e => e.event === 'mandatory_gate' || e.event === 'stop').map(e => e.data),
+    [
+      { name: 'manifest_scope_and_integrity', passed: true, changeId: 'change-a' },
+      { name: 'required_sources_read', passed: true },
+      { reason: 'finished_unverified' },
+    ],
+  );
+  assert.deepEqual(
+    ok.trace.map(e => e.sequence),
+    ok.trace.map((_, i) => i + 1),
+  );
+});
+test('budgets are inclusive limits: exactly at the limit passes, one over fails closed', async () => {
+  const prompts: string[] = [];
+  const inner = provider(valid);
+  const base = await runAgent(fixture(), { generate: async (t, f) => (prompts.push(t), inner.generate(t, f)) });
+  const replies = valid.map(v => JSON.stringify(v).length);
+  const maxPrompt = Math.max(...prompts.map(p => p.length));
+  const cases: [Partial<Record<string, number>>, string][] = [
+    [{ promptChars: maxPrompt }, 'finished_unverified'],
+    [{ promptChars: maxPrompt - 1 }, 'prompt_budget'],
+    [{ responseChars: Math.max(...replies) }, 'finished_unverified'],
+    [{ responseChars: Math.max(...replies) - 1 }, 'response_budget'],
+    [{ totalResponseChars: replies.reduce((a, b) => a + b, 0) }, 'finished_unverified'],
+    [{ totalResponseChars: replies.reduce((a, b) => a + b, 0) - 1 }, 'total_response_budget'],
+    [{ tokens: base.tokens }, 'finished_unverified'],
+    [{ tokens: base.tokens - 1 }, 'token_budget'],
+  ];
+  for (const [budget, reason] of cases) {
+    const r = await runAgent(fixture(), provider(valid), budget);
+    assert.equal(r.reason, reason, JSON.stringify(budget));
+    assert.ok(last(r).endsWith(`:${reason}`), last(r));
+  }
+  assert.equal(base.tokens, 160);
+});
+test('token metadata must be present, whole and non-negative on both counts', async () => {
+  for (const field of [
+    { outputTokens: null },
+    { promptTokens: -1 },
+    { outputTokens: -1 },
+    { promptTokens: 1.5 },
+    { outputTokens: Number.MAX_SAFE_INTEGER + 2 },
+  ]) {
+    const p = provider(valid);
+    const r = await runAgent(fixture(), { generate: async (a, b) => ({ ...(await p.generate(a, b)), ...field }) });
+    assert.equal(r.reason, 'token_metadata', JSON.stringify(field));
+    assert.equal(last(r), 'denial:token_metadata');
+  }
+  const zero = provider(valid);
+  const r = await runAgent(fixture(), {
+    generate: async (a, b) => ({ ...(await zero.generate(a, b)), promptTokens: 0, outputTokens: 0 }),
+  });
+  assert.equal(r.status, 'draft');
+});
+test('stop and denial reasons are recorded in the trace', async () => {
+  assert.equal(last(await runAgent(fixture(), provider([valid[0]]))), 'stop:turn_budget');
+  assert.equal(last(await runAgent(fixture(), provider(['not-json']))), 'denial:invalid_proposal');
+  const failing: TextProvider = {
+    generate: async () => {
+      throw new Error('boom');
+    },
+  };
+  assert.equal(last(await runAgent(fixture(), failing)), 'stop:provider_error');
+  const r = await runAgent(fixture(), provider(valid), {}, { procedure: 'Team procedure text.' });
+  assert.deepEqual(r.trace.find(e => e.event === 'procedure_context')?.data, {
+    hash: createHash('sha256').update('Team procedure text.').digest('hex'),
+    authority: false,
+  });
+  assert.equal(
+    (await runAgent(fixture(), provider(valid), {}, { procedure: 'x'.repeat(4001) })).reason,
+    'mandatory_gate',
+  );
+});
