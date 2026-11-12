@@ -1,1 +1,5 @@
-{"extends":"./tsconfig.json","compilerOptions":{"noEmit":false,"rewriteRelativeImportExtensions":true,"outDir":"dist"},"include":["apps/api/**/*.ts","packages/**/*.ts","scripts/migrate.ts","scripts/seed.ts"]}
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": false, "rewriteRelativeImportExtensions": true, "outDir": "dist" },
+  "include": ["apps/api/**/*.ts", "packages/**/*.ts", "scripts/migrate.ts", "scripts/seed.ts"]
+}
