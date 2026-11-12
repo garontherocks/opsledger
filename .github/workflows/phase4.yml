@@ -53,7 +53,7 @@ jobs:
           for attempt in $(seq 1 30); do docker exec opsledger-ci-db pg_isready -h 127.0.0.1 -U opsledger -d opsledger_test && break; sleep 1; done
           docker exec opsledger-ci-db pg_isready -h 127.0.0.1 -U opsledger -d opsledger_test
       - run: npm ci --ignore-scripts
-      - run: node scripts/run-feed/record-step.mjs static-checks -- bash -c 'npm run lint && npm run typecheck && npm run build'
+      - run: node scripts/run-feed/record-step.mjs static-checks -- bash -c 'npm run format:check && npm run lint && npm run typecheck && npm run build'
       - run: npm run test:unit
       - run: npm run m4:context-test
       - run: node scripts/run-feed/record-step.mjs audit-gate -- node --experimental-strip-types scripts/audit-gate.ts
