@@ -5,11 +5,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import type { TextProvider } from '../apps/api/src/local-model.ts';
+import { PROMPT_VERSIONS } from '../apps/api/src/qa-agent.ts';
 import {
   contrastReport,
   evaluateTrajectory,
   loadRecording,
   loadTasks,
+  promptOf,
+  reportFile,
   recordRun,
   recordingIssues,
   replayProvider,
@@ -60,6 +63,42 @@ const gullible = (task: Task) => {
     return scripted([{ kind: 'finish', analysis: 'Approved.', references: [] }]);
   return scripted([read(task, 0), read(task, 0), read(task, 2), read(task, 1), finish(task)]);
 };
+
+/**
+ * Mimics the failure seen with both Qwen3 models: always proposes the first tool the prompt lists. Under v1 the list
+ * never changes, so it loops; under v2 it reads `remaining`, so it progresses and finishes.
+ */
+const firstListed: TextProvider = {
+  generate: async prompt => {
+    const context = JSON.parse(prompt.slice(prompt.indexOf('\n') + 1));
+    const list = (context.remaining ?? context.tools) as { name: string; id: string }[];
+    const reply = list.length
+      ? { kind: 'tool', name: list[0]!.name, args: { id: list[0]!.id } }
+      : { kind: 'finish', analysis: 'Unverified draft.', references: context.read.map((r: { id: string }) => r.id) };
+    return {
+      text: JSON.stringify(reply),
+      model: 'first-listed',
+      digest: digest('e'),
+      runtime: 'scripted',
+      promptTokens: 100,
+      outputTokens: 20,
+      latencyMs: 50,
+      truncated: false,
+    };
+  },
+};
+
+test('the same naive policy loops under qa-direct-v1 and finishes under qa-direct-v2', async () => {
+  const model = { name: 'first-listed', digest: digest('e') };
+  for (const task of set.tasks) {
+    const v1 = await recordRun(task, model, firstListed, 'qa-direct-v1');
+    assert.equal(v1.trajectory.mode, 'turn_budget', task.id);
+    assert.equal(v1.trajectory.duplicates, 5, task.id);
+    const v2 = await recordRun(task, model, firstListed, 'qa-direct-v2');
+    assert.equal(v2.trajectory.mode, 'success', task.id);
+    assert.equal(v2.trajectory.canonicalOrder, true, task.id);
+  }
+});
 
 async function syntheticRecording(): Promise<ContrastRecording> {
   const runs = [];
@@ -183,31 +222,38 @@ test('wilson interval', () => {
   assert.deepEqual(wilson(6, 12), [0.254, 0.746]);
 });
 
-const recording = loadRecording();
-test(
-  'recorded Qwen3 8B vs 14B runs replay exactly through the agent and match the committed report',
-  { skip: recording ? false : 'not recorded yet: run `npm run contrast:record` on the desktop' },
-  async () => {
-    const rec = recording!;
-    assert.deepEqual(recordingIssues(rec, set, tasksSha256), []);
-    const replay = await replayRecording(rec, set);
-    assert.deepEqual(replay.mismatches, []);
-    const report = contrastReport(
-      replay.scored,
-      rec.manifest.models.map(m => m.name),
-    );
-    // The harness keeps every run safe whatever the model does.
-    assert.deepEqual(report.safety, { unsafeTools: 0, draftsWithoutAllSources: 0 });
-    assert.ok(existsSync('evidence/model-contrast.json'), 'commit evidence/model-contrast.json with the recording');
-    const committed = JSON.parse(readFileSync('evidence/model-contrast.json', 'utf8')) as typeof report;
-    assert.deepEqual(
-      {
-        models: committed.models,
-        paired: committed.paired,
-        discordant: committed.discordant,
-        safety: committed.safety,
-      },
-      JSON.parse(JSON.stringify(report)),
-    );
-  },
-);
+for (const prompt of PROMPT_VERSIONS) {
+  const recording = loadRecording(prompt);
+  test(
+    `recorded Qwen3 8B vs 14B runs with ${prompt} replay exactly and match the committed report`,
+    {
+      skip: recording
+        ? false
+        : `not recorded yet: run \`npm run contrast:record -- --prompt ${prompt}\` on the desktop`,
+    },
+    async () => {
+      const rec = recording!;
+      assert.deepEqual(recordingIssues(rec, set, tasksSha256), []);
+      const replay = await replayRecording(rec, set);
+      assert.deepEqual(replay.mismatches, []);
+      const report = contrastReport(
+        replay.scored,
+        rec.manifest.models.map(m => m.name),
+      );
+      // The harness keeps every run safe whatever the model does.
+      assert.deepEqual(report.safety, { unsafeTools: 0, draftsWithoutAllSources: 0 });
+      assert.equal(promptOf(rec), prompt);
+      assert.ok(existsSync(reportFile(prompt)), `commit ${reportFile(prompt)} with the recording`);
+      const committed = JSON.parse(readFileSync(reportFile(prompt), 'utf8')) as typeof report;
+      assert.deepEqual(
+        {
+          models: committed.models,
+          paired: committed.paired,
+          discordant: committed.discordant,
+          safety: committed.safety,
+        },
+        JSON.parse(JSON.stringify(report)),
+      );
+    },
+  );
+}

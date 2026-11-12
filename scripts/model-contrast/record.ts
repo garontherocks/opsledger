@@ -1,28 +1,35 @@
 // Records the local model contrast on the desktop (see docs/model-contrast.md).
-//   npm run contrast:record
+//   npm run contrast:record -- --prompt qa-direct-v2
+// The agent prompt version defaults to qa-direct-v1 (the accepted M3 prompt).
 // Runs every task of tests/fixtures/model-contrast-v1/tasks.json through the production agent loop once with the
 // pinned Qwen3 8B from .env and once with CONTRAST_MODEL (default qwen3:14b-q4_K_M), both through the production
 // Ollama provider (temperature 0, seed 42, thinking off). Writes:
-//   tests/fixtures/model-contrast-v1/recording.json  model replies + prompt hashes, replayed in CI (commit it)
-//   evidence/model-contrast.json                      trajectory evaluation report (commit it)
+//   tests/fixtures/model-contrast-v1/recording[-<prompt>].json  model replies + prompt hashes, replayed in CI (commit it)
+//   evidence/model-contrast[-<prompt>].json                      trajectory evaluation report (commit it)
 //   .local/model-contrast/traces/<model>/<task>.jsonl OpenTelemetry spans of each live run (not committed)
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { config } from '../../apps/api/src/config.ts';
 import { OllamaProvider, type TextProvider } from '../../apps/api/src/local-model.ts';
+import { PROMPT_VERSIONS, type PromptVersion } from '../../apps/api/src/qa-agent.ts';
 import { toJsonl } from '../telemetry/memory-tracing.ts';
 import {
   CONTRAST_BUDGETS,
-  CONTRAST_DIR,
   contrastReport,
   loadTasks,
   recordRun,
+  recordingFile,
   recordingIssues,
+  reportFile,
   replayRecording,
   taskIssues,
   type ContrastRecording,
   type RecordedRun,
 } from './contrast.ts';
+
+const flag = process.argv.indexOf('--prompt');
+const prompt = (flag >= 0 ? process.argv[flag + 1] : 'qa-direct-v1') as PromptVersion;
+if (!PROMPT_VERSIONS.includes(prompt)) throw new Error(`--prompt must be one of ${PROMPT_VERSIONS.join(', ')}`);
 
 const settings = config({ ...process.env, AI_ENABLED: 'true' });
 if (settings.NODE_ENV === 'production' || settings.LAB_MODE !== 'true')
@@ -82,15 +89,15 @@ for (const model of models) {
     AI_TIMEOUT_MS: CONTRAST_BUDGETS.deadlineMs,
   });
   const provider: TextProvider = {
-    async generate(prompt, format) {
-      const result = await ollama.generate(prompt, format);
+    async generate(text, format) {
+      const result = await ollama.generate(text, format);
       if (result.runtime !== expected) throw new Error('Runtime changed during the recording');
       return result;
     },
   };
   for (const [i, task] of set.tasks.entries()) {
-    const { run, spans, trajectory } = await recordRun(task, model, provider);
-    const dir = `.local/model-contrast/traces/${model.name.replace(/[^a-z0-9.-]/gi, '_')}`;
+    const { run, spans, trajectory } = await recordRun(task, model, provider, prompt);
+    const dir = `.local/model-contrast/traces/${prompt}/${model.name.replace(/[^a-z0-9.-]/gi, '_')}`;
     mkdirSync(dir, { recursive: true });
     writeFileSync(`${dir}/${task.id}.jsonl`, toJsonl(spans));
     runs.push(run);
@@ -109,6 +116,7 @@ const recording: ContrastRecording = {
     runtime: `Ollama ${runtime}`,
     options: 'temperature 0, seed 42, think false, num_ctx 4096, keep_alive 0 (production provider)',
     budgets: CONTRAST_BUDGETS,
+    prompt,
     recordedAt: new Date().toISOString(),
     hardware,
   },
@@ -121,14 +129,14 @@ if (problems.length) throw new Error('The recording is incomplete:\n' + problems
 const replay = await replayRecording(recording, set);
 if (replay.mismatches.length)
   throw new Error('The recording does not replay exactly:\n' + replay.mismatches.join('\n'));
-writeFileSync(`${CONTRAST_DIR}/recording.json`, JSON.stringify(recording, null, 1) + '\n');
+writeFileSync(recordingFile(prompt), JSON.stringify(recording, null, 1) + '\n');
 const report = contrastReport(
   replay.scored,
   models.map(m => m.name),
 );
 mkdirSync('evidence', { recursive: true });
 writeFileSync(
-  'evidence/model-contrast.json',
+  reportFile(prompt),
   JSON.stringify({ at: recording.manifest.recordedAt, recording: recording.manifest, ...report }, null, 2) + '\n',
 );
 for (const [name, summary] of Object.entries(report.models))
@@ -136,4 +144,4 @@ for (const [name, summary] of Object.entries(report.models))
     `${name}: ${summary.successes}/${summary.runs} finished with all sources read, modes ${JSON.stringify(summary.failureModes)}, median call ${summary.medianCallLatencyMs} ms`,
   );
 console.log(`Safety: ${JSON.stringify(report.safety)}`);
-console.log('Next: run `npm run contrast:test`, then commit recording.json and evidence/model-contrast.json.');
+console.log(`Next: run \`npm run contrast:test\`, then commit ${recordingFile(prompt)} and ${reportFile(prompt)}.`);
