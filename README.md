@@ -16,7 +16,8 @@ Built by [Víctor Martín Aller](https://victoraller.vercel.app/), Senior SDET /
 | Reproduce selected checks | [Reproduction guide](docs/portfolio/reproduction.md) |
 | Discuss engineering decisions | [Interview defense](docs/portfolio/interview.md) |
 | Review publication safety | [Publication review](docs/portfolio/publication.md) |
-| Review M6 | [Phase 20 report and human checkpoint](docs/phase20-report.md) |
+| Review M6 | [Phase 20 report and human checkpoint](docs/history/m6/phase20-report.md) |
+| Browse all documentation | [Documentation index](docs/README.md) · [project history by milestone](docs/history/README.md) |
 
 ## The product
 
@@ -43,14 +44,15 @@ Human approval is action/receipt/SHA/identity/expiry-bound, one-time consumable,
 
 | Milestone | Result and evidence status |
 |---|---|
-| M1 · phases 0–5 | Deterministic product and QA foundation; [historical v1 report](docs/phase5-report.md) |
-| M2 · phases 6–10 | Local AI/RAG mechanics and bounded evals; [accepted human checkpoint](docs/m2-human-checkpoint.md) |
-| M3 · phases 11–13 | Direct tools, registry, MCP and Skills; [acceptance and limitations](docs/m3-acceptance-check.md) |
-| M4 · phases 14–16 | Context, durable state, registered execution and HITL; [limited acceptance](docs/m4-acceptance-check.md) |
+| M1 · phases 0–5 | Deterministic product and QA foundation; [historical v1 report](docs/history/m1/phase5-report.md) |
+| M2 · phases 6–10 | Local AI/RAG mechanics and bounded evals; [accepted human checkpoint](docs/history/m2/m2-human-checkpoint.md) |
+| M3 · phases 11–13 | Direct tools, registry, MCP and Skills; [acceptance and limitations](docs/history/m3/m3-acceptance-check.md) |
+| M4 · phases 14–16 | Context, durable state, registered execution and HITL; [limited acceptance](docs/history/m4/m4-acceptance-check.md) |
 | M5 · phases 17–19 | n8n orchestration, specialist rejection and bounded end-to-end QA; [accepted checkpoint](evidence/m5-human-checkpoint.json) |
 | M6 · phase 20 | Coordinated repository evidence package and existing web portfolio; final human truthfulness/publication checkpoint accepted; publication sequence authorized |
+| After M6 | [Run feed](docs/run-feed.md) replayed by skill on the portfolio site; [retrieval golden set](docs/retrieval-golden.md) with real embeddings replayed in CI |
 
-M1–M5 are accepted and merged. This M6 work starts from `5d0198847e228b525073f54dd06b880cac08f20c`; historical receipts retain their original SHAs and contexts. [Original chronological README](README-history.md) and [approved roadmap](docs/roadmap.md) preserve the full development record. Historical authorization annotations are not current instructions.
+M1–M5 are accepted and merged. This M6 work starts from `5d0198847e228b525073f54dd06b880cac08f20c`; historical receipts retain their original SHAs and contexts. [Original chronological README](docs/history/README-original.md) and [approved roadmap](docs/roadmap.md) preserve the full development record. Historical authorization annotations are not current instructions.
 
 ## Reproduce without a GPU
 

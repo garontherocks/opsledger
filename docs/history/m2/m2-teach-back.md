@@ -13,7 +13,7 @@ Phase 6 understanding is already demonstrated. Do not repeat that checkpoint or 
 
 Explain two flows: published runbook → chunks → pinned embeddings → scoped retrieval; question/sources → generation → validation → current-source recheck → unverified display. See [architecture](m2-architecture.md).
 
-Educational failures: [contract-valid falsehood](../evidence/phase7-eval-report.json), [mixed digest/withdrawal/revocation](../evidence/phase8-boundaries.json), [valid quote with false claim](../evidence/phase9-evals.json), [telemetry denial](../evidence/phase10-telemetry-denial.json).
+Educational failures: [contract-valid falsehood](../../../evidence/phase7-eval-report.json), [mixed digest/withdrawal/revocation](../../../evidence/phase8-boundaries.json), [valid quote with false claim](../../../evidence/phase9-evals.json), [telemetry denial](../../../evidence/phase10-telemetry-denial.json).
 
 Senior/Staff scenarios: defend boundaries when asked to auto-close incidents from convincing cited text; design a paired fresh-held-out/repeated experiment when a benchmark-winning model worsens Spanish retrieval or abstention.
 

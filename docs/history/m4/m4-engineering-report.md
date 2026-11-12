@@ -1,6 +1,6 @@
 # M4 — Agentic QA engineering handoff
 
-Initial Phase 16 gates passed on e3426f234e6d4dbed9fb5811ae68cef61fcf85c3, with required Linux API/browser and Windows CI green at [run 37960577739](https://github.com/garontherocks/opsledger/actions/runs/37960577739). Actual CI checkout d19fed05c2e5822a5a100aaf61b0eb0af733e318 has exactly the same tree as the branch code commit; [receipt](../evidence/phase16-ci-receipt.json) records both identities. The initial handoff was superseded by the expiry correction below; a final documentation/evidence successor requires its own head checks.
+Initial Phase 16 gates passed on e3426f234e6d4dbed9fb5811ae68cef61fcf85c3, with required Linux API/browser and Windows CI green at [run 37960577739](https://github.com/garontherocks/opsledger/actions/runs/37960577739). Actual CI checkout d19fed05c2e5822a5a100aaf61b0eb0af733e318 has exactly the same tree as the branch code commit; [receipt](../../../evidence/phase16-ci-receipt.json) records both identities. The initial handoff was superseded by the expiry correction below; a final documentation/evidence successor requires its own head checks.
 
 **Milestone boundary reached; final engineering review identified an expiry/write TOCTOU gap not covered by the earlier green run. A controlled red test reproduces it. Correction rechecks expiry after asynchronous target verification and at the transactional INSERT via the DB clock; corrective full CI passed on e1fb584b4c3808ae8371f514d0678cd4d0841d20 / [37962926938](https://github.com/garontherocks/opsledger/actions/runs/37962926938), all three lanes green. The user completed the final human/desktop checkpoint; M4 is formally accepted for the limited lab scope, with required final-head CI and all caveats retained. No M5 started; PR #6 unmerged.**
 
@@ -12,7 +12,7 @@ Initial Phase 16 gates passed on e3426f234e6d4dbed9fb5811ae68cef61fcf85c3, with 
 | 15 | Typed PostgreSQL checkpoints, immutable history, reviewed expiring risk memory; retain direct runtime after isolated comparison; native independent-process recovery | 7018867f64b058c08026b808085e8254214a7bb3 / [37957661131](https://github.com/garontherocks/opsledger/actions/runs/37957661131), all three lanes green before Phase 16 |
 | 16 | Bounded durable registered check workflow, fenced recovery, SHA/action/identity/expiry HITL and one transactional local report effect | e3426f234e6d4dbed9fb5811ae68cef61fcf85c3 / [37960577739](https://github.com/garontherocks/opsledger/actions/runs/37960577739), all three lanes green |
 
-Reports: [14](phase14-report.md), [15](phase15-report.md), [16](phase16-report.md). Decisions: [QA context](adr/009-qa-context-adoption.md), [durability/runtime](adr/010-qa-durable-state.md). [Current architecture/data flow](m4-architecture.md).
+Reports: [14](phase14-report.md), [15](phase15-report.md), [16](phase16-report.md). Decisions: [QA context](../../adr/009-qa-context-adoption.md), [durability/runtime](../../adr/010-qa-durable-state.md). [Current architecture/data flow](m4-architecture.md).
 
 ## Actual validation
 
@@ -31,7 +31,7 @@ Reports: [14](phase14-report.md), [15](phase15-report.md), [16](phase16-report.m
 | Build / static / dependencies | lint, strict typecheck, build, audit passed; zero reported vulnerabilities |
 | M4 desktop harness in Work | 16 fixture abstentions, zero provider/contract errors; not live generation or human acceptance |
 
-Commands are in [.github/workflows/phase4.yml](../.github/workflows/phase4.yml). Local supplemental PGlite/Chromium 153 UI checks passed, but native PostgreSQL and CI-pinned Playwright/Chromium remain the required evidence. [Exact receipt](../evidence/phase16-ci-receipt.json); artifact uploads preserve generated native/Windows/browser results. [Development failures](../evidence/phase16-development-failures.json) and [initial PGlite child limitation](../evidence/phase15-development-failure.json) remain honest records.
+Commands are in [.github/workflows/phase4.yml](../../../.github/workflows/phase4.yml). Local supplemental PGlite/Chromium 153 UI checks passed, but native PostgreSQL and CI-pinned Playwright/Chromium remain the required evidence. [Exact receipt](../../../evidence/phase16-ci-receipt.json); artifact uploads preserve generated native/Windows/browser results. [Development failures](../../../evidence/phase16-development-failures.json) and [initial PGlite child limitation](../../../evidence/phase15-development-failure.json) remain honest records.
 
 ## Security / evaluation summary
 
@@ -45,7 +45,7 @@ Base main c55eee55fcfeb4c31e0b252a1573156e2a9d41b4 is the user's PR #5 merge of 
 
 ## Remaining acceptance work versus debt
 
-The required milestone human gates are complete: the user reports one live desktop bundle, six semantic judgments, limited-scope HITL acceptance and all consolidated Teach-Back items passed. [Actual checkpoint](../evidence/m4-human-checkpoint.json), [judgments](m4-human-review.md), [learning results](m4-teach-back.md). Fixture approvals never count as human judgments or actual UI approval. No required acceptance blocker remains on the tested implementation; this documentation-only final head must also pass required CI.
+The required milestone human gates are complete: the user reports one live desktop bundle, six semantic judgments, limited-scope HITL acceptance and all consolidated Teach-Back items passed. [Actual checkpoint](../../../evidence/m4-human-checkpoint.json), [judgments](m4-human-review.md), [learning results](m4-teach-back.md). Fixture approvals never count as human judgments or actual UI approval. No required acceptance blocker remains on the tested implementation; this documentation-only final head must also pass required CI.
 
 Non-blocking limited-lab debt: fresh calibrated bilingual QA-plan/value evidence; M3 live tool-selection failure; no default retrieval adoption; reviewed repository corpus rather than dynamic tenant ingestion; no automatic model/memory-to-executor wiring; same-owner reviewer rather than four-eyes approval; one-hour runs/short metadata with no long-term retention/purge policy; process/JS guards rather than an OS/native sandbox; trusted checkout/dependencies/secret and local PATH Git assumptions; cooperative cancellation cannot roll back arbitrary external effects (none authorized here); no production HTTP/TLS/OAuth/release workflow. HMACs do not protect against a compromised application secret or DB owner who can alter enforcement. Existing main protection plan limitation remains procedural, not claimed enforced.
 
@@ -55,7 +55,7 @@ M4's single human/desktop checkpoint is complete and limited-scope acceptance is
 
 ## Final expiry hard-gate correction
 
-The prior green run did not prove expiry remained valid during the final asynchronous target check. [Preserved actual red regression](../evidence/phase16-expiry-toctou-regression.json) records the gap and local report-only impact. The controller now rejects elapsed application expiry after that check, and the INSERT independently enforces approval/run expiry using PostgreSQL clock_timestamp. Added controlled async expiry and independent native DB/application-clock cases. Full corrective CI passed on e1fb584b4c3808ae8371f514d0678cd4d0841d20: native workflow 14 tests, no skips; 83 product integrations, Windows, nine existing browser flows, QA UI and five lifecycle runs passed. [Corrective receipt](../evidence/phase16-expiry-ci-receipt.json). PostgreSQL [current-time documentation](https://www.postgresql.org/docs/18/functions-datetime.html) was checked on 2026-10-09: clock_timestamp changes during statement execution, unlike transaction-start current_timestamp.
+The prior green run did not prove expiry remained valid during the final asynchronous target check. [Preserved actual red regression](../../../evidence/phase16-expiry-toctou-regression.json) records the gap and local report-only impact. The controller now rejects elapsed application expiry after that check, and the INSERT independently enforces approval/run expiry using PostgreSQL clock_timestamp. Added controlled async expiry and independent native DB/application-clock cases. Full corrective CI passed on e1fb584b4c3808ae8371f514d0678cd4d0841d20: native workflow 14 tests, no skips; 83 product integrations, Windows, nine existing browser flows, QA UI and five lifecycle runs passed. [Corrective receipt](../../../evidence/phase16-expiry-ci-receipt.json). PostgreSQL [current-time documentation](https://www.postgresql.org/docs/18/functions-datetime.html) was checked on 2026-10-09: clock_timestamp changes during statement execution, unlike transaction-start current_timestamp.
 
 ## Actual final human/desktop checkpoint — 2026-10-09
 

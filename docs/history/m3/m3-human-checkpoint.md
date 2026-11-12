@@ -18,7 +18,7 @@ Source: actual outcomes and learner explanations explicitly supplied by the user
 
 The original attempt at 544f22edf55c4abd806751e693162d936c0aa7e0 failed before any agent runs because a Windows filesystem path was passed to Node --import. Independent reproduction: ERR_UNSUPPORTED_ESM_URL_SCHEME; On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'.
 
-This is cross-platform engineering evidence, not model/MCP quality evidence. Work completed the corrective implementation and Linux + Windows CI before the final handoff. [Original failed attempt](../evidence/m3-windows-startup-failure.json) remains preserved, not rewritten as successful.
+This is cross-platform engineering evidence, not model/MCP quality evidence. Work completed the corrective implementation and Linux + Windows CI before the final handoff. [Original failed attempt](../../../evidence/m3-windows-startup-failure.json) remains preserved, not rewritten as successful.
 
 ## Actual Desktop Validation Bundle
 

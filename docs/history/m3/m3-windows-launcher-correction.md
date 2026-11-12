@@ -2,7 +2,7 @@
 
 ## Actual failure
 
-The user ran npm run ai:m3-desktop on Windows / Node 24.19.0 at 544f22edf55c4abd806751e693162d936c0aa7e0. All nine agent runs were prevented by startup failure. The same guard import independently failed as a Windows filesystem argument with ERR_UNSUPPORTED_ESM_URL_SCHEME and succeeded as a file URL. [Original failed attempt](../evidence/m3-windows-startup-failure.json) is preserved. This is engineering/platform evidence, not model/provider/MCP quality evidence.
+The user ran npm run ai:m3-desktop on Windows / Node 24.19.0 at 544f22edf55c4abd806751e693162d936c0aa7e0. All nine agent runs were prevented by startup failure. The same guard import independently failed as a Windows filesystem argument with ERR_UNSUPPORTED_ESM_URL_SCHEME and succeeded as a file URL. [Original failed attempt](../../../evidence/m3-windows-startup-failure.json) is preserved. This is engineering/platform evidence, not model/provider/MCP quality evidence.
 
 ## Implementation and review
 
@@ -18,6 +18,6 @@ Regression coverage: Windows drive/UNC and escaped POSIX specifier preservation;
 
 ## Acceptance
 
-Corrective code commit: cf4c6f0c2a97bcc494eaeb2b2d5a39dcc16ea1d2. Full corrective CI run 37867155568 passed all three lanes; [actual receipt](../evidence/m3-windows-correction-ci-receipt.json). Windows: 8 MCP and 7 M3 tests, no failures/skips. Linux: 48 units, 82 native integrations without skips, 114 AI regressions with zero unexpected egress, 8 agent fixtures, 9 browser flows, lint/types/build/audit and restore/baseline passed. Local lint/types/build/audit, 48 unit tests, 8 MCP tests and 7 M3 tests passed. The initial diagnostic regression exposed SDK sibling stderr suppression and was corrected before this commit; it is not a successful desktop result.
+Corrective code commit: cf4c6f0c2a97bcc494eaeb2b2d5a39dcc16ea1d2. Full corrective CI run 37867155568 passed all three lanes; [actual receipt](../../../evidence/m3-windows-correction-ci-receipt.json). Windows: 8 MCP and 7 M3 tests, no failures/skips. Linux: 48 units, 82 native integrations without skips, 114 AI regressions with zero unexpected egress, 8 agent fixtures, 9 browser flows, lint/types/build/audit and restore/baseline passed. Local lint/types/build/audit, 48 unit tests, 8 MCP tests and 7 M3 tests passed. The initial diagnostic regression exposed SDK sibling stderr suppression and was corrected before this commit; it is not a successful desktop result.
 
 Desktop rerun and human M3 checkpoint remain pending. Preserve the approved M2 runtime/model configuration and run one desktop bundle at the supplied final handoff. No Phase 14/M4 or PR merge authorized.

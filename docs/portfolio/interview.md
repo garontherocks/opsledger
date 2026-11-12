@@ -10,10 +10,10 @@
 
 | Decision | Why | Evidence / trade-off |
 |---|---|---|
-| Product before AI | Establish known contracts and trustworthy regression evidence | [ADR 001](../adr/001-modular-monolith.md), [phase 5](../phase5-report.md); modest modular-monolith scope |
-| Direct loop/registry before MCP/frameworks | Make identity, schemas and executor policy visible | [M3 report](../m3-engineering-report.md); interoperability does not make the model intelligent |
+| Product before AI | Establish known contracts and trustworthy regression evidence | [ADR 001](../adr/001-modular-monolith.md), [phase 5](../history/m1/phase5-report.md); modest modular-monolith scope |
+| Direct loop/registry before MCP/frameworks | Make identity, schemas and executor policy visible | [M3 report](../history/m3/m3-engineering-report.md); interoperability does not make the model intelligent |
 | Durable state before orchestration | Restarts/races/expiry need durable, independently checked receipts | [ADR 010](../adr/010-qa-durable-state.md); state complexity accepted for named failure scenarios |
-| n8n orchestrates, TypeScript decides | A workflow graph must not become a second policy source | [phase 17](../phase17-report.md); no OS sandbox claim |
+| n8n orchestrates, TypeScript decides | A workflow graph must not become a second policy source | [phase 17](../history/m5/phase17-report.md); no OS sandbox claim |
 | Reject default QA retrieval | Correct context did not reliably improve human-reviewed reasoning | [ADR 009](../adr/009-qa-context-adoption.md); retain experiment and provenance mechanics |
 | Reject default specialists | Same bounded inputs/authority, 3× calls, no demonstrated semantic advantage | [ADR 0018](../adr/0018-specialist-comparison.md); direct baseline retained |
 | No public agent runtime | Recruiters need evidence access, not privileged execution | [publication review](publication.md); fewer exposed endpoints, local inference remains local |

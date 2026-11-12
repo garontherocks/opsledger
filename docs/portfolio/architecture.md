@@ -1,6 +1,6 @@
 # Architecture and authority
 
-[Portfolio entry point](../../README.md) · [Claims](claims.md) · [Detailed M4 flows](../m4-architecture.md)
+[Portfolio entry point](../../README.md) · [Claims](claims.md) · [Detailed M4 flows](../history/m4/m4-architecture.md)
 
 ## Product path
 
