@@ -1,0 +1,15 @@
+# Prettier formats code and its configuration only.
+# Markdown, evidence and fixtures are hashed or quoted byte-for-byte (skill digests, dataset hashes,
+# recorded evidence), so they are never reformatted.
+*.md
+**/*.md
+docs/
+evidence/
+skills/
+lab/
+tests/fixtures/
+tests/browser/*-snapshots/
+migrations/
+dist/
+.local/
+package-lock.json

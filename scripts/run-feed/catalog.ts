@@ -60,14 +60,14 @@ export const SKILLS:Skill[]=[
   {id:'specialists-pipeline',name:'Specialist comparison & QA pipeline',tool:'Paired comparison · registered suites',provenance:'fixture',
     note:'Specialist contracts and the paired comparison harness on fixtures; the live comparison is recorded locally below.',
     files:['qa-specialists.unit.test.ts','qa-pipeline.unit.test.ts'],steps:['specialist-fixture','pipeline-smoke'],flows:[]},
-  {id:'supply-chain',name:'Supply chain & build integrity',tool:'npm audit gate · ESLint · TypeScript',provenance:'deterministic',
-    note:'Lint, typecheck and build, plus a fail-closed audit gate with scoped, expiring exceptions (ADR 0019).',
+  {id:'supply-chain',name:'Supply chain & build integrity',tool:'npm audit gate · Prettier · ESLint · TypeScript',provenance:'deterministic',
+    note:'Formatting, lint, typecheck and build, plus a fail-closed audit gate with scoped, expiring exceptions (ADR 0019).',
     files:['audit-gate.unit.test.ts','run-feed.unit.test.ts'],steps:['static-checks','audit-gate'],flows:[]},
 ];
 
 /** Human-readable command per step, shown in the replay. */
 export const STEP_COMMANDS:Record<string,string>={
-  'static-checks':'npm run lint && npm run typecheck && npm run build',
+  'static-checks':'npm run format:check && npm run lint && npm run typecheck && npm run build',
   'audit-gate':'node scripts/audit-gate.ts',
   'quality-baseline':'npm run quality:baseline',
   'm2-harness':'M2_BUNDLE_FIXTURE=true npm run ai:m2-harness',
