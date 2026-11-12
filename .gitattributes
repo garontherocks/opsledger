@@ -3,3 +3,4 @@ skills/** text eol=lf
 
 # The retrieval golden set is hashed into its recording manifest; keep it byte-identical on every OS.
 tests/fixtures/retrieval-golden-v1/** text eol=lf
+tests/fixtures/model-contrast-v1/** text eol=lf

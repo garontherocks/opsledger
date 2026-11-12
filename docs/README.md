@@ -17,6 +17,7 @@ was built, milestone by milestone, is in [history](history/README.md).
 | [run-feed.md](run-feed.md) | The CI run feed behind the portfolio's Quality run, grouped by skill |
 | [retrieval-golden.md](retrieval-golden.md) | Retrieval quality golden set: recorded embeddings replayed in CI, and its results |
 | [observability.md](observability.md) | OpenTelemetry GenAI traces of agent runs, model calls, retrieval and tools |
+| [model-contrast.md](model-contrast.md) | Qwen3 8B vs 14B on the same agent tasks, recorded locally and scored from OpenTelemetry spans |
 | [adr/](adr/) | Architecture decision records |
 | [roadmap.md](roadmap.md) | The approved roadmap, its deferred technologies and their triggers |
 | [openapi.json](openapi.json) | Generated API description (`npm run build`) |

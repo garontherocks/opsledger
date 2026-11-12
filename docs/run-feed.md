@@ -30,6 +30,7 @@ Anything unmapped still appears, under "Other checks", instead of disappearing.
 | Agent budgets & tool boundaries | fixture | Turn/deadline/token budgets, M3 tool boundaries, agent eval cases |
 | MCP read-only server | deterministic | `opsledger-qa-readonly` over stdio and HTTP, on Linux and Windows |
 | Agent observability (OpenTelemetry GenAI) | fixture | Trace-based tests: agent trajectory, tool allowlist and denials asserted on gen_ai spans; no content exported ([details](observability.md)) |
+| Trajectory evaluation · Qwen3 8B vs 14B | recorded | Recorded local runs replayed through the agent loop; trajectories scored from spans ([details](model-contrast.md)) |
 | Context engineering & provenance | fixture | Budgeted, SHA-bound context; M4 harness |
 | Human approval gates & durable workflow | deterministic | One-time, SHA-bound approvals, crash and restart recovery, approval UI |
 | Signed orchestration with n8n | deterministic | HMAC webhooks, duplicate recovery, actual n8n Community smoke |

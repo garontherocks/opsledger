@@ -126,6 +126,16 @@ export const SKILLS: Skill[] = [
     flows: [],
   },
   {
+    id: 'model-contrast',
+    name: 'Trajectory evaluation · Qwen3 8B vs 14B',
+    tool: 'Recorded local runs · OpenTelemetry spans · paired comparison',
+    provenance: 'recorded',
+    note: 'Both local models run the same 12 agent tasks on the desktop; CI replays their recorded replies through the agent loop and scores each trajectory from its spans.',
+    files: ['model-contrast.unit.test.ts'],
+    steps: [],
+    flows: [],
+  },
+  {
     id: 'context-engineering',
     name: 'Context engineering & provenance',
     tool: 'Budgeted retrieval · SHA-bound sources',
