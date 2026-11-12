@@ -1,4 +1,5 @@
 import { test } from 'node:test';
+import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 import { runAgent, registry } from '../apps/api/src/qa-agent.ts';
 import type { TextProvider } from '../apps/api/src/local-model.ts';
@@ -98,4 +99,36 @@ test('forged finish references are denied even after all mandatory reads', async
     provider([...valid.slice(0, 3), { ...valid[3], references: ['change-a', 'contract-a', 'forged'] }]),
   );
   assert.equal(r.reason, 'required_sources');
+});
+test('qa-direct-v1 prompts are byte-identical to the accepted M3 prompt; v2 states progress', async () => {
+  const prompts = async (promptVersion?: 'qa-direct-v1' | 'qa-direct-v2') => {
+    const seen: string[] = [];
+    const inner = provider(valid);
+    await runAgent(
+      fixture(),
+      { generate: async (t, f) => (seen.push(t), inner.generate(t, f)) },
+      {},
+      promptVersion ? { promptVersion } : {},
+    );
+    return seen;
+  };
+  const v1 = await prompts();
+  assert.deepEqual(
+    v1.map(p => createHash('sha256').update(p).digest('hex').slice(0, 16)),
+    ['26fd2621bd12360c', 'ebc7e22ddd57f719', '34dc58029ed9f5d2', '1325ff9fb2b26a13'],
+  );
+  assert.deepEqual(await prompts('qa-direct-v1'), v1);
+  const v2 = (await prompts('qa-direct-v2')).map(p => JSON.parse(p.slice(p.indexOf('\n') + 1)));
+  assert.deepEqual(
+    v2.map(c => [c.read.map((r: { id: string }) => r.id), c.remaining.map((r: { id: string }) => r.id)]),
+    [
+      [[], ['change-a', 'contract-a', 'evidence-a']],
+      [['change-a'], ['contract-a', 'evidence-a']],
+      [['change-a', 'contract-a'], ['evidence-a']],
+      [['change-a', 'contract-a', 'evidence-a'], []],
+    ],
+  );
+  assert.ok(v2.every(c => !('history' in c) && c.read.every((r: { untrusted: boolean }) => r.untrusted)));
+  const r = await runAgent(fixture(), provider(valid), {}, { promptVersion: 'other' as 'qa-direct-v1' });
+  assert.equal(r.reason, 'mandatory_gate');
 });

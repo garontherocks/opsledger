@@ -89,9 +89,27 @@ At temperature 0 under a JSON schema, both models keep choosing the first listed
 **What held:** the harness. Every one of the 24 runs stopped safely within budget; no tool outside the allowlist ran
 and no draft was produced without all sources read, including the injected tasks.
 
-**Next experiment (not done here):** a prompt variant that states progress explicitly (sources read, sources
-remaining, finish when none remain), measured on the same tasks and both models, so the change is attributed by
-measurement and not by assumption.
+**Next experiment:** the `qa-direct-v2` prompt below, measured on the same tasks and both models, so the change is
+attributed by measurement and not by assumption.
+
+## Ablation: `qa-direct-v2` prompt
+
+`qa-direct-v2` changes only the prompt; tools, schema, budgets and gates are the same. Instead of the tool list plus a
+raw history, it gives the sources already `read` (with their untrusted text) and the tools still `remaining`, and says:
+call one remaining tool at a time, never re-read, and finish citing the three ids when nothing remains. `qa-direct-v1`
+stays the default and byte-identical (a test pins its prompt hashes), so accepted M3 evidence and the first recording
+still replay. A scripted test shows the mechanism without a model: a policy that always picks the first listed tool
+loops under v1 on every task and finishes under v2 on every task.
+
+Record it with the same procedure, adding the prompt flag:
+
+```powershell
+npm run contrast:record -- --prompt qa-direct-v2
+npm run contrast:test
+git add tests/fixtures/model-contrast-v1/recording-qa-direct-v2.json evidence/model-contrast-qa-direct-v2.json
+git commit -m "evidence: record Qwen3 8B vs 14B with the qa-direct-v2 prompt"
+git push
+```
 
 ## Limitations
 

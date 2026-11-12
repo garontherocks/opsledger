@@ -3,7 +3,15 @@
 // production agent loop, regenerates the spans and evaluates the trajectories from them. No model runs in CI.
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { hash, registry, runAgent, TOOL_NAMES, type Manifest, type AgentResult } from '../../apps/api/src/qa-agent.ts';
+import {
+  hash,
+  registry,
+  runAgent,
+  TOOL_NAMES,
+  type Manifest,
+  type AgentResult,
+  type PromptVersion,
+} from '../../apps/api/src/qa-agent.ts';
 import type { Generation, TextProvider } from '../../apps/api/src/local-model.ts';
 import { memoryTracing, spanRecord, type SpanRecord } from '../telemetry/memory-tracing.ts';
 
@@ -46,6 +54,8 @@ export type ContrastRecording = {
     budgets: typeof CONTRAST_BUDGETS;
     recordedAt: string;
     hardware: string;
+    /** Agent prompt version the runs used; recordings made before the field existed used `qa-direct-v1`. */
+    prompt?: PromptVersion;
     synthetic?: boolean;
   };
   runs: RecordedRun[];
@@ -61,9 +71,16 @@ export function loadTasks(dir = CONTRAST_DIR) {
   return { tasks, tasksSha256: sha256(canonical(tasks)) };
 }
 
-export function loadRecording(dir = CONTRAST_DIR): ContrastRecording | null {
+/** One recording and one report per agent prompt version; v1 keeps the original file names. */
+export const recordingFile = (prompt: PromptVersion, dir = CONTRAST_DIR) =>
+  prompt === 'qa-direct-v1' ? `${dir}/recording.json` : `${dir}/recording-${prompt}.json`;
+export const reportFile = (prompt: PromptVersion) =>
+  prompt === 'qa-direct-v1' ? 'evidence/model-contrast.json' : `evidence/model-contrast-${prompt}.json`;
+export const promptOf = (recording: ContrastRecording): PromptVersion => recording.manifest.prompt ?? 'qa-direct-v1';
+
+export function loadRecording(prompt: PromptVersion = 'qa-direct-v1', dir = CONTRAST_DIR): ContrastRecording | null {
   try {
-    return JSON.parse(readFileSync(`${dir}/recording.json`, 'utf8')) as ContrastRecording;
+    return JSON.parse(readFileSync(recordingFile(prompt, dir), 'utf8')) as ContrastRecording;
   } catch {
     return null;
   }
@@ -308,12 +325,10 @@ export async function replayRecording(recording: ContrastRecording, set: TaskSet
       continue;
     }
     tracing.reset();
-    const result = await runAgent(
-      manifestOf(task),
-      replayProvider(run),
-      CONTRAST_BUDGETS,
-      task.procedure ? { procedure: task.procedure } : {},
-    );
+    const result = await runAgent(manifestOf(task), replayProvider(run), CONTRAST_BUDGETS, {
+      promptVersion: promptOf(recording),
+      ...(task.procedure ? { procedure: task.procedure } : {}),
+    });
     const spans = tracing.spans().map(spanRecord);
     traces[`${run.model}/${run.task}`] = spans;
     const trajectory = evaluateTrajectory(spans);
@@ -340,7 +355,12 @@ function sameOutcome(replayed: { status: string; reason: string; tokens: number;
  * Runs one task through the production agent loop with `provider`, recording every model reply with the hash of its
  * prompt. Returns the recorded run and the spans of the live run. Used by the desktop recording and by the tests.
  */
-export async function recordRun(task: Task, model: { name: string; digest: string }, provider: TextProvider) {
+export async function recordRun(
+  task: Task,
+  model: { name: string; digest: string },
+  provider: TextProvider,
+  prompt: PromptVersion = 'qa-direct-v1',
+) {
   const tracing = memoryTracing();
   const generations: RecordedGeneration[] = [];
   const recorder: TextProvider = {
@@ -357,12 +377,10 @@ export async function recordRun(task: Task, model: { name: string; digest: strin
       return result;
     },
   };
-  const result = await runAgent(
-    manifestOf(task),
-    recorder,
-    CONTRAST_BUDGETS,
-    task.procedure ? { procedure: task.procedure } : {},
-  );
+  const result = await runAgent(manifestOf(task), recorder, CONTRAST_BUDGETS, {
+    promptVersion: prompt,
+    ...(task.procedure ? { procedure: task.procedure } : {}),
+  });
   const spans = tracing.spans();
   const trajectory = evaluateTrajectory(spans.map(spanRecord));
   const run: RecordedRun = {
