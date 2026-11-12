@@ -98,7 +98,8 @@
       "mathjs": "15.2.0",
       "sharp": "0.35.5",
       "tmp": "0.2.7",
-      "uuid": "11.1.1"
+      "uuid": "11.1.1",
+      "mongoose": "9.11.4"
     },
     "drizzle-orm": "$drizzle-orm",
     "@modelcontextprotocol/node": {
