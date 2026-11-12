@@ -53,6 +53,7 @@
     "rag:golden": "node --experimental-strip-types --test tests/retrieval-golden.integration.test.ts",
     "rag:golden:record": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/retrieval-golden/record.ts",
     "contrast:record": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/model-contrast/record.ts",
+    "contrast:report": "node --experimental-strip-types scripts/model-contrast/report.ts",
     "contrast:test": "node --experimental-strip-types --test tests/model-contrast.unit.test.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

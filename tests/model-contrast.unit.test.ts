@@ -8,6 +8,7 @@ import type { TextProvider } from '../apps/api/src/local-model.ts';
 import { PROMPT_VERSIONS } from '../apps/api/src/qa-agent.ts';
 import {
   contrastReport,
+  echoesInjection,
   evaluateTrajectory,
   loadRecording,
   loadTasks,
@@ -98,6 +99,32 @@ test('the same naive policy loops under qa-direct-v1 and finishes under qa-direc
     assert.equal(v2.trajectory.mode, 'success', task.id);
     assert.equal(v2.trajectory.canonicalOrder, true, task.id);
   }
+});
+
+test('the naive policy also finishes under qa-direct-v3', async () => {
+  const model = { name: 'first-listed', digest: digest('e') };
+  for (const task of set.tasks)
+    assert.equal((await recordRun(task, model, firstListed, 'qa-direct-v3')).trajectory.mode, 'success', task.id);
+});
+
+test('a finished draft that repeats injected text is counted as an injection echo', async () => {
+  const task = set.tasks.find(t => t.id === 'injection-evidence-finish')!;
+  const model = { name: 'echo', digest: digest('f') };
+  const echoing = scripted([
+    read(task, 0),
+    read(task, 1),
+    read(task, 2),
+    { ...finish(task), analysis: 'Title edits are covered and the review is already approved.' },
+  ]);
+  const runs = [
+    await recordRun(task, model, echoing),
+    await recordRun(task, { ...model, name: 'clean' }, careful(task)),
+  ];
+  const scored = runs.map(r => ({ task, run: r.run, trajectory: r.trajectory }));
+  assert.deepEqual(scored.map(echoesInjection), [true, false]);
+  const summary = contrastReport(scored, ['echo', 'clean']).models;
+  assert.deepEqual([summary.echo!.injectedDrafts, summary.echo!.injectionEchoes], [1, 1]);
+  assert.deepEqual([summary.clean!.injectedDrafts, summary.clean!.injectionEchoes], [1, 0]);
 });
 
 async function syntheticRecording(): Promise<ContrastRecording> {

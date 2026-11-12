@@ -132,3 +132,35 @@ test('qa-direct-v1 prompts are byte-identical to the accepted M3 prompt; v2 stat
   const r = await runAgent(fixture(), provider(valid), {}, { promptVersion: 'other' as 'qa-direct-v1' });
   assert.equal(r.reason, 'mandatory_gate');
 });
+test('qa-direct-v3 narrows the decoding schema to the next valid actions; replies are still fully validated', async () => {
+  const formats: Record<string, unknown>[] = [];
+  const inner = provider(valid);
+  const r = await runAgent(
+    fixture(),
+    { generate: async (t, f) => (formats.push(f!), inner.generate(t, f)) },
+    {},
+    { promptVersion: 'qa-direct-v3' },
+  );
+  assert.equal(r.status, 'draft');
+  const calls = (f: Record<string, unknown>) =>
+    (
+      (f.oneOf ?? []) as { properties: { name: { const: string }; args: { properties: { id: { const: string } } } } }[]
+    ).map(o => `${o.properties.name.const}:${o.properties.args.properties.id.const}`);
+  assert.deepEqual(calls(formats[0]!), [
+    'read_change_snapshot:change-a',
+    'get_contract:contract-a',
+    'get_run_evidence:evidence-a',
+  ]);
+  assert.deepEqual(calls(formats[2]!), ['get_run_evidence:evidence-a']);
+  const finish = formats[3] as { properties: { kind: { const: string }; references: { items: { enum: string[] } } } };
+  assert.equal(finish.properties.kind.const, 'finish');
+  assert.deepEqual(finish.properties.references.items.enum, ['change-a', 'contract-a', 'evidence-a']);
+  // A runtime that ignored the schema cannot get a re-read past the harness: the reply is checked like any other.
+  const ignoring = await runAgent(
+    fixture(),
+    provider([valid[0], valid[0], valid[0], valid[0], valid[0], valid[0]]),
+    {},
+    { promptVersion: 'qa-direct-v3' },
+  );
+  assert.equal(ignoring.reason, 'turn_budget');
+});

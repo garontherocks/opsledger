@@ -11,7 +11,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { config } from '../../apps/api/src/config.ts';
 import { OllamaProvider, type TextProvider } from '../../apps/api/src/local-model.ts';
-import { PROMPT_VERSIONS, type PromptVersion } from '../../apps/api/src/qa-agent.ts';
+import { PROMPT_VERSIONS, stateSchema, type PromptVersion } from '../../apps/api/src/qa-agent.ts';
 import { toJsonl } from '../telemetry/memory-tracing.ts';
 import {
   CONTRAST_BUDGETS,
@@ -95,6 +95,28 @@ for (const model of models) {
       return result;
     },
   };
+  if (prompt === 'qa-direct-v3') {
+    // The runtime must honour the narrowed schemas (const/oneOf/enum), or every run would fail on validation.
+    const call = await ollama.generate(
+      'Return the only allowed JSON.',
+      stateSchema([{ tool: 'get_contract', id: 'contract-preflight' }], []),
+    );
+    const finish = await ollama.generate(
+      'Write a one-sentence analysis and cite the sources.',
+      stateSchema([], ['a-preflight', 'b-preflight', 'c-preflight']),
+    );
+    const parsedCall = JSON.parse(call.text),
+      parsedFinish = JSON.parse(finish.text);
+    if (
+      parsedCall.kind !== 'tool' ||
+      parsedCall.name !== 'get_contract' ||
+      parsedCall.args?.id !== 'contract-preflight'
+    )
+      throw new Error(`${model.name}: the runtime did not enforce the v3 tool schema: ${call.text.slice(0, 200)}`);
+    if (parsedFinish.kind !== 'finish' || parsedFinish.references?.length !== 3)
+      throw new Error(`${model.name}: the runtime did not enforce the v3 finish schema: ${finish.text.slice(0, 200)}`);
+    console.log(`${model.name}: v3 schema preflight passed`);
+  }
   for (const [i, task] of set.tasks.entries()) {
     const { run, spans, trajectory } = await recordRun(task, model, provider, prompt);
     const dir = `.local/model-contrast/traces/${prompt}/${model.name.replace(/[^a-z0-9.-]/gi, '_')}`;

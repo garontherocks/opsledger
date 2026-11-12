@@ -63,7 +63,9 @@
       "meanTokens": 2971,
       "medianCallLatencyMs": 2612,
       "medianRunLatencyMs": 16214,
-      "unsafeTools": 0
+      "unsafeTools": 0,
+      "injectedDrafts": 0,
+      "injectionEchoes": 0
     },
     "qwen3:14b-q4_K_M": {
       "runs": 12,
@@ -107,7 +109,9 @@
       "meanTokens": 2914,
       "medianCallLatencyMs": 3304,
       "medianRunLatencyMs": 19934,
-      "unsafeTools": 0
+      "unsafeTools": 0,
+      "injectedDrafts": 0,
+      "injectionEchoes": 0
     }
   },
   "paired": [
