@@ -88,7 +88,9 @@ function suiteCommand(skill:Skill){
 
 export type RunInfo={id:string|null,number:number|null,attempt:number|null,workflow:string,event:string,branch:string,commit:string|null,repository:string,url:string|null};
 export type RecordedLocal={id:string,title:string,recordedAt:string|null,commit:string|null,model:string|null,runtime:string|null,hardware:string|null,facts:{label:string,value:string}[],finding:string,evidence:string};
-export type BuildInput={nodeTests:NodeRecord[],steps:StepRecord[],browser:{lane:string,report:unknown}[],evals:{step:string,lane:string,report:unknown}[],lanes:{lane:string,startedAt?:string|undefined,finishedAt?:string|undefined}[],retrieval:{lane:string,recallAt5:number,mrr:number}|null,run:RunInfo,generatedAt:string,node:string,recorded:RecordedLocal[]};
+/** Held-out metrics of the retrieval golden set (evidence/phase21-retrieval-golden.json), when the run produced them. */
+export type GoldenCheck={dataset:string,split:'held-out',queries:number,recallAt1:number,recallAt5:number,mrr:number,ndcg5:number,spanHitAt5:number,keywordRecallAt5:number,noAnswerRecall:number,model:string,digest:string,recordedAt:string};
+export type BuildInput={nodeTests:NodeRecord[],steps:StepRecord[],browser:{lane:string,report:unknown}[],evals:{step:string,lane:string,report:unknown}[],lanes:{lane:string,startedAt?:string|undefined,finishedAt?:string|undefined}[],retrieval:{lane:string,recallAt5:number,mrr:number}|null,golden?:GoldenCheck|null,run:RunInfo,generatedAt:string,node:string,recorded:RecordedLocal[]};
 
 export function buildFeed(input:BuildInput){
   const collected:Collected[]=[];
@@ -126,7 +128,8 @@ export function buildFeed(input:BuildInput){
     totals:totalsOf(collected),
     suites,
     environment:{database:'PostgreSQL 18.6 + pgvector 0.8.7',browsers:['Chromium'],runner:'Linux X64 · Windows',node:input.node,pipeline:'GitHub Actions',models:'none in CI · AI contracts run on fixtures'},
-    checks:{retrieval:input.retrieval&&ran('m2-harness',input.retrieval.lane)?{recallAt5:input.retrieval.recallAt5,mrr:input.retrieval.mrr,source:'fixture'}:null},
+    // The golden set measures real recorded embeddings; the M2 harness only checks plumbing with synthetic vectors.
+    checks:{retrieval:input.golden?{...input.golden,source:'recorded'}:input.retrieval&&ran('m2-harness',input.retrieval.lane)?{recallAt5:input.retrieval.recallAt5,mrr:input.retrieval.mrr,source:'fixture'}:null},
     reports:{history:'./history.json'},
     recordedLocal:input.recorded,
   };
@@ -173,13 +176,23 @@ export function recordedLocal(root:string):RecordedLocal[]{
   return out;
 }
 
+/** Only an official report written during this lane counts: a committed copy from an earlier run is not this run's result. */
+export function goldenCheck(report:unknown,laneStartedAt:string|undefined):GoldenCheck|null{
+  const r=report as {at?:string,official?:boolean,dataset?:string,heldOut?:Record<string,number>,abstention?:{heldOut?:{noAnswerRecall?:number}},recording?:{model?:string,digest?:string,recordedAt?:string}}|null;
+  if(!r?.official||!r.at||!r.heldOut||!r.recording)return null;
+  if(laneStartedAt&&Date.parse(r.at)<Date.parse(laneStartedAt))return null;
+  const h=r.heldOut;
+  return {dataset:r.dataset??'unknown',split:'held-out',queries:h.n??0,recallAt1:h.recallAt1??0,recallAt5:h.recallAt5??0,mrr:h.mrr??0,ndcg5:h.ndcg5??0,spanHitAt5:h.spanHitAt5??0,keywordRecallAt5:h.keywordRecallAt5??0,
+    noAnswerRecall:r.abstention?.heldOut?.noAnswerRecall??0,model:r.recording.model??'unknown',digest:r.recording.digest??'unknown',recordedAt:r.recording.recordedAt??'unknown'};
+}
+
 const readLines=<T,>(file:string):T[]=>existsSync(file)?readFileSync(file,'utf8').split('\n').filter(Boolean).map(line=>JSON.parse(line) as T):[];
 const readJson=(file:string):unknown=>existsSync(file)?JSON.parse(readFileSync(file,'utf8')):null;
 
 export function collectArtifacts(input:string){
   const dirs=readdirSync(input).map(d=>join(input,d)).filter(d=>statSync(d).isDirectory());
   const nodeTests:NodeRecord[]=[],steps:StepRecord[]=[],browser:{lane:string,report:unknown}[]=[],evals:{step:string,lane:string,report:unknown}[]=[],lanes:{lane:string,startedAt?:string|undefined,finishedAt?:string|undefined}[]=[];
-  let retrieval:{lane:string,recallAt5:number,mrr:number}|null=null;
+  let retrieval:{lane:string,recallAt5:number,mrr:number}|null=null,golden:GoldenCheck|null=null;
   for(const dir of dirs){
     const start=readJson(join(dir,'lane-start.json')) as {lane?:string,startedAt?:string}|null;
     const end=readJson(join(dir,'lane-end.json')) as {finishedAt?:string}|null;
@@ -190,9 +203,10 @@ export function collectArtifacts(input:string){
     for(const f of readdirSync(dir).filter(f=>/^browser-[a-z]+\.json$/.test(f)))browser.push({lane,report:readJson(join(dir,f))});
     for(const [step,file] of [['agent-eval','phase11-agent-eval.json'],['ai-regression','phase10-eval-report.json']] as const){const report=readJson(join(dir,file));if(report)evals.push({step,lane,report});}
     const m2=readJson(join(dir,'m2-bundle-harness.json')) as {retrieval?:{recallAt5?:number,mrr?:number}}|null;
+    golden=goldenCheck(readJson(join(dir,'phase21-retrieval-golden.json')),start?.startedAt)??golden;
     if(m2?.retrieval&&asNumber(m2.retrieval.recallAt5)!==null&&asNumber(m2.retrieval.mrr)!==null&&steps.some(s=>s.step==='m2-harness'&&s.lane===lane))retrieval={lane,recallAt5:m2.retrieval.recallAt5!,mrr:m2.retrieval.mrr!};
   }
-  return {nodeTests,steps,browser,evals,lanes,retrieval};
+  return {nodeTests,steps,browser,evals,lanes,retrieval,golden};
 }
 
 function runFromEnvironment(env:NodeJS.ProcessEnv):RunInfo{

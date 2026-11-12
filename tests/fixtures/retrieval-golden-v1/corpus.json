@@ -1,0 +1,151 @@
+{
+  "version": "retrieval-golden-v1",
+  "notes": "Synthetic runbooks for a retrieval quality golden set. Fictional systems and commands only. Hard cases on purpose: near-duplicate pairs (r02/r03, r05/r06), a superseded version (r18), a withdrawn runbook (r19), a near-identical runbook in another workspace (r20) and a long runbook whose answers sit in later chunks (r17).",
+  "runbooks": [
+    {
+      "id": "r01",
+      "workspace": "north",
+      "category": "operations",
+      "title": "PostgreSQL primary failover",
+      "body": "# PostgreSQL primary failover\nUse this when the primary database stops accepting writes and health checks fail for more than two minutes.\n1. Confirm replication lag on the standby is below 5 seconds before you promote it. A larger lag means recent writes would be lost.\n2. Promote the standby to primary with the fictional command `dbctl promote --standby ledger-db-2`.\n3. Repoint the connection pooler to the new primary and reload it; applications reconnect on their own.\n4. Fence the old primary so it cannot accept writes if it comes back, then open a ticket to rebuild it as a standby.\nRecord the promotion time and the observed lag in the incident timeline."
+    },
+    {
+      "id": "r02",
+      "workspace": "north",
+      "category": "recovery",
+      "title": "Restore the incident database from a nightly backup",
+      "body": "# Restore the incident database from a nightly backup\nNightly logical dumps of the incident database are kept for 30 days.\nBefore restoring, verify the checksum of the dump file against the manifest written by the backup job. Never restore a dump whose checksum does not match.\nRestore into the staging environment first and run the integrity checks there.\nA production restore needs a recorded approval from the incident commander.\nFor point-in-time recovery, replay the WAL archive up to the timestamp just before the bad change.\nAfter the restore, compare row counts of the incidents and runbooks tables with the last known good report."
+    },
+    {
+      "id": "r03",
+      "workspace": "north",
+      "category": "recovery",
+      "title": "Restore attachment files from object storage snapshots",
+      "body": "# Restore attachment files from object storage snapshots\nIncident attachments live in the attachments bucket, not in the database. This runbook does not cover database restores.\nThe bucket keeps object versions for 14 days. To recover a deleted or overwritten attachment, list the object versions and copy the last good version back over the current key.\nFor bulk recovery after accidental deletion, restore the whole prefix from the daily bucket snapshot into a quarantine prefix first, scan it, then move the files back.\nTell the reporters whose attachments were affected once the files are back."
+    },
+    {
+      "id": "r04",
+      "workspace": "north",
+      "category": "security",
+      "title": "Renew an expiring TLS certificate",
+      "body": "# Renew an expiring TLS certificate\nThe monitoring alert fires when a public certificate expires in fewer than 14 days.\nRequest a new certificate through the ACME client with the fictional command `certctl renew api.ledger.example`.\nStore the new key only in the secret store, never in the repository.\nReload the ingress so it serves the new certificate without dropping connections.\nVerify the full chain from outside with `openssl s_client -connect api.ledger.example:443 -servername api.ledger.example` and confirm the new expiry date."
+    },
+    {
+      "id": "r05",
+      "workspace": "north",
+      "category": "security",
+      "title": "Rotate database credentials",
+      "body": "# Rotate database credentials\nRotate the password of the application database role every 90 days or immediately after a suspected leak.\nCreate the new password for the ledger_app role and write it to the secret store as a new version.\nRoll out the API pods one at a time so each pod picks up the new database password from the secret store.\nKeep the old password valid for 24 hours, then revoke it and confirm no connections still use it."
+    },
+    {
+      "id": "r06",
+      "workspace": "north",
+      "category": "security",
+      "title": "Rotate third-party API keys",
+      "body": "# Rotate third-party API keys\nThis covers keys for external providers such as the payment processor and the email service, not database passwords.\nGenerate a new key in the provider dashboard and add it next to the current one: the integration accepts two active keys during a dual-key window.\nSwitch traffic to the new key, watch the provider error rate for an hour, then delete the old key in the provider dashboard.\nIf a key leaked, delete it first and accept a short outage of that integration."
+    },
+    {
+      "id": "r07",
+      "workspace": "north",
+      "category": "operations",
+      "title": "Free disk space when a volume is nearly full",
+      "body": "# Free disk space when a volume is nearly full\nThe alert fires when disk usage on a data volume goes above 90 percent.\nFirst find what grew: application logs, temporary export files and old core dumps are the usual causes.\nForce a log rotation and delete compressed logs older than seven days.\nRemove export files in the temporary exports directory that are older than one day.\nIf usage is still above 85 percent, expand the volume online and file a capacity ticket."
+    },
+    {
+      "id": "r08",
+      "workspace": "north",
+      "category": "operations",
+      "title": "Investigate a worker memory leak",
+      "body": "# Investigate a worker memory leak\nSuspect a leak when the resident memory of the background worker grows steadily across hours and the container is OOMKilled and restarted.\nTake a heap snapshot from one affected worker before restarting it; a restart erases the evidence.\nCompare two snapshots taken ten minutes apart and look for object counts that only grow.\nAs a mitigation, restart workers on a schedule while the fix is prepared, and lower the batch size."
+    },
+    {
+      "id": "r09",
+      "workspace": "north",
+      "category": "operations",
+      "title": "Drain a growing job queue backlog",
+      "body": "# Drain a growing job queue backlog\nThe queue depth alert fires when more than 5000 jobs are waiting for over ten minutes.\nScale the worker deployment out to the maximum of twelve replicas.\nPause non-critical producers such as report generation so urgent notification jobs drain first.\nJobs that fail three times move to the dead letter queue; review them after the backlog clears instead of retrying them blindly."
+    },
+    {
+      "id": "r10",
+      "workspace": "north",
+      "category": "recovery",
+      "title": "Roll back a faulty deployment",
+      "body": "# Roll back a faulty deployment\nRoll back when the error rate or the share of 502 responses rises sharply within 30 minutes of a release.\nRedeploy the previous image tag recorded in the release log with the fictional command `deployctl rollback api --to previous`.\nFreeze further deployments until the cause is understood.\nDatabase migrations are not reverted automatically: check whether the release ran one and whether the previous version can run against the new schema."
+    },
+    {
+      "id": "r11",
+      "workspace": "north",
+      "category": "operations",
+      "title": "Disable a feature with its kill switch",
+      "body": "# Disable a feature with its kill switch\nEvery new feature ships behind a flag that can switch it off in production without a deployment.\nSet the feature flag to off in the flag service; the change reaches all API instances within 60 seconds.\nConfirm in the flag audit log that the change was recorded with your name and the incident number.\nLeave the flag off until the owning team signs off on a fix."
+    },
+    {
+      "id": "r12",
+      "workspace": "north",
+      "category": "operations",
+      "title": "Diagnose DNS resolution failures",
+      "body": "# Diagnose DNS resolution failures\nSymptoms are clients that cannot resolve service hostnames, with NXDOMAIN or SERVFAIL answers.\nQuery the authoritative servers directly to tell a missing record apart from a resolver problem.\nIf a record was changed recently, remember that resolvers keep the old answer until its TTL expires.\nFor SERVFAIL, check whether DNSSEC signatures on the zone have expired."
+    },
+    {
+      "id": "r13",
+      "workspace": "north",
+      "category": "operations",
+      "title": "Handle clients hitting the API rate limit",
+      "body": "# Handle clients hitting the API rate limit\nClients over their quota receive HTTP 429 Too Many Requests with a Retry-After header.\nIdentify the client from the API key in the rate limiter dashboard and check whether the traffic is a retry storm or real growth.\nA temporary quota increase needs approval from the service owner and expires automatically after 48 hours.\nTell the client to back off exponentially and honour Retry-After."
+    },
+    {
+      "id": "r14",
+      "workspace": "north",
+      "category": "operations",
+      "title": "Escalate a severity 1 incident",
+      "body": "# Escalate a severity 1 incident\nA severity 1 incident means customers cannot use a core feature.\nPage the incident commander on call within five minutes of declaring it.\nOpen a dedicated bridge call and a channel named after the incident number.\nPost an update on the status page every 30 minutes, even when there is nothing new to say."
+    },
+    {
+      "id": "r15",
+      "workspace": "north",
+      "category": "security",
+      "title": "Atender una solicitud de exportación de datos personales",
+      "body": "# Atender una solicitud de exportación de datos personales\nUna persona puede pedir una copia de todos sus datos personales guardados en el sistema.\nPrimero verificá la identidad del solicitante con el procedimiento de doble confirmación por correo.\nEl plazo legal para responder es de 30 días corridos desde la solicitud.\nExportá los datos en un formato legible por máquina, como JSON, y enviá el archivo por el canal seguro.\nRegistrá la solicitud y la fecha de entrega en el registro de privacidad."
+    },
+    {
+      "id": "r16",
+      "workspace": "north",
+      "category": "operations",
+      "title": "Mitigar una avalancha de caché tras un vencimiento masivo",
+      "body": "# Mitigar una avalancha de caché tras un vencimiento masivo\nSi muchas claves del caché vencen al mismo tiempo, todas las peticiones van a la base de datos a la vez y la latencia se dispara.\nActivá la coalescencia de peticiones para que una sola consulta regenere cada clave.\nAgregá una variación aleatoria al TTL de las claves para que no venzan juntas.\nSi la base de datos sigue saturada, serví temporalmente los valores vencidos mientras se regeneran."
+    },
+    {
+      "id": "r17",
+      "workspace": "north",
+      "category": "recovery",
+      "title": "Quarterly disaster recovery drill",
+      "body": "# Quarterly disaster recovery drill\nThis drill proves that the team can rebuild the incident ledger in the secondary region from backups alone. Schedule it once per quarter and announce it one week ahead.\n\n## Preparation\nPick a drill lead and a scribe. The scribe keeps a timestamped log from the first command to the last check.\nConfirm that the latest nightly dump and the WAL archive have been replicated to the secondary region. If replication is behind, postpone the drill: it would measure the replication delay instead of the recovery.\nPrepare an empty environment in the secondary region with the same versions of PostgreSQL and pgvector as production.\nAgree on a fictional bad change to recover from, for example dropping one table at a known time.\n\n## Execution\nApply the bad change in the drill environment and note the exact time.\nRestore the nightly dump, then replay the WAL archive to the moment just before the bad change.\nRebuild the knowledge index for every published runbook so semantic search works again.\nStart the API and the worker against the restored database and run the smoke checks.\nDo not touch production at any point during the drill.\n\n## Objectives\nThe recovery time objective is four hours from the start of the restore to passing smoke checks.\nThe recovery point objective is fifteen minutes of lost writes at most.\n\n## After the drill\nRecord the measured recovery time and the measured recovery point in the drill report, next to the objectives.\nList every manual step that was not in this runbook and every command that failed.\nOpen a ticket for each gap and assign an owner before closing the drill.\nDestroy the drill environment so it does not keep restored data around."
+    },
+    {
+      "id": "r18",
+      "workspace": "north",
+      "category": "operations",
+      "title": "Clear stuck background jobs",
+      "body": "# Clear stuck background jobs\nJobs are stuck when they stay in the running state long after their timeout.\nRun the fictional command `jobctl delete --stuck` to remove the rows from the jobs table and let producers create them again.",
+      "revision": {
+        "body": "# Clear stuck background jobs\nJobs are stuck when they stay in the running state long after their timeout.\nUse the fictional command `jobctl requeue --stuck` to move them back to the queue with their payload intact.\nNever delete rows from the jobs table directly: producers do not recreate deleted jobs, so their work is silently lost.\nIf a job gets stuck again after requeueing, move it to the dead letter queue and open a ticket."
+      },
+      "obsoleteEvidence": "remove the rows from the jobs table"
+    },
+    {
+      "id": "r19",
+      "workspace": "north",
+      "category": "operations",
+      "title": "Reboot the whole cluster to fix latency",
+      "status": "withdrawn",
+      "body": "# Reboot the whole cluster to fix latency\nWhen latency is high, reboot every node of the cluster at once to clear all state.\nThis guidance was withdrawn because it causes a full outage."
+    },
+    {
+      "id": "r20",
+      "workspace": "south",
+      "category": "operations",
+      "title": "PostgreSQL primary failover (South region)",
+      "body": "# PostgreSQL primary failover (South region)\nUse this when the South primary database stops accepting writes.\nConfirm replication lag on the South standby is below 5 seconds, then promote it with `dbctl promote --standby south-db-2`.\nRepoint the South connection pooler and fence the old primary."
+    }
+  ]
+}

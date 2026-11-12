@@ -2,8 +2,11 @@
 // Every CI test file, harness step and browser flow belongs to exactly one skill;
 // tests/run-feed.unit.test.ts fails when a test file or browser spec is left unmapped.
 
-/** `deterministic`: no model involved. `fixture`: AI contract exercised with recorded or synthetic model output, never a live model. */
-export type Provenance='deterministic'|'fixture';
+/**
+ * `deterministic`: no model involved. `fixture`: AI contract exercised with synthetic or hand-written model output.
+ * `recorded`: real output of the pinned local model, recorded on the desktop and replayed exactly; CI never calls a model.
+ */
+export type Provenance='deterministic'|'fixture'|'recorded';
 
 export type Skill={
   id:string,
@@ -33,6 +36,9 @@ export const SKILLS:Skill[]=[
   {id:'rag-retrieval',name:'RAG, embeddings & citations',tool:'pgvector · embeddings · cited answers',provenance:'fixture',
     note:'Retrieval, citation spans and source versions are checked with fixed vectors; generation quality is not claimed here.',
     files:['embeddings.unit.test.ts','retrieval.integration.test.ts','rag.integration.test.ts'],steps:['m2-harness'],flows:['retrieval','rag']},
+  {id:'retrieval-quality',name:'Retrieval quality (golden set)',tool:'embeddinggemma vectors · pgvector · 50 labelled queries',provenance:'recorded',
+    note:'Real embeddings of the pinned model, recorded on the desktop and replayed through the production index and search: Recall@k, MRR, nDCG, citable span and abstention on a held-out split, with no leaks of withdrawn, superseded or other-workspace content.',
+    files:['retrieval-golden.integration.test.ts','retrieval-golden.unit.test.ts'],steps:[],flows:[]},
   {id:'prompt-injection-evals',name:'Prompt-injection & eval regression',tool:'Promptfoo · deterministic graders · egress guard',provenance:'fixture',
     note:'Adversarial and boundary cases replayed against reviewed fixtures with network egress denied.',
     files:[],steps:['ai-regression'],flows:[]},

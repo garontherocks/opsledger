@@ -1,0 +1,73 @@
+{
+  "version": "retrieval-golden-v1",
+  "notes": "Grade 2 = the runbook that answers the query; grade 1 = related but not the answer. `evidence` is an exact substring of the answering runbook that a cited answer would quote. `noAnswer` queries have no published answer in the north workspace; the right behaviour is to abstain. The development split tunes the abstention threshold; the held-out split only measures.",
+  "queries": [
+    {"id": "q01", "split": "development", "type": "lexical", "lang": "en", "q": "promote the standby when the primary database fails", "relevant": [{"runbook": "r01", "grade": 2, "evidence": "Promote the standby to primary"}]},
+    {"id": "q02", "split": "held-out", "type": "paraphrase", "lang": "en", "q": "main postgres node is dead and writes are failing, how do we switch over", "relevant": [{"runbook": "r01", "grade": 2, "evidence": "Promote the standby to primary"}]},
+    {"id": "q03", "split": "development", "type": "paraphrase", "lang": "en", "q": "how much replica delay is acceptable before switching to it", "relevant": [{"runbook": "r01", "grade": 2, "evidence": "Confirm replication lag on the standby is below 5 seconds"}]},
+    {"id": "q04", "split": "held-out", "type": "cross-lingual", "lang": "es", "q": "la base de datos principal no acepta escrituras, ¿cómo promuevo la réplica?", "relevant": [{"runbook": "r01", "grade": 2, "evidence": "Promote the standby to primary"}]},
+
+    {"id": "q05", "split": "development", "type": "lexical", "lang": "en", "q": "restore the incident database from the nightly backup", "relevant": [{"runbook": "r02", "grade": 2, "evidence": "verify the checksum of the dump file"}, {"runbook": "r17", "grade": 1, "evidence": "Restore the nightly dump"}]},
+    {"id": "q06", "split": "held-out", "type": "hard-negative", "lang": "en", "q": "a bad migration corrupted rows, roll the database back to just before it", "relevant": [{"runbook": "r02", "grade": 2, "evidence": "replay the WAL archive up to the timestamp just before the bad change"}]},
+    {"id": "q07", "split": "development", "type": "cross-lingual", "lang": "es", "q": "cómo restaurar la base de datos desde un respaldo nocturno", "relevant": [{"runbook": "r02", "grade": 2, "evidence": "verify the checksum of the dump file"}]},
+    {"id": "q08", "split": "held-out", "type": "paraphrase", "lang": "en", "q": "who has to sign off before we load a dump into production", "relevant": [{"runbook": "r02", "grade": 2, "evidence": "A production restore needs a recorded approval from the incident commander"}]},
+
+    {"id": "q09", "split": "development", "type": "hard-negative", "lang": "en", "q": "recover an attachment someone deleted from the bucket", "relevant": [{"runbook": "r03", "grade": 2, "evidence": "list the object versions and copy the last good version back"}]},
+    {"id": "q10", "split": "held-out", "type": "hard-negative", "lang": "en", "q": "a whole folder of uploaded files was wiped by mistake", "relevant": [{"runbook": "r03", "grade": 2, "evidence": "restore the whole prefix from the daily bucket snapshot"}]},
+    {"id": "q11", "split": "development", "type": "cross-lingual", "lang": "es", "q": "recuperar archivos adjuntos borrados del almacenamiento de objetos", "relevant": [{"runbook": "r03", "grade": 2, "evidence": "list the object versions and copy the last good version back"}]},
+
+    {"id": "q12", "split": "held-out", "type": "symptom", "lang": "en", "q": "certificate expires next week on the public API", "relevant": [{"runbook": "r04", "grade": 2, "evidence": "Request a new certificate through the ACME client"}]},
+    {"id": "q13", "split": "development", "type": "lexical", "lang": "en", "q": "verify the TLS certificate chain with openssl", "relevant": [{"runbook": "r04", "grade": 2, "evidence": "Verify the full chain from outside"}]},
+    {"id": "q14", "split": "held-out", "type": "cross-lingual", "lang": "es", "q": "el certificado HTTPS está por vencer, ¿cómo lo renuevo?", "relevant": [{"runbook": "r04", "grade": 2, "evidence": "Request a new certificate through the ACME client"}]},
+
+    {"id": "q15", "split": "development", "type": "hard-negative", "lang": "en", "q": "change the password the API uses to connect to postgres", "relevant": [{"runbook": "r05", "grade": 2, "evidence": "Create the new password for the ledger_app role"}, {"runbook": "r06", "grade": 1, "evidence": "not database passwords"}]},
+    {"id": "q16", "split": "held-out", "type": "paraphrase", "lang": "en", "q": "how long can the previous database secret stay valid after rotation", "relevant": [{"runbook": "r05", "grade": 2, "evidence": "Keep the old password valid for 24 hours"}]},
+    {"id": "q17", "split": "development", "type": "hard-negative", "lang": "en", "q": "the payment processor secret leaked, replace it", "relevant": [{"runbook": "r06", "grade": 2, "evidence": "If a key leaked, delete it first"}, {"runbook": "r05", "grade": 1, "evidence": "immediately after a suspected leak"}]},
+    {"id": "q18", "split": "held-out", "type": "paraphrase", "lang": "en", "q": "can two keys for the email provider be active at the same time", "relevant": [{"runbook": "r06", "grade": 2, "evidence": "the integration accepts two active keys during a dual-key window"}]},
+
+    {"id": "q19", "split": "development", "type": "symptom", "lang": "en", "q": "data volume at 95 percent usage", "relevant": [{"runbook": "r07", "grade": 2, "evidence": "Force a log rotation and delete compressed logs older than seven days"}]},
+    {"id": "q20", "split": "held-out", "type": "cross-lingual", "lang": "es", "q": "el disco se está quedando sin espacio", "relevant": [{"runbook": "r07", "grade": 2, "evidence": "Force a log rotation and delete compressed logs older than seven days"}]},
+
+    {"id": "q21", "split": "development", "type": "symptom", "lang": "en", "q": "worker container keeps getting OOMKilled and memory climbs all day", "relevant": [{"runbook": "r08", "grade": 2, "evidence": "Take a heap snapshot from one affected worker before restarting it"}]},
+    {"id": "q22", "split": "held-out", "type": "paraphrase", "lang": "en", "q": "should I restart the leaking process right away or collect something first", "relevant": [{"runbook": "r08", "grade": 2, "evidence": "a restart erases the evidence"}]},
+
+    {"id": "q23", "split": "development", "type": "symptom", "lang": "en", "q": "thousands of jobs are waiting and workers cannot keep up", "relevant": [{"runbook": "r09", "grade": 2, "evidence": "Scale the worker deployment out to the maximum of twelve replicas"}]},
+    {"id": "q24", "split": "held-out", "type": "paraphrase", "lang": "en", "q": "what happens to jobs that keep failing during a backlog", "relevant": [{"runbook": "r09", "grade": 2, "evidence": "Jobs that fail three times move to the dead letter queue"}]},
+
+    {"id": "q25", "split": "development", "type": "symptom", "lang": "en", "q": "customers get 502 errors right after the release", "relevant": [{"runbook": "r10", "grade": 2, "evidence": "Redeploy the previous image tag"}]},
+    {"id": "q26", "split": "held-out", "type": "paraphrase", "lang": "en", "q": "go back to the last version of the API that worked", "relevant": [{"runbook": "r10", "grade": 2, "evidence": "Redeploy the previous image tag"}]},
+    {"id": "q27", "split": "held-out", "type": "cross-lingual", "lang": "es", "q": "después del despliegue subieron los errores, ¿cómo vuelvo a la versión anterior?", "relevant": [{"runbook": "r10", "grade": 2, "evidence": "Redeploy the previous image tag"}]},
+
+    {"id": "q28", "split": "development", "type": "paraphrase", "lang": "en", "q": "turn off the new checkout feature immediately without deploying", "relevant": [{"runbook": "r11", "grade": 2, "evidence": "Set the feature flag to off in the flag service"}]},
+    {"id": "q29", "split": "held-out", "type": "lexical", "lang": "en", "q": "how fast does a kill switch flag change reach the API instances", "relevant": [{"runbook": "r11", "grade": 2, "evidence": "reaches all API instances within 60 seconds"}]},
+
+    {"id": "q30", "split": "development", "type": "symptom", "lang": "en", "q": "hostnames do not resolve and clients get SERVFAIL", "relevant": [{"runbook": "r12", "grade": 2, "evidence": "check whether DNSSEC signatures on the zone have expired"}]},
+    {"id": "q31", "split": "held-out", "type": "paraphrase", "lang": "en", "q": "I updated a record but some clients still see the old address", "relevant": [{"runbook": "r12", "grade": 2, "evidence": "resolvers keep the old answer until its TTL expires"}]},
+
+    {"id": "q32", "split": "development", "type": "symptom", "lang": "en", "q": "a partner receives 429 too many requests", "relevant": [{"runbook": "r13", "grade": 2, "evidence": "Identify the client from the API key in the rate limiter dashboard"}]},
+    {"id": "q33", "split": "held-out", "type": "paraphrase", "lang": "en", "q": "can we raise a customer's request quota for a couple of days", "relevant": [{"runbook": "r13", "grade": 2, "evidence": "A temporary quota increase needs approval from the service owner"}]},
+
+    {"id": "q34", "split": "development", "type": "paraphrase", "lang": "en", "q": "a core feature is down for all customers, who do we page", "relevant": [{"runbook": "r14", "grade": 2, "evidence": "Page the incident commander on call within five minutes"}]},
+    {"id": "q35", "split": "held-out", "type": "lexical", "lang": "en", "q": "how often should the status page be updated during a sev1", "relevant": [{"runbook": "r14", "grade": 2, "evidence": "Post an update on the status page every 30 minutes"}]},
+
+    {"id": "q36", "split": "development", "type": "lexical", "lang": "es", "q": "solicitud de exportación de datos personales, ¿cuál es el plazo?", "relevant": [{"runbook": "r15", "grade": 2, "evidence": "El plazo legal para responder es de 30 días corridos"}]},
+    {"id": "q37", "split": "held-out", "type": "cross-lingual", "lang": "en", "q": "a user asked for a copy of all the personal data we store about them", "relevant": [{"runbook": "r15", "grade": 2, "evidence": "Primero verificá la identidad del solicitante"}]},
+
+    {"id": "q38", "split": "development", "type": "cross-lingual", "lang": "en", "q": "latency spiked when many cache keys expired at the same time", "relevant": [{"runbook": "r16", "grade": 2, "evidence": "Activá la coalescencia de peticiones"}]},
+    {"id": "q39", "split": "held-out", "type": "lexical", "lang": "es", "q": "evitar que las claves del caché venzan todas juntas", "relevant": [{"runbook": "r16", "grade": 2, "evidence": "Agregá una variación aleatoria al TTL"}]},
+
+    {"id": "q40", "split": "development", "type": "multi-chunk", "lang": "en", "q": "what is the recovery time objective in the disaster recovery drill", "relevant": [{"runbook": "r17", "grade": 2, "evidence": "The recovery time objective is four hours"}]},
+    {"id": "q41", "split": "held-out", "type": "multi-chunk", "lang": "en", "q": "what do we have to write down after the DR exercise", "relevant": [{"runbook": "r17", "grade": 2, "evidence": "Record the measured recovery time and the measured recovery point"}]},
+    {"id": "q42", "split": "held-out", "type": "multi-chunk", "lang": "en", "q": "how much data loss is acceptable in a regional recovery", "relevant": [{"runbook": "r17", "grade": 2, "evidence": "fifteen minutes of lost writes at most"}]},
+
+    {"id": "q43", "split": "development", "type": "superseded", "lang": "en", "q": "jobs are stuck in running state, should I delete them from the table", "relevant": [{"runbook": "r18", "grade": 2, "evidence": "Never delete rows from the jobs table directly"}]},
+    {"id": "q44", "split": "held-out", "type": "superseded", "lang": "en", "q": "command to clear stuck background jobs", "relevant": [{"runbook": "r18", "grade": 2, "evidence": "jobctl requeue --stuck"}]},
+
+    {"id": "q45", "split": "development", "type": "no-answer", "lang": "en", "q": "how do I configure the office printer", "noAnswer": true},
+    {"id": "q46", "split": "development", "type": "no-answer", "lang": "en", "q": "renew the company domain name registration", "noAnswer": true},
+    {"id": "q47", "split": "development", "type": "no-answer", "lang": "es", "q": "¿cómo cambio el fondo de pantalla del portal de empleados?", "noAnswer": true},
+    {"id": "q48", "split": "held-out", "type": "no-answer", "lang": "en", "q": "rotate SSH host keys on the mainframe", "noAnswer": true},
+    {"id": "q49", "split": "held-out", "type": "no-answer", "lang": "en", "q": "reboot every node of the cluster to clear latency", "noAnswer": true},
+    {"id": "q50", "split": "held-out", "type": "no-answer", "lang": "en", "q": "set up an alert for Kafka consumer group lag", "noAnswer": true}
+  ]
+}
