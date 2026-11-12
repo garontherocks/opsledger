@@ -40,7 +40,7 @@ runbook, every answer is retrievable by the North reporter, obsolete text exists
 
 Per split, over answerable queries: Recall@1/3/5 and MRR on the answering runbook, graded nDCG@5 over distinct
 runbooks, and **citable span@5** — a top-5 chunk of the answering runbook contains the evidence text. The same queries
-run through a keyword baseline (any query term, `ts_rank_cd`) for comparison. Abstention: a threshold on the top
+run through a keyword baseline (any query term, `ts_rank_cd`, ties broken by title so it is reproducible) for comparison. Abstention: a threshold on the top
 cosine score, tuned on `development` for balanced accuracy and reported on `held-out` as no-answer recall, precision
 and answerable coverage. Breakdowns by query type and language are included. Only identities, ranks and scores are
 written — never vectors, prompts or model output.
@@ -89,8 +89,8 @@ on an RTX 4070 Ti SUPER. Full per-query results: `evidence/phase21-retrieval-gol
 
 | Split | Recall@1 | Recall@5 | MRR | nDCG@5 | Citable span@5 | Keyword Recall@5 | Keyword MRR |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| development (21 answerable) | 1.00 | 1.00 | 1.00 | 0.998 | 1.00 | 0.86 | 0.52 |
-| held-out (23 answerable) | 0.96 | 1.00 | 0.97 | 0.975 | 1.00 | 0.61 | 0.44 |
+| development (21 answerable) | 1.00 | 1.00 | 1.00 | 0.998 | 1.00 | 0.86 | 0.50 |
+| held-out (23 answerable) | 0.96 | 1.00 | 0.97 | 0.975 | 1.00 | 0.65 | 0.43 |
 
 What it shows:
 

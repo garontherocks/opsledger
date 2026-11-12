@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-12T04:30:50.459Z",
+  "at": "2026-11-12T04:35:47.343Z",
   "dataset": "retrieval-golden-v1",
   "official": true,
   "recording": {
@@ -36,7 +36,7 @@
     "ndcg5": 0.9752,
     "spanHitAt5": 1,
     "keywordRecallAt5": 0.6522,
-    "keywordMrr": 0.4471
+    "keywordMrr": 0.4254
   },
   "abstention": {
     "tunedOn": "development",
@@ -110,7 +110,7 @@
       "ndcg5": 1,
       "spanHitAt5": 1,
       "keywordRecallAt5": 0.8333,
-      "keywordMrr": 0.4194
+      "keywordMrr": 0.3778
     },
     "superseded": {
       "n": 2,
@@ -145,7 +145,7 @@
       "ndcg5": 0.9832,
       "spanHitAt5": 1,
       "keywordRecallAt5": 0.8611,
-      "keywordMrr": 0.5194
+      "keywordMrr": 0.5056
     },
     "es": {
       "n": 8,
@@ -409,7 +409,7 @@
       "ndcg5": 1,
       "spanHit": true,
       "topScore": 0.3062253277822401,
-      "keywordRank": 1,
+      "keywordRank": 2,
       "hits": [
         {
           "runbook": "r02",

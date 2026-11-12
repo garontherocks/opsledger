@@ -58,9 +58,10 @@ test('retrieval golden set replayed on PostgreSQL',{skip:pending},async t=>{
         if(obsolete.some(text=>h.text.includes(text)))leaks.push(`${q.id} returned superseded text`);
       }
       // Keyword baseline: any query term, ranked by ts_rank_cd over the same published north runbooks.
+      // Ties break on the title, which is unique: runbook ids are random per run and would make the baseline vary.
       const terms=[...new Set(q.q.toLowerCase().match(/[\p{L}\p{N}]{3,}/gu)??[])];
       const keyword=terms.length?(await db.pool.query(`SELECT r.id FROM runbooks r JOIN runbook_versions v ON v.runbook_id=r.id AND v.number=r.published_version
-        WHERE r.workspace_id=$1 AND v.status='published' AND v.search_vector @@ to_tsquery('simple',$2) ORDER BY ts_rank_cd(v.search_vector,to_tsquery('simple',$2)) DESC,r.id LIMIT ${SEARCH_LIMIT}`,[NORTH,terms.join(' | ')])).rows as {id:string}[]:[];
+        WHERE r.workspace_id=$1 AND v.status='published' AND v.search_vector @@ to_tsquery('simple',$2) ORDER BY ts_rank_cd(v.search_vector,to_tsquery('simple',$2)) DESC,v.title LIMIT ${SEARCH_LIMIT}`,[NORTH,terms.join(' | ')])).rows as {id:string}[]:[];
       const answer=q.relevant?.find(r=>r.grade===2)?.runbook;
       const keywordRank=answer?keyword.findIndex(row=>goldenId.get(row.id)===answer)+1:0;
       results.push(evaluateQuery(q,ranked,keywordRank));

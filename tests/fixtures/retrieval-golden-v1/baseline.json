@@ -11,7 +11,7 @@
     "ndcg5": 0.9983,
     "spanHitAt5": 1,
     "keywordRecallAt5": 0.8571,
-    "keywordMrr": 0.5159
+    "keywordMrr": 0.496
   },
   "heldOut": {
     "n": 23,
@@ -21,8 +21,8 @@
     "mrr": 0.9674,
     "ndcg5": 0.9752,
     "spanHitAt5": 1,
-    "keywordRecallAt5": 0.6087,
-    "keywordMrr": 0.4384
+    "keywordRecallAt5": 0.6522,
+    "keywordMrr": 0.4254
   },
   "heldOutAbstention": {
     "abstained": 2,
