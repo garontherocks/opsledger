@@ -9,6 +9,7 @@ Built by [Víctor Martín Aller](https://victoraller.vercel.app/), Senior SDET /
 | Reviewer goal | Read |
 |---|---|
 | Understand the system in five minutes | [Architecture and authority diagrams](docs/portfolio/architecture.md) |
+| Watch the latest CI run, replayed by skill | [Quality run](https://victoraller.vercel.app/quality-run?suite=opsledger) · [how the feed is built](docs/run-feed.md) |
 | Inspect the strongest evidence | [Curated evidence index](docs/portfolio/evidence.md) |
 | Verify a public statement | [Claims-to-evidence matrix](docs/portfolio/claims.md) |
 | Understand negative results | [Limitations and rejected complexity](docs/portfolio/limitations.md) |
