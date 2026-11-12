@@ -19,12 +19,21 @@ export type Manifest={version:string,model:string,digest:string,dimensions:numbe
 export type Recording={manifest:Manifest,vectors:Record<string,string>};
 
 const sha256=(text:string|Buffer)=>createHash('sha256').update(text).digest('hex');
-// Hashes ignore line endings and JSON formatting, so a Windows checkout (CRLF) records the same identities as Linux.
-const normalizeNewlines=(text:string)=>text.replace(/\r\n?/g,'\n');
+// Hashes ignore line endings and formatting, so a Windows checkout (CRLF) or a reformat records the same identities.
 /** Canonical hash of a dataset file: its parsed content, not its bytes. */
 export const contentSha256=(raw:string|Buffer)=>sha256(JSON.stringify(JSON.parse(raw.toString())));
-/** The chunker is part of the recording: if its code changes, chunk texts and their vectors no longer match. */
-export const chunkerSha256=()=>sha256(normalizeNewlines(chunks.toString())+'\n'+INDEX_VERSION);
+/** Fixed probe texts that exercise every chunker path: short bodies, newline-aware cuts, overlap and surrogate pairs. */
+const CHUNKER_PROBES=[
+  'Short runbook body.',
+  Array.from({length:40},(_,i)=>`Step ${i+1}: verify the replica, record the timestamp and continue with the next check.`).join('\n'),
+  ('WARNING: verify approval before restore.\n'+'\u{1F6E1}'.repeat(500)+'\n').repeat(3),
+  'x'.repeat(2500),
+];
+/**
+ * The chunker is part of the recording: if its behaviour changes, chunk texts and their vectors no longer match.
+ * Identified by what it produces on the probes, not by its source text, so formatting never invalidates a recording.
+ */
+export const chunkerSha256=()=>sha256(JSON.stringify(CHUNKER_PROBES.map(text=>chunks(text).map(c=>[c.start,c.end])))+'\n'+INDEX_VERSION);
 export const embeddingKey=(purpose:Purpose,text:string)=>sha256(purpose+'\n'+text);
 
 export function loadGolden(dir=GOLDEN_DIR){
