@@ -6,6 +6,8 @@ import { seedLab, NORTH, SOUTH } from '../scripts/seed.ts';
 import { Knowledge } from '../apps/api/src/knowledge.ts';
 import { Retrieval } from '../apps/api/src/retrieval.ts';
 import { SemanticQuery } from '../packages/contracts/src/retrieval.ts';
+import { ATTR } from '../apps/api/src/telemetry.ts';
+import { memoryTracing, toJsonl } from '../scripts/telemetry/memory-tracing.ts';
 import {
   abstention,
   breakdown,
@@ -49,6 +51,7 @@ test('retrieval golden set replayed on PostgreSQL', { skip: pending }, async t =
     await seedLab(db.pool, crypto.randomUUID() + '-Pass9!');
     const knowledge = new Knowledge(db.pool, 'synthetic-secret');
     const retrieval = new Retrieval(db.pool, 'synthetic-secret', replayProvider(rec));
+    const tracing = memoryTracing();
     const goldenId = new Map<string, string>();
     // Every runbook goes through the production write, publish and index path.
     for (const r of golden.corpus.runbooks) {
@@ -157,6 +160,26 @@ test('retrieval golden set replayed on PostgreSQL', { skip: pending }, async t =
     mkdirSync(official ? 'evidence' : '.local', { recursive: true });
     writeFileSync(path, JSON.stringify(report, null, 2) + '\n');
 
+    await t.test('index and search emit embeddings and retrieval spans without query or chunk text', () => {
+      const spans = tracing.spans();
+      const op = (name: string) => spans.filter(s => s.attributes[ATTR.operation] === name);
+      const searches = op('retrieval');
+      assert.equal(searches.length, golden.queries.queries.length);
+      const embeddings = op('embeddings');
+      assert.ok(embeddings.some(s => s.attributes['opsledger.embeddings.purpose'] === 'document'));
+      for (const search of searches) {
+        assert.equal(search.attributes[ATTR.dataSource], 'opsledger-knowledge');
+        assert.equal(search.attributes[ATTR.topK], SEARCH_LIMIT);
+        assert.equal(typeof search.attributes['opsledger.retrieval.hits'], 'number');
+        const children = embeddings.filter(e => e.parentSpanContext?.spanId === search.spanContext().spanId);
+        assert.equal(children.length, 1);
+        assert.equal(children[0]!.attributes['opsledger.embeddings.purpose'], 'query');
+        assert.equal(children[0]!.attributes[ATTR.requestModel], rec.manifest.model);
+      }
+      const exported = toJsonl(spans);
+      for (const q of golden.queries.queries) assert.ok(!exported.includes(JSON.stringify(q.q).slice(1, -1)), q.id);
+      for (const r of golden.corpus.runbooks) assert.ok(!exported.includes(r.body.slice(0, 40)), r.id);
+    });
     await t.test('search never returns withdrawn, superseded or other-workspace content', () => {
       assert.deepEqual(leaks, []);
     });

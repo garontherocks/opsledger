@@ -16,6 +16,7 @@ was built, milestone by milestone, is in [history](history/README.md).
 | [portfolio/publication.md](portfolio/publication.md) | Publication safety review |
 | [run-feed.md](run-feed.md) | The CI run feed behind the portfolio's Quality run, grouped by skill |
 | [retrieval-golden.md](retrieval-golden.md) | Retrieval quality golden set: recorded embeddings replayed in CI, and its results |
+| [observability.md](observability.md) | OpenTelemetry GenAI traces of agent runs, model calls, retrieval and tools |
 | [adr/](adr/) | Architecture decision records |
 | [roadmap.md](roadmap.md) | The approved roadmap, its deferred technologies and their triggers |
 | [openapi.json](openapi.json) | Generated API description (`npm run build`) |

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { hash } from './qa-agent.ts';
 import { vectorValue, type EmbeddingProvider } from './embeddings.ts';
+import { traceEmbeddings } from './telemetry.ts';
 
 const Hex = z.string().regex(/^[a-f0-9]{64}$/);
 const Sha = z.string().regex(/^[a-f0-9]{40}$/);
@@ -67,9 +68,11 @@ export async function qaIndex(
   const vectors: number[][] = [];
   for (let i = 0; i < chunks.length; i += 4) {
     const batch = chunks.slice(i, i + 4);
-    const v = await provider.embed(
-      batch.map(c => c.text),
-      'document',
+    const v = await traceEmbeddings(provider.model, batch.length, 'document', () =>
+      provider.embed(
+        batch.map(c => c.text),
+        'document',
+      ),
     );
     if (v.length !== batch.length) throw new Error('qa_vector_count');
     vectors.push(...v.map(vectorValue));
@@ -91,7 +94,7 @@ export async function qaIndex(
         Space.parse({ model: provider.model, digest: provider.digest, dimensions: 768, chunkVersion: 'qa-chunks-v1' }),
       );
       if (expected !== space) throw new Error('qa_vector_space');
-      const vs = await provider.embed([query], 'query');
+      const vs = await traceEmbeddings(provider.model, 1, 'query', () => provider.embed([query], 'query'));
       if (vs.length !== 1) throw new Error('qa_vector_count');
       const q = vectorValue(vs[0]);
       const ranked = chunks

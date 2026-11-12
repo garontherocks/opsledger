@@ -2,6 +2,7 @@ import { McpServer } from '@modelcontextprotocol/server';
 import { z } from 'zod';
 import { registry } from './qa-agent.ts';
 import { TRIAGE_PROMPT } from './qa-skill.ts';
+import { ATTR, traceTool } from './telemetry.ts';
 
 export const MCP_OUTPUT = z.strictObject({
   id: z.string().regex(/^[a-z][a-z0-9-]{0,63}$/),
@@ -27,14 +28,20 @@ export function qaMcpServer(input: unknown) {
         outputSchema: MCP_OUTPUT,
         annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       },
-      async args => {
-        try {
-          const output = tools.invoke(source.tool, args);
-          return { content: [{ type: 'text' as const, text: JSON.stringify(output) }], structuredContent: output };
-        } catch {
-          return { isError: true, content: [{ type: 'text' as const, text: 'tool_scope_denied' }] };
-        }
-      },
+      args =>
+        traceTool(
+          source.tool,
+          async span => {
+            try {
+              const output = tools.invoke(source.tool, args);
+              return { content: [{ type: 'text' as const, text: JSON.stringify(output) }], structuredContent: output };
+            } catch {
+              span.setAttribute(ATTR.errorType, 'tool_scope');
+              return { isError: true, content: [{ type: 'text' as const, text: 'tool_scope_denied' }] };
+            }
+          },
+          { 'opsledger.mcp.server': 'opsledger-qa-readonly' },
+        ),
     );
     const uri = 'qa://snapshot/qa-readonly-v1/' + source.id + '/' + source.sha256;
     server.registerResource(
