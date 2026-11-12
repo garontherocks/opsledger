@@ -14,12 +14,20 @@ jobs:
         lane: [api, browser]
     env:
       TEST_DATABASE_URL: postgresql://opsledger:disposable-ci-only@127.0.0.1:5432/opsledger_test
+      # Run feed (docs/run-feed.md): node:test results and wrapped steps are recorded for the public replay.
+      RUN_FEED_DIR: ${{ github.workspace }}/.local/run-feed
+      RUN_FEED_LANE: ${{ matrix.lane }}
+      NODE_OPTIONS: --test-reporter=spec --test-reporter-destination=stdout --test-reporter=./scripts/run-feed/node-reporter.mjs --test-reporter-destination=stdout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24.19.0
           cache: npm
+      - name: Mark run feed lane start
+        run: |
+          mkdir -p "$RUN_FEED_DIR"
+          printf '{"lane":"%s","startedAt":"%s"}\n' "$RUN_FEED_LANE" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$RUN_FEED_DIR/lane-start.json"
       - name: Authenticate pinned-image pulls to Docker Hub
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -45,10 +53,10 @@ jobs:
           for attempt in $(seq 1 30); do docker exec opsledger-ci-db pg_isready -h 127.0.0.1 -U opsledger -d opsledger_test && break; sleep 1; done
           docker exec opsledger-ci-db pg_isready -h 127.0.0.1 -U opsledger -d opsledger_test
       - run: npm ci --ignore-scripts
-      - run: npm run lint && npm run typecheck && npm run build
+      - run: node scripts/run-feed/record-step.mjs static-checks -- bash -c 'npm run lint && npm run typecheck && npm run build'
       - run: npm run test:unit
       - run: npm run m4:context-test
-      - run: node --experimental-strip-types scripts/audit-gate.ts
+      - run: node scripts/run-feed/record-step.mjs audit-gate -- node --experimental-strip-types scripts/audit-gate.ts
       - if: matrix.lane == 'api'
         name: Native lifecycle lock-overlap regression
         run: node --experimental-strip-types --test tests/lifecycle-outbox.integration.test.ts
@@ -63,37 +71,37 @@ jobs:
         run: npm run m5:orchestration-test
       - if: matrix.lane == 'api'
         name: Actual n8n Community signed webhook, error branch and scrubbed export
-        run: npm run m5:n8n-smoke
+        run: node scripts/run-feed/record-step.mjs n8n-smoke -- npm run m5:n8n-smoke
       - if: matrix.lane == 'api'
         name: Bounded specialist contracts and paired fixture comparison (not live semantics)
-        run: npm run m5:specialist-test && npm run m5:specialist-fixture
+        run: npm run m5:specialist-test && node scripts/run-feed/record-step.mjs specialist-fixture -- npm run m5:specialist-fixture
       - if: matrix.lane == 'api'
         name: Bounded end-to-end QA contracts and actual SHA-bound registered execution
-        run: npm run m5:pipeline-test && npm run m5:pipeline-smoke
+        run: npm run m5:pipeline-test && node scripts/run-feed/record-step.mjs pipeline-smoke -- npm run m5:pipeline-smoke
       - if: matrix.lane == 'api'
         name: M4 desktop bundle plumbing (fixture, not model-quality evidence)
-        run: M4_BUNDLE_FIXTURE=true npm run ai:m4-harness
+        run: node scripts/run-feed/record-step.mjs m4-harness -- env M4_BUNDLE_FIXTURE=true npm run ai:m4-harness
       - if: matrix.lane == 'api'
         run: npm run m3:test
       - if: matrix.lane == 'api'
         run: npm run mcp:test
       - if: matrix.lane == 'api'
-        run: npm run agent:eval
+        run: node scripts/run-feed/record-step.mjs agent-eval -- npm run agent:eval
       - if: matrix.lane == 'api'
-        run: npm run ai:regression
+        run: node scripts/run-feed/record-step.mjs ai-regression -- npm run ai:regression
       - if: matrix.lane == 'api'
-        run: env -u TEST_DATABASE_URL M2_BUNDLE_FIXTURE=true npm run ai:m2-harness
+        run: node scripts/run-feed/record-step.mjs m2-harness -- env -u TEST_DATABASE_URL M2_BUNDLE_FIXTURE=true npm run ai:m2-harness
       - if: matrix.lane == 'api'
         run: npm run test:integration | tee evidence/phase10-ci-integration.log
       - if: matrix.lane == 'api'
-        run: env -u TEST_DATABASE_URL npm run quality:baseline | tee evidence/phase10-ci-baseline.log
+        run: node scripts/run-feed/record-step.mjs quality-baseline -- env -u TEST_DATABASE_URL npm run quality:baseline | tee evidence/phase10-ci-baseline.log
       - if: matrix.lane == 'browser'
         run: npx playwright install --with-deps chromium
       - if: matrix.lane == 'browser'
         name: Targeted lifecycle regression (five fresh server lifetimes, no retries)
         run: |
           for trial in 1 2 3 4 5; do
-            E2E_FLOW=lifecycle npx playwright test tests/browser/lifecycle.spec.ts
+            node scripts/run-feed/record-step.mjs lifecycle-trial-$trial -- env E2E_FLOW=lifecycle npx playwright test tests/browser/lifecycle.spec.ts
             cp evidence/m3-lifecycle-diagnostic-0.json evidence/m3-lifecycle-diagnostic-trial-$trial.json
           done
       - if: matrix.lane == 'browser'
@@ -101,6 +109,21 @@ jobs:
       - if: matrix.lane == 'browser'
         name: QA approval UI (fixture checks; real session, API and DB)
         run: E2E_FLOW=qa npx playwright test tests/browser/qa.spec.ts
+      - name: Collect run feed results
+        if: always()
+        run: |
+          mkdir -p "$RUN_FEED_DIR"
+          cp .local/browser-*.json "$RUN_FEED_DIR/" 2>/dev/null || true
+          # Eval reports are regenerated only in the API lane; elsewhere they are committed copies.
+          if [ "$RUN_FEED_LANE" = api ]; then cp evidence/phase11-agent-eval.json evidence/phase10-eval-report.json evidence/m2-bundle-harness.json "$RUN_FEED_DIR/" 2>/dev/null || true; fi
+          printf '{"finishedAt":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$RUN_FEED_DIR/lane-end.json"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: run-feed-${{ matrix.lane }}
+          path: .local/run-feed/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Remove disposable Docker authentication
         if: always()
         run: |
@@ -135,16 +158,95 @@ jobs:
 
   windows-launchers:
     runs-on: windows-2025
+    env:
+      # Run feed (docs/run-feed.md): node:test results and wrapped steps are recorded for the public replay.
+      RUN_FEED_DIR: .local/run-feed
+      RUN_FEED_LANE: windows
+      NODE_OPTIONS: --test-reporter=spec --test-reporter-destination=stdout --test-reporter=./scripts/run-feed/node-reporter.mjs --test-reporter-destination=stdout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24.19.0
           cache: npm
+      - name: Mark run feed lane start
+        run: |
+          mkdir -p "$RUN_FEED_DIR"
+          printf '{"lane":"%s","startedAt":"%s"}\n' "$RUN_FEED_LANE" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$RUN_FEED_DIR/lane-start.json"
       - run: npm ci --ignore-scripts
       - run: npm run mcp:test
       - run: npm run m3:test
       - run: npm run m4:context-test
       - name: Windows reviewed fixed executable and cross-platform import URLs
         run: node --experimental-strip-types --test tests/qa-runner.integration.test.ts
+      - name: Collect run feed results
+        if: always()
+        run: |
+          mkdir -p "$RUN_FEED_DIR"
+          printf '{"finishedAt":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$RUN_FEED_DIR/lane-end.json"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: run-feed-windows
+          path: .local/run-feed/
+          if-no-files-found: ignore
+          retention-days: 7
 
+  build-run-feed:
+    # Builds the replayable run feed on every run (PRs included) so the builder is exercised before main.
+    if: always()
+    needs: [acceptance, windows-launchers]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24.19.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: run-feed-*
+          path: .local/run-feed-input
+      - name: Fetch the published history
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: curl -fsSL https://garontherocks.github.io/opsledger/run/history.json -o .local/history.json || echo "No published history yet"
+      - name: Build the run feed
+        run: |
+          node --experimental-strip-types scripts/run-feed/build-run-feed.ts --input .local/run-feed-input --out .local/pages --history .local/history.json | tee .local/run-feed-summary.txt
+          cp scripts/run-feed/pages-index.html .local/pages/index.html
+          { echo '### Run feed'; echo '```'; cat .local/run-feed-summary.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Show the feed
+        run: |
+          echo "::group::run/latest.json"
+          cat .local/pages/run/latest.json
+          echo "::endgroup::"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: run-feed-site
+          path: .local/pages/
+          retention-days: 7
+
+  publish-run-feed:
+    # Publishes the feed of main to GitHub Pages, including runs with failing tests.
+    if: always() && needs.build-run-feed.result == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [build-run-feed]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: opsledger-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: run-feed-site
+          path: .local/pages
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: .local/pages
+      - id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

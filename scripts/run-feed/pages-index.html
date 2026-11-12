@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpsLedger run feed</title>
+  <style>
+    :root { color-scheme: light dark; --fg: #1d2330; --muted: #5b6475; --bg: #f7f8fa; --link: #2453c7; }
+    @media (prefers-color-scheme: dark) { :root { --fg: #e7eaf0; --muted: #a3acbd; --bg: #12151b; --link: #8fb0ff; } }
+    body { margin: 0; padding: 48px 16px; font: 16px/1.6 system-ui, sans-serif; color: var(--fg); background: var(--bg); }
+    main { max-width: 640px; margin: 0 auto; }
+    p { color: var(--muted); }
+    a { color: var(--link); }
+    code { font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>OpsLedger run feed</h1>
+    <p>Machine-readable results of the latest CI run of <code>main</code>, grouped by the skill each check demonstrates.</p>
+    <ul>
+      <li><a href="https://victoraller.vercel.app/quality-run?suite=opsledger">Replay the run test by test</a></li>
+      <li><a href="run/latest.json">run/latest.json</a> — latest run (<code>sdet-portfolio/run-feed@1</code>)</li>
+      <li><a href="run/history.json">run/history.json</a> — the last 20 runs</li>
+      <li><a href="https://github.com/garontherocks/opsledger/blob/main/docs/run-feed.md">How the feed is built</a></li>
+    </ul>
+    <p>AI checks in CI run on recorded fixtures, never a live model. Live local-model runs are listed separately in the feed.</p>
+  </main>
+</body>
+</html>
