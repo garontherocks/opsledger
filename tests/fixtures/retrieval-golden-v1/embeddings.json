@@ -5,7 +5,7 @@
   "digest": "sha256:85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
   "dimensions": 768,
   "indexVersion": "chunk-v1-768",
-  "chunkerSha256": "a7e97098b1a7586bfadce37bb3ff17dd3c5d920c2ae615ec0d179010da0e037d",
+  "chunkerSha256": "f9af68f9c242d0b9f9582954cdeee7804a44613ba3bdb5bbfc8966f087f57e6e",
   "corpusSha256": "144957cfb5d59f905fb15efe2be582a214d2be2f17b08aa9fe6a809bb69bc27b",
   "queriesSha256": "d7b44420f57977adcc987da9bf23b054e3001c612ca870e7a0a19cac88dbf5f1",
   "runtime": "Ollama 0.40.3",

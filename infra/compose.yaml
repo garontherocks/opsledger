@@ -8,10 +8,10 @@ services:
       POSTGRES_DB: opsledger
       POSTGRES_USER: opsledger
       POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD locally}
-    ports: ["127.0.0.1:5432:5432"]
-    volumes: ["db-data:/var/lib/postgresql"]
+    ports: ['127.0.0.1:5432:5432']
+    volumes: ['db-data:/var/lib/postgresql']
     healthcheck:
-      test: ["CMD-SHELL","pg_isready -U opsledger -d opsledger"]
+      test: ['CMD-SHELL', 'pg_isready -U opsledger -d opsledger']
       interval: 3s
       timeout: 3s
       retries: 20
@@ -20,14 +20,14 @@ services:
     build:
       context: ..
       dockerfile: infra/Dockerfile
-    command: ["node", "--experimental-strip-types", "apps/api/src/server.ts"]
+    command: ['node', '--experimental-strip-types', 'apps/api/src/server.ts']
     env_file: ../.env
     environment:
       DATABASE_URL: postgresql://opsledger:${DB_PASSWORD:?Set DB_PASSWORD locally}@db:5432/opsledger
       STORAGE_DIR: /var/lib/opsledger-files
       BIND_HOST: 0.0.0.0
-    ports: ["127.0.0.1:3100:3100"]
-    volumes: ["private-files:/var/lib/opsledger-files"]
+    ports: ['127.0.0.1:3100:3100']
+    volumes: ['private-files:/var/lib/opsledger-files']
     depends_on:
       db:
         condition: service_healthy
@@ -36,12 +36,12 @@ services:
     build:
       context: ..
       dockerfile: infra/Dockerfile
-    command: ["node", "--experimental-strip-types", "apps/api/src/worker.ts"]
+    command: ['node', '--experimental-strip-types', 'apps/api/src/worker.ts']
     env_file: ../.env
     environment:
       DATABASE_URL: postgresql://opsledger:${DB_PASSWORD:?Set DB_PASSWORD locally}@db:5432/opsledger
       STORAGE_DIR: /var/lib/opsledger-files
-    volumes: ["private-files:/var/lib/opsledger-files"]
+    volumes: ['private-files:/var/lib/opsledger-files']
     depends_on:
       db:
         condition: service_healthy

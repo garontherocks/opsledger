@@ -51,7 +51,9 @@
     "m5:pipeline-smoke": "node --experimental-strip-types scripts/phase19-smoke.ts",
     "m5:desktop": "node --env-file=.env --experimental-strip-types scripts/m5-desktop.ts",
     "rag:golden": "node --experimental-strip-types --test tests/retrieval-golden.integration.test.ts",
-    "rag:golden:record": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/retrieval-golden/record.ts"
+    "rag:golden:record": "node --env-file=.env --import ./scripts/eval-egress.mjs --experimental-strip-types scripts/retrieval-golden/record.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.16",
@@ -84,6 +86,7 @@
     "@vitejs/plugin-react": "6.2.1",
     "drizzle-kit": "0.31.11",
     "eslint": "10.14.0",
+    "prettier": "3.10.1",
     "promptfoo": "0.116.7",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.1",
