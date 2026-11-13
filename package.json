@@ -108,7 +108,9 @@
     "@esbuild-kit/core-utils": {
       "esbuild": "0.25.12"
     },
-    "basic-ftp": "6.2.2",
+    "basic-ftp": "6.2.4",
+    "hono": "4.13.16",
+    "@hono/node-server": "2.1.6",
     "promptfoo": {
       "csv-parse": "7.0.2",
       "fast-xml-parser": "5.7.0",
@@ -119,9 +121,6 @@
       "mongoose": "9.11.4"
     },
     "drizzle-orm": "$drizzle-orm",
-    "@modelcontextprotocol/node": {
-      "@hono/node-server": "2.1.6"
-    },
     "playwright": "$@playwright/test",
     "playwright-core": "$@playwright/test"
   }

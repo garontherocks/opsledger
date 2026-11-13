@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-12T04:35:47.343Z",
+  "at": "2026-11-13T16:46:39.592Z",
   "dataset": "retrieval-golden-v1",
   "official": true,
   "recording": {
@@ -8,7 +8,7 @@
     "digest": "sha256:85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
     "dimensions": 768,
     "indexVersion": "chunk-v1-768",
-    "chunkerSha256": "a7e97098b1a7586bfadce37bb3ff17dd3c5d920c2ae615ec0d179010da0e037d",
+    "chunkerSha256": "f9af68f9c242d0b9f9582954cdeee7804a44613ba3bdb5bbfc8966f087f57e6e",
     "corpusSha256": "144957cfb5d59f905fb15efe2be582a214d2be2f17b08aa9fe6a809bb69bc27b",
     "queriesSha256": "d7b44420f57977adcc987da9bf23b054e3001c612ca870e7a0a19cac88dbf5f1",
     "runtime": "Ollama 0.40.3",
@@ -55,6 +55,134 @@
       "answerableCoverage": 0.913,
       "balancedAccuracy": 0.4565
     }
+  },
+  "hybrid": {
+    "development": {
+      "n": 21,
+      "recallAt1": 0.8571,
+      "recallAt3": 0.9524,
+      "recallAt5": 0.9524,
+      "mrr": 0.8968,
+      "ndcg5": 0.9076,
+      "spanHitAt5": 0.9524,
+      "keywordRecallAt5": 0.8571,
+      "keywordMrr": 0.496
+    },
+    "heldOut": {
+      "n": 23,
+      "recallAt1": 0.8261,
+      "recallAt3": 0.913,
+      "recallAt5": 0.9565,
+      "mrr": 0.871,
+      "ndcg5": 0.8921,
+      "spanHitAt5": 0.9565,
+      "keywordRecallAt5": 0.6522,
+      "keywordMrr": 0.4254
+    },
+    "byType": {
+      "cross-lingual": {
+        "n": 8,
+        "recallAt1": 0.5,
+        "recallAt3": 0.75,
+        "recallAt5": 0.75,
+        "mrr": 0.5833,
+        "ndcg5": 0.625,
+        "spanHitAt5": 0.75,
+        "keywordRecallAt5": 0,
+        "keywordMrr": 0
+      },
+      "hard-negative": {
+        "n": 5,
+        "recallAt1": 0.8,
+        "recallAt3": 0.8,
+        "recallAt5": 1,
+        "mrr": 0.84,
+        "ndcg5": 0.8702,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 1,
+        "keywordMrr": 0.5333
+      },
+      "lexical": {
+        "n": 7,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1,
+        "ndcg5": 0.9948,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 0.8571,
+        "keywordMrr": 0.5714
+      },
+      "multi-chunk": {
+        "n": 3,
+        "recallAt1": 0.6667,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 0.8333,
+        "ndcg5": 0.877,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 1,
+        "keywordMrr": 1
+      },
+      "paraphrase": {
+        "n": 12,
+        "recallAt1": 0.9167,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 0.9583,
+        "ndcg5": 0.9692,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 0.8333,
+        "keywordMrr": 0.3778
+      },
+      "superseded": {
+        "n": 2,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1,
+        "ndcg5": 1,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 1,
+        "keywordMrr": 0.75
+      },
+      "symptom": {
+        "n": 7,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1,
+        "ndcg5": 1,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 1,
+        "keywordMrr": 0.6429
+      }
+    },
+    "byLanguage": {
+      "en": {
+        "n": 36,
+        "recallAt1": 0.8611,
+        "recallAt3": 0.9167,
+        "recallAt5": 0.9444,
+        "mrr": 0.8944,
+        "ndcg5": 0.9049,
+        "spanHitAt5": 0.9444,
+        "keywordRecallAt5": 0.8611,
+        "keywordMrr": 0.5056
+      },
+      "es": {
+        "n": 8,
+        "recallAt1": 0.75,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 0.8333,
+        "ndcg5": 0.875,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 0.25,
+        "keywordMrr": 0.25
+      }
+    },
+    "method": "Reciprocal Rank Fusion (k=60, 20 candidates each) of exact cosine and chunk full text"
   },
   "byType": {
     "cross-lingual": {

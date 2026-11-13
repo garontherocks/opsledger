@@ -107,6 +107,71 @@ What it shows:
 Because the held-out results have now been seen, they must not be used to retune the threshold or the splits. A
 `retrieval-golden-v2` should add in-domain no-answer queries to development and a fresh held-out set.
 
+## Hybrid search (RRF) on v1 (2026-11-13)
+
+`Retrieval.search(…, 'hybrid')` fuses the exact-cosine ranking with a PostgreSQL full-text ranking of the chunk text by
+Reciprocal Rank Fusion (k = 60, 20 candidates from each). Authorization, publication, version, model and index filters
+are the same in both modes, and `score` stays the cosine similarity, so thresholds keep their meaning. Semantic search
+remains the default; hybrid is opt-in and measured next to it on the same replayed index.
+
+| v1, held-out (n = 23) | Recall@1 | Recall@5 | MRR | nDCG@5 |
+| --- | --- | --- | --- | --- |
+| Semantic (default) | 0.957 | 1.000 | 0.967 | 0.975 |
+| Hybrid, plain keyword terms | 0.609 | 0.913 | 0.712 | 0.761 |
+| Hybrid, stopwords removed (chosen on development) | 0.826 | 0.957 | 0.871 | 0.892 |
+
+**Finding: on this corpus, naive hybrid search hurts.** The `simple` text-search config keeps function words ("the",
+"para"), which match nearly every chunk and flood the keyword ranking; removing English and Spanish stopwords, chosen
+on the development split only, recovered most of the loss. The rest is structural: semantic search already ranks every
+v1 lexical query first, so the keyword channel can only add noise, and it hurts most on cross-lingual queries (Recall@1
+1.00 → 0.50), where Spanish words match English text by accident. Hybrid is not adopted; its metrics are gated in
+`baseline.json` so a change to it is still measured.
+
+## Golden set v2 (`tests/fixtures/retrieval-golden-v2/`)
+
+v1 has no query that semantic search gets wrong for lexical reasons, so it cannot show where keyword search helps. v2
+keeps all of v1 and adds:
+
+- **r21–r26**, pairs of runbooks that differ mainly by an identifier: SQLSTATE 53300 vs 53400, `max_wal_size` vs
+  `wal_keep_size`, Redis `OOM … maxmemory` vs `LOADING`.
+- **10 identifier queries** (4 development, 6 held-out), such as `SQLSTATE 53300` or `raise wal_keep_size`.
+- **7 in-domain no-answer questions** (3 development, 4 held-out) that use the corpus vocabulary but are not answered,
+  such as upgrading PostgreSQL with `pg_upgrade`. v1's abstention could not separate these from answerable questions.
+
+The new held-out queries were written before any v2 measurement. Record v2 on the desktop with the same procedure:
+
+```powershell
+npm run rag:golden:record -- --set v2
+npm run rag:golden
+git add tests/fixtures/retrieval-golden-v2/embeddings.json evidence/retrieval-golden-v2.json
+git commit -m "evidence: record retrieval golden set v2"
+git push
+```
+
+## Results of the v2 recording (2026-11-13)
+
+Same model, digest, runtime and machine as v1. Report: [`evidence/retrieval-golden-v2.json`](../evidence/retrieval-golden-v2.json).
+
+| v2 | Semantic Recall@1 | Hybrid Recall@1 | Semantic MRR | Hybrid MRR |
+| --- | --- | --- | --- | --- |
+| Development (n = 25) | 0.96 | 0.88 | 0.980 | 0.903 |
+| Held-out (n = 29) | 0.931 | 0.828 | 0.957 | 0.876 |
+| Identifier queries (n = 10) | 0.90 | 0.90 | 0.950 | 0.950 |
+
+**Finding: the embedding model already handles identifiers, so hybrid search still does not pay off.** Semantic search
+ranked the right runbook first for 9 of 10 identifier queries, including both SQLSTATE pairs; hybrid matched it and
+lost elsewhere. The one miss, `raise wal_keep_size`, defeats both: the full-text parser splits `wal_keep_size` into
+`wal`, `keep`, `size`, which the `max_wal_size` runbook also contains.
+
+**Finding: a score threshold cannot abstain on in-domain questions.** Tuned on development (0.496), held-out abstention
+caught 6 of 7 no-answer questions but also refused 41% of answerable ones (balanced accuracy 0.72). In-domain questions
+without an answer score 0.40–0.52, inside the range of answerable ones. Retrieval scores say "related", not "answers
+it"; abstention stays with the grounded-citation check of the RAG answer, which refuses claims without a verbatim quote.
+
+**Decision:** semantic search stays the default; hybrid stays opt-in and gated. A reranker is not added: ranking is
+already at 0.93–0.96 Recall@1, and the open problem, deciding whether a source answers the question, is the one the
+citation validator already owns.
+
 ## Limitations
 
 - A small synthetic corpus written for this test, not production runbooks; one model, one recording, no confidence

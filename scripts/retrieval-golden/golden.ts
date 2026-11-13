@@ -7,6 +7,13 @@ import { chunks, INDEX_VERSION } from '../../apps/api/src/retrieval.ts';
 import { DIMENSIONS, type EmbeddingProvider } from '../../apps/api/src/embeddings.ts';
 
 export const GOLDEN_DIR = 'tests/fixtures/retrieval-golden-v1';
+/** Golden sets replayed in CI. v2 extends v1 with identifier queries and in-domain no-answer questions. */
+export const GOLDEN_SETS = ['v1', 'v2'] as const;
+export type GoldenSet = (typeof GOLDEN_SETS)[number];
+export const goldenDir = (set: GoldenSet) => `tests/fixtures/retrieval-golden-${set}`;
+/** v1 keeps its original evidence file name, which the run feed and the site read. */
+export const goldenEvidence = (set: GoldenSet) =>
+  set === 'v1' ? 'evidence/phase21-retrieval-golden.json' : `evidence/retrieval-golden-${set}.json`;
 export const SEARCH_LIMIT = 5;
 
 export type Runbook = {
@@ -324,6 +331,8 @@ export type Baseline = {
   heldOut: Metrics;
   development: Metrics;
   heldOutAbstention: ReturnType<typeof abstention>;
+  /** Hybrid (RRF) search metrics; gated once the baseline records them. */
+  hybrid?: { development: Metrics; heldOut: Metrics };
 };
 const GATED: (keyof Metrics)[] = ['recallAt1', 'recallAt3', 'recallAt5', 'mrr', 'ndcg5', 'spanHitAt5'];
 /** Retrieval with replayed vectors is deterministic, so any drop below the committed baseline is a regression. */
@@ -333,6 +342,11 @@ export function regressions(current: Baseline, baseline: Baseline) {
     for (const k of GATED)
       if (current[split][k] < baseline[split][k] - 1e-9)
         out.push(`${split}.${k}: ${current[split][k]} < baseline ${baseline[split][k]}`);
+  if (baseline.hybrid && current.hybrid)
+    for (const split of ['development', 'heldOut'] as const)
+      for (const k of GATED)
+        if (current.hybrid[split][k] < baseline.hybrid[split][k] - 1e-9)
+          out.push(`hybrid.${split}.${k}: ${current.hybrid[split][k]} < baseline ${baseline.hybrid[split][k]}`);
   for (const k of ['noAnswerRecall', 'answerableCoverage'] as const)
     if (current.heldOutAbstention[k] < baseline.heldOutAbstention[k] - 1e-9)
       out.push(`heldOutAbstention.${k}: ${current.heldOutAbstention[k]} < baseline ${baseline.heldOutAbstention[k]}`);

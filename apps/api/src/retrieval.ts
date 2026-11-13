@@ -7,6 +7,29 @@ import { vectorValue, type EmbeddingProvider } from './embeddings.ts';
 import { ATTR, inSpan, traceEmbeddings } from './telemetry.ts';
 import { ChunkHit, SemanticQuery, type Hit } from '../../../packages/contracts/src/retrieval.ts';
 export const INDEX_VERSION = 'chunk-v1-768';
+/** Search modes. `semantic` (exact cosine) is the default; `hybrid` fuses it with keyword search (docs/retrieval-golden.md). */
+export type SearchMode = 'semantic' | 'hybrid';
+/** Reciprocal Rank Fusion constant and candidate pool per ranking (Cormack et al., 2009: k = 60). */
+export const RRF_K = 60;
+export const RRF_POOL = 20;
+/** Keyword query for PostgreSQL full text: distinct letter/digit terms of 3+ characters, ORed. Never raw user syntax. */
+/**
+ * Function words in the two languages the runbooks and queries use. The `simple` text-search config keeps them, and
+ * because they occur in almost every chunk they flood the keyword ranking with noise.
+ */
+const STOPWORDS = new Set(
+  (
+    'the and for are but not you all any can had her was one our out has have him his how its may new now old see two who ' +
+    'did get let put say she too use what when where which while with this that these those from into onto than then them ' +
+    'they their there here been being does doing done each few more most other some such only own same very will would ' +
+    'should could about after again against before below between both down during further once over under until why ' +
+    'que los las del con por para una uno unos unas como más pero sus les ese esa eso esto esta este estos estas entre ' +
+    'sobre sin hay muy qué cómo cuál cuándo dónde fue son ser está están tiene tienen hace hacer todo todos también'
+  ).split(' '),
+);
+/** Keyword query for PostgreSQL full text: distinct 3+ character letter/digit terms that are not stopwords, ORed. */
+export const keywordQuery = (q: string) =>
+  [...new Set(q.toLowerCase().match(/[\p{L}\p{N}]{3,}/gu) ?? [])].filter(t => !STOPWORDS.has(t)).join(' | ');
 export function chunks(body: string) {
   if (body.length < 10 || body.length > 10000 || body.includes('\0'))
     throw new HttpError(413, 'ingestion_budget', 'Unsupported runbook body');
@@ -148,18 +171,33 @@ export class Retrieval {
     }
   }
   /** Exact-cosine search inside a `retrieval` span: the query embedding is a child span; only counts are recorded. */
-  search(user: string, workspace: string, input: z.infer<typeof SemanticQuery>): Promise<Hit[]> {
+  search(
+    user: string,
+    workspace: string,
+    input: z.infer<typeof SemanticQuery>,
+    mode: SearchMode = 'semantic',
+  ): Promise<Hit[]> {
     return inSpan(
       'retrieval opsledger-knowledge',
-      { [ATTR.operation]: 'retrieval', [ATTR.dataSource]: 'opsledger-knowledge', [ATTR.topK]: input.limit },
+      {
+        [ATTR.operation]: 'retrieval',
+        [ATTR.dataSource]: 'opsledger-knowledge',
+        [ATTR.topK]: input.limit,
+        'opsledger.retrieval.mode': mode,
+      },
       async span => {
-        const hits = await this.searchInSpan(user, workspace, input);
+        const hits = await this.searchInSpan(user, workspace, input, mode);
         span.setAttribute('opsledger.retrieval.hits', hits.length);
         return hits;
       },
     );
   }
-  private async searchInSpan(user: string, workspace: string, input: z.infer<typeof SemanticQuery>): Promise<Hit[]> {
+  private async searchInSpan(
+    user: string,
+    workspace: string,
+    input: z.infer<typeof SemanticQuery>,
+    mode: SearchMode,
+  ): Promise<Hit[]> {
     await this.knowledge.role(user, workspace);
     const output = await traceEmbeddings(this.provider.model, 1, 'query', () =>
       this.provider.embed([input.q], 'query'),
@@ -167,23 +205,40 @@ export class Retrieval {
     if (output.length !== 1) throw new HttpError(503, 'embedding_invalid', 'Embedding count mismatch');
     const query = vectorValue(output[0]);
     await this.knowledge.role(user, workspace);
-    const rows = await this.pool.query(
-      `SELECT c.*,v.title,1-(c.embedding <=> $1::vector) AS score FROM knowledge_chunks c JOIN runbooks r ON r.id=c.runbook_id JOIN runbook_versions v ON v.runbook_id=c.runbook_id AND v.number=c.version
+    // Same authorization, publication, version, model and index filters in both modes.
+    const visible = `FROM knowledge_chunks c JOIN runbooks r ON r.id=c.runbook_id JOIN runbook_versions v ON v.runbook_id=c.runbook_id AND v.number=c.version
    WHERE r.workspace_id=$2 AND r.published_version=c.version AND v.status='published' AND v.content_hash=c.content_hash AND c.model=$3 AND c.digest=$4 AND c.index_version=$5 AND ($6::uuid IS NULL OR r.service_id=$6) AND ($7::text IS NULL OR v.category=$7)
-   AND EXISTS(SELECT 1 FROM memberships m WHERE m.workspace_id=r.workspace_id AND m.user_id=$8 AND m.active=true)
-   ORDER BY c.embedding <=> $1::vector,c.id LIMIT $9`,
-      [
-        JSON.stringify(query),
-        workspace,
-        this.provider.model,
-        this.provider.digest,
-        INDEX_VERSION,
-        input.serviceId ?? null,
-        input.category ?? null,
-        user,
-        input.limit,
-      ],
-    );
+   AND EXISTS(SELECT 1 FROM memberships m WHERE m.workspace_id=r.workspace_id AND m.user_id=$8 AND m.active=true)`;
+    const params: unknown[] = [
+      JSON.stringify(query),
+      workspace,
+      this.provider.model,
+      this.provider.digest,
+      INDEX_VERSION,
+      input.serviceId ?? null,
+      input.category ?? null,
+      user,
+      input.limit,
+    ];
+    const rows =
+      mode === 'semantic'
+        ? await this.pool.query(
+            `SELECT c.*,v.title,1-(c.embedding <=> $1::vector) AS score ${visible} ORDER BY c.embedding <=> $1::vector,c.id LIMIT $9`,
+            params,
+          )
+        : // Reciprocal Rank Fusion of the cosine ranking and a full-text ranking of the chunk text. `score` stays the
+          // cosine similarity, so thresholds keep their meaning; only the order changes. Ties break on cosine distance.
+          await this.pool.query(
+            `WITH visible AS (SELECT c.*,v.title,c.embedding <=> $1::vector AS distance,
+               CASE WHEN $10 = '' THEN NULL ELSE ts_rank_cd(to_tsvector('simple',c.chunk_text),to_tsquery('simple',$10)) END AS kw,
+               CASE WHEN $10 = '' THEN false ELSE to_tsvector('simple',c.chunk_text) @@ to_tsquery('simple',$10) END AS matches ${visible}),
+             sem AS (SELECT id,row_number() OVER (ORDER BY distance,id) AS rank FROM visible ORDER BY distance,id LIMIT $11),
+             kw AS (SELECT id,row_number() OVER (ORDER BY kw DESC,distance,id) AS rank FROM visible WHERE matches ORDER BY kw DESC,distance,id LIMIT $11)
+             SELECT x.*,1-x.distance AS score,COALESCE(1.0/($12+sem.rank),0)+COALESCE(1.0/($12+kw.rank),0) AS rrf
+             FROM visible x LEFT JOIN sem ON sem.id=x.id LEFT JOIN kw ON kw.id=x.id WHERE sem.id IS NOT NULL OR kw.id IS NOT NULL
+             ORDER BY rrf DESC,x.distance,x.id LIMIT $9`,
+            [...params, keywordQuery(input.q), RRF_POOL, RRF_K],
+          );
     return rows.rows.map(r =>
       ChunkHit.parse({
         chunkId: r.id,
