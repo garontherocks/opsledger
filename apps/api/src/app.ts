@@ -265,12 +265,12 @@ export async function buildApp(
       async request => {
         const user = await identity(request);
         await store.member(user.id, request.params.workspaceId);
-        return qa!.store.create({ workspaceId: request.params.workspaceId, userId: user.id });
+        return qa.store.create({ workspaceId: request.params.workspaceId, userId: user.id });
       },
     );
     app.get('/api/v1/workspaces/:workspaceId/qa-runs/:runId', { schema: { params: RunParams } }, async request => {
       const user = await identity(request);
-      return qa!.read({ workspaceId: request.params.workspaceId, userId: user.id }, request.params.runId);
+      return qa.read({ workspaceId: request.params.workspaceId, userId: user.id }, request.params.runId);
     });
     app.post(
       '/api/v1/workspaces/:workspaceId/qa-runs/:runId/checkpoint',
@@ -282,7 +282,7 @@ export async function buildApp(
       },
       async request => {
         const user = await identity(request);
-        return qa!.store.checkpoint(
+        return qa.store.checkpoint(
           { workspaceId: request.params.workspaceId, userId: user.id },
           request.params.runId,
           request.body.expectedRevision,
@@ -299,7 +299,7 @@ export async function buildApp(
       async request => {
         const user = await identity(request);
         await store.member(user.id, request.params.workspaceId);
-        return qa!.checks({ workspaceId: request.params.workspaceId, userId: user.id }, request.params.runId);
+        return qa.checks({ workspaceId: request.params.workspaceId, userId: user.id }, request.params.runId);
       },
     );
     app.post(
@@ -307,7 +307,7 @@ export async function buildApp(
       { schema: { params: RunParams, body: QaDecision } },
       async request => {
         const user = await identity(request);
-        return qa!.decide(
+        return qa.decide(
           { workspaceId: request.params.workspaceId, userId: user.id },
           request.params.runId,
           request.body,
@@ -319,7 +319,7 @@ export async function buildApp(
       { schema: { params: RunParams, body: QaMemoryRequest } },
       async request => {
         const user = await identity(request);
-        return qa!.store.remember(
+        return qa.store.remember(
           { workspaceId: request.params.workspaceId, userId: user.id },
           request.params.runId,
           request.body,
@@ -331,7 +331,7 @@ export async function buildApp(
       { schema: { params: RunParams, body: QaConsume } },
       async request => {
         const user = await identity(request);
-        return qa!.consume(
+        return qa.consume(
           { workspaceId: request.params.workspaceId, userId: user.id },
           request.params.runId,
           request.body,

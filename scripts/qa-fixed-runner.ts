@@ -57,7 +57,7 @@ export const fixedQaRunner: QaRunner = {
     for (let i = 0; i < tasks.length; i++) {
       let passed = false;
       try {
-        await exec(process.execPath, tasks[i]!, {
+        await exec(process.execPath, tasks[i], {
           cwd: root,
           signal,
           timeout: 15000,

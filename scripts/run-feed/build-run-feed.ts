@@ -4,7 +4,7 @@
 // browser-*.json (Playwright JSON) and the eval reports the harnesses write.
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
-import { LANES, RECORDED_LOCAL, SKILLS, STEP_COMMANDS, type Provenance, type Skill } from './catalog.ts';
+import { LANES, RECORDED_LOCAL, SKILLS, STEP_COMMANDS, type Skill } from './catalog.ts';
 
 export const FEED_SCHEMA = 'sdet-portfolio/run-feed@1';
 export const HISTORY_SCHEMA = 'sdet-portfolio/run-history@1';
@@ -263,7 +263,7 @@ export function buildFeed(input: BuildInput) {
         id: skill.id,
         name: skill.name,
         tool: skill.tool,
-        provenance: skill.provenance as Provenance,
+        provenance: skill.provenance,
         note: skill.note,
         command: suiteCommand(skill) || undefined,
         target: lanes.join(', '),
@@ -469,11 +469,11 @@ export function coverageCheck(summary: unknown): CoverageCheck | null {
   const total = s?.total;
   const pct = (k: string) => asNumber(total?.[k]?.pct);
   const values = ['lines', 'statements', 'functions', 'branches'].map(pct);
-  if (!total || values.some(v => v === null || v! < 0 || v! > 100)) return null;
+  if (!total || values.some(v => v === null || v < 0 || v > 100)) return null;
   const [lines, statements, functions, branches] = values as number[];
   return {
     scope: 'apps/api and packages, all Node processes of the API lane',
-    files: Object.keys(s!).filter(k => k !== 'total').length,
+    files: Object.keys(s).filter(k => k !== 'total').length,
     lines: lines!,
     statements: statements!,
     functions: functions!,

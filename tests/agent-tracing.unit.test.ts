@@ -6,7 +6,7 @@ import { SpanStatusCode } from '@opentelemetry/api';
 import { Client, InMemoryTransport } from '@modelcontextprotocol/client';
 import type { ReadableSpan } from '@opentelemetry/sdk-trace';
 import { memoryTracing, spanRecord, toJsonl } from '../scripts/telemetry/memory-tracing.ts';
-import { runAgent, hash, TOOL_NAMES, type Manifest } from '../apps/api/src/qa-agent.ts';
+import { runAgent, hash, TOOL_NAMES } from '../apps/api/src/qa-agent.ts';
 import { qaMcpServer } from '../apps/api/src/qa-mcp.ts';
 import { ATTR, GENAI_CONVENTIONS, traceGeneration } from '../apps/api/src/telemetry.ts';
 import type { TextProvider } from '../apps/api/src/local-model.ts';
@@ -134,7 +134,7 @@ test('spans never carry prompts, model output, tool arguments or source text', a
   manifest.sources = manifest.sources.map(s => ({ ...s, sha256: hash(s.text) }));
   const finish = { ...valid[3], analysis: `Draft analysis ${canary}` };
   const r = await runAgent(
-    manifest as Manifest,
+    manifest,
     provider([...valid.slice(0, 3), finish]),
     {},
     {
