@@ -1,7 +1,7 @@
 {
   "version": "retrieval-golden-v1",
   "digest": "sha256:85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
-  "note": "Measured from the first recording (embeddinggemma:300m, Ollama 0.40.3, RTX 4070 Ti SUPER). Replay is deterministic: any drop is a regression. Update only together with a new recording or a deliberate retrieval change, with the reason in the PR.",
+  "note": "Measured from the first recording (embeddinggemma:300m, Ollama 0.40.3, RTX 4070 Ti SUPER). Replay is deterministic: any drop is a regression. Update only together with a new recording or a deliberate retrieval change, with the reason in the PR. Hybrid (RRF with stopword-filtered keywords) added 2026-11-13: measured lower than semantic, kept as a gated comparison, not adopted.",
   "development": {
     "n": 21,
     "recallAt1": 1,
@@ -30,5 +30,29 @@
     "noAnswerRecall": 0,
     "answerableCoverage": 0.913,
     "balancedAccuracy": 0.4565
+  },
+  "hybrid": {
+    "development": {
+      "n": 21,
+      "recallAt1": 0.8571,
+      "recallAt3": 0.9524,
+      "recallAt5": 0.9524,
+      "mrr": 0.8968,
+      "ndcg5": 0.9076,
+      "spanHitAt5": 0.9524,
+      "keywordRecallAt5": 0.8571,
+      "keywordMrr": 0.496
+    },
+    "heldOut": {
+      "n": 23,
+      "recallAt1": 0.8261,
+      "recallAt3": 0.913,
+      "recallAt5": 0.9565,
+      "mrr": 0.871,
+      "ndcg5": 0.8921,
+      "spanHitAt5": 0.9565,
+      "keywordRecallAt5": 0.6522,
+      "keywordMrr": 0.4254
+    }
   }
 }

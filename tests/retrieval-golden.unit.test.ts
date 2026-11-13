@@ -250,3 +250,10 @@ test('the replay provider returns recorded vectors and never guesses', async () 
   await assert.rejects(provider.embed(['a text nobody recorded'], 'query'), /record the golden set again/);
   await assert.rejects(provider.embed([golden.queries.queries[0]!.q], 'document'), /No recorded document vector/);
 });
+
+test('hybrid keyword query keeps only distinct 3+ character letter and digit terms', async () => {
+  const { keywordQuery } = await import('../apps/api/src/retrieval.ts');
+  assert.equal(keywordQuery("Rotate the TLS cert: ERR_PG_53300 & it's  rotate!"), 'rotate | tls | cert | err | 53300');
+  assert.equal(keywordQuery('¿Cómo reinicio el nodo?'), 'reinicio | nodo');
+  assert.equal(keywordQuery("a b' OR 1=1 --"), '');
+});

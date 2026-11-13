@@ -1,5 +1,5 @@
 // Records the golden-set embeddings with the pinned local model (desktop only, see docs/retrieval-golden.md).
-//   npm run rag:golden:record
+//   npm run rag:golden:record -- --set v2   (default: v1)
 // Reads the private .env (EMBEDDING_MODEL, EMBEDDING_DIGEST, OLLAMA_URL, OLLAMA_EXPECTED_VERSION), embeds every chunk
 // the golden set indexes and every query through the production OllamaEmbeddings provider, and writes
 // tests/fixtures/retrieval-golden-v1/embeddings.json. Only vectors and identities are written: no prompts or output.
@@ -10,7 +10,9 @@ import { config } from '../../apps/api/src/config.ts';
 import { DIMENSIONS, OllamaEmbeddings } from '../../apps/api/src/embeddings.ts';
 import { INDEX_VERSION } from '../../apps/api/src/retrieval.ts';
 import {
-  GOLDEN_DIR,
+  GOLDEN_SETS,
+  goldenDir,
+  type GoldenSet,
   chunkerSha256,
   datasetIssues,
   embeddingKey,
@@ -35,7 +37,10 @@ if (!response.ok) throw new Error('Ollama is not reachable on the configured loo
 const runtime = ((await response.json()) as { version: string }).version;
 if (runtime !== expected) throw new Error(`Ollama ${runtime} is running but OLLAMA_EXPECTED_VERSION is ${expected}`);
 
-const golden = loadGolden();
+const flag = process.argv.indexOf('--set');
+const set = (flag >= 0 ? process.argv[flag + 1] : 'v1') as GoldenSet;
+if (!GOLDEN_SETS.includes(set)) throw new Error(`--set must be one of ${GOLDEN_SETS.join(', ')}`);
+const golden = loadGolden(goldenDir(set));
 const issues = datasetIssues(golden.corpus, golden.queries);
 if (issues.length) throw new Error('Fix the golden dataset before recording:\n' + issues.join('\n'));
 
@@ -90,7 +95,7 @@ const recording: Recording = {
 };
 const problems = recordingIssues(recording, golden);
 if (problems.length) throw new Error('The recording does not match the dataset:\n' + problems.join('\n'));
-const target = join(GOLDEN_DIR, 'embeddings.json');
+const target = join(goldenDir(set), 'embeddings.json');
 writeFileSync(target, JSON.stringify(recording, null, 1) + '\n');
 console.log(
   `Recorded ${Object.keys(vectors).length} vectors with ${provider.model} (${provider.digest.slice(0, 19)}…) on ${hardware} to ${target}.`,
