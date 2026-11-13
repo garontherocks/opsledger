@@ -37,6 +37,11 @@ Anything unmapped still appears, under "Other checks", instead of disappearing.
 | Specialist comparison & QA pipeline | fixture | Specialist contracts, paired comparison on fixtures, registered-suite pipeline |
 | Supply chain & build integrity | deterministic | Lint, typecheck, build, audit gate (ADR 0019), feed builder tests |
 
+**Coverage** (`checks.coverage`): every Node process of the API lane writes raw V8 coverage (`NODE_V8_COVERAGE`), and
+`npm run coverage:report` (c8) summarises lines, statements, functions and branches of `apps/api` and `packages`,
+counting files no test loaded as uncovered. It runs on the TypeScript sources directly, so lines map to the code as
+written. The browser lane's server and the web app are not included.
+
 **Provenance** is part of every suite in the feed (`provenance`, `note`):
 
 - `deterministic` — no model is involved.
