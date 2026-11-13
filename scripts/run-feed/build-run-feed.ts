@@ -205,6 +205,7 @@ export type BuildInput = {
   lanes: { lane: string; startedAt?: string | undefined; finishedAt?: string | undefined }[];
   retrieval: { lane: string; recallAt5: number; mrr: number } | null;
   golden?: GoldenCheck | null;
+  coverage?: CoverageCheck | null;
   run: RunInfo;
   generatedAt: string;
   node: string;
@@ -316,6 +317,7 @@ export function buildFeed(input: BuildInput) {
         : input.retrieval && ran('m2-harness', input.retrieval.lane)
           ? { recallAt5: input.retrieval.recallAt5, mrr: input.retrieval.mrr, source: 'fixture' }
           : null,
+      coverage: input.coverage ?? null,
     },
     reports: { history: './history.json' },
     recordedLocal: input.recorded,
@@ -450,6 +452,35 @@ export function recordedLocal(root: string): RecordedLocal[] {
 }
 
 /** Only an official report written during this lane counts: a committed copy from an earlier run is not this run's result. */
+export type CoverageCheck = {
+  scope: string;
+  files: number;
+  lines: number;
+  statements: number;
+  functions: number;
+  branches: number;
+};
+/**
+ * Line, statement, function and branch coverage of apps/api and packages from c8's json-summary (npm run
+ * coverage:report), measured over every Node process of the API lane: unit, integration, harness and golden-set runs.
+ */
+export function coverageCheck(summary: unknown): CoverageCheck | null {
+  const s = summary as Record<string, Record<string, { pct?: unknown }>> | null;
+  const total = s?.total;
+  const pct = (k: string) => asNumber(total?.[k]?.pct);
+  const values = ['lines', 'statements', 'functions', 'branches'].map(pct);
+  if (!total || values.some(v => v === null || v! < 0 || v! > 100)) return null;
+  const [lines, statements, functions, branches] = values as number[];
+  return {
+    scope: 'apps/api and packages, all Node processes of the API lane',
+    files: Object.keys(s!).filter(k => k !== 'total').length,
+    lines: lines!,
+    statements: statements!,
+    functions: functions!,
+    branches: branches!,
+  };
+}
+
 export function goldenCheck(report: unknown, laneStartedAt: string | undefined): GoldenCheck | null {
   const r = report as {
     at?: string;
@@ -498,7 +529,8 @@ export function collectArtifacts(input: string) {
     evals: { step: string; lane: string; report: unknown }[] = [],
     lanes: { lane: string; startedAt?: string | undefined; finishedAt?: string | undefined }[] = [];
   let retrieval: { lane: string; recallAt5: number; mrr: number } | null = null,
-    golden: GoldenCheck | null = null;
+    golden: GoldenCheck | null = null,
+    coverage: CoverageCheck | null = null;
   for (const dir of dirs) {
     const start = readJson(join(dir, 'lane-start.json')) as { lane?: string; startedAt?: string } | null;
     const end = readJson(join(dir, 'lane-end.json')) as { finishedAt?: string } | null;
@@ -519,6 +551,7 @@ export function collectArtifacts(input: string) {
       retrieval?: { recallAt5?: number; mrr?: number };
     } | null;
     golden = goldenCheck(readJson(join(dir, 'phase21-retrieval-golden.json')), start?.startedAt) ?? golden;
+    coverage = coverageCheck(readJson(join(dir, 'coverage-summary.json'))) ?? coverage;
     if (
       m2?.retrieval &&
       asNumber(m2.retrieval.recallAt5) !== null &&
@@ -527,7 +560,7 @@ export function collectArtifacts(input: string) {
     )
       retrieval = { lane, recallAt5: m2.retrieval.recallAt5!, mrr: m2.retrieval.mrr! };
   }
-  return { nodeTests, steps, browser, evals, lanes, retrieval, golden };
+  return { nodeTests, steps, browser, evals, lanes, retrieval, golden, coverage };
 }
 
 function runFromEnvironment(env: NodeJS.ProcessEnv): RunInfo {

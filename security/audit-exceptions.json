@@ -23,8 +23,8 @@
       "id": "GHSA-g3hv-75wg-m249",
       "package": "minimatch",
       "severity": "moderate",
-      "requiredAncestors": ["eslint", "typescript-eslint", "promptfoo", "@stryker-mutator/core"],
-      "reason": "Dev-only minimatch@10.2.6 used by the lint toolchain (eslint 10.12.0, @eslint/config-array, @typescript-eslint/typescript-estree) and by promptfoo's nested glob. No patched 10.x exists and current eslint/typescript-eslint releases still require ^10; forcing 11.x would be a major override of the linter. Patterns come from repository-controlled lint/eval configuration, not untrusted input. Also dev-only via @stryker-mutator/core 10.1.1 (requires ~10.2.4), which matches mutate/ignore patterns from repository-controlled stryker.config.json (added 2026-11-12).",
+      "requiredAncestors": ["eslint", "typescript-eslint", "promptfoo", "@stryker-mutator/core", "c8"],
+      "reason": "Dev-only minimatch@10.2.6 used by the lint toolchain (eslint 10.12.0, @eslint/config-array, @typescript-eslint/typescript-estree) and by promptfoo's nested glob. No patched 10.x exists and current eslint/typescript-eslint releases still require ^10; forcing 11.x would be a major override of the linter. Patterns come from repository-controlled lint/eval configuration, not untrusted input. Also dev-only via @stryker-mutator/core 10.1.1 (requires ~10.2.4), which matches mutate/ignore patterns from repository-controlled stryker.config.json (added 2026-11-12). Also dev-only via c8 12.0.0 (test-exclude), which matches include/exclude patterns from the repository CI workflow (added 2026-11-13).",
       "decided": "2026-11-06",
       "expires": "2027-02-06"
     }

@@ -9,6 +9,7 @@ import { SKILLS, STEP_COMMANDS } from '../scripts/run-feed/catalog.ts';
 import {
   buildFeed,
   evalCases,
+  coverageCheck,
   goldenCheck,
   leafNodeTests,
   mergeHistory,
@@ -369,4 +370,31 @@ test('record-step passes the exit code through and records the outcome', () => {
     ],
   );
   assert.ok(!existsSync(join(dir, 'node-tests.jsonl')));
+});
+
+test('coverage comes from the c8 json summary of the API lane and ends up in the feed checks', () => {
+  const summary = {
+    total: {
+      lines: { pct: 81.2 },
+      statements: { pct: 81.2 },
+      functions: { pct: 77 },
+      branches: { pct: 70.5 },
+    },
+    '/w/apps/api/src/app.ts': { lines: { pct: 90 } },
+    '/w/packages/contracts/src/rag.ts': { lines: { pct: 100 } },
+  };
+  const coverage = coverageCheck(summary)!;
+  assert.deepEqual(
+    { files: coverage.files, lines: coverage.lines, branches: coverage.branches },
+    { files: 2, lines: 81.2, branches: 70.5 },
+  );
+  assert.equal(coverageCheck(null), null);
+  assert.equal(
+    coverageCheck({ total: { ...summary.total, lines: { pct: 'n/a' } } }),
+    null,
+    'malformed totals are dropped',
+  );
+  assert.equal(coverageCheck({ total: { ...summary.total, branches: { pct: 120 } } }), null);
+  assert.deepEqual(buildFeed(input({ coverage })).checks.coverage, coverage);
+  assert.equal(buildFeed(input({})).checks.coverage, null);
 });
