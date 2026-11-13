@@ -148,6 +148,30 @@ git commit -m "evidence: record retrieval golden set v2"
 git push
 ```
 
+## Results of the v2 recording (2026-11-13)
+
+Same model, digest, runtime and machine as v1. Report: [`evidence/retrieval-golden-v2.json`](../evidence/retrieval-golden-v2.json).
+
+| v2 | Semantic Recall@1 | Hybrid Recall@1 | Semantic MRR | Hybrid MRR |
+| --- | --- | --- | --- | --- |
+| Development (n = 25) | 0.96 | 0.88 | 0.980 | 0.903 |
+| Held-out (n = 29) | 0.931 | 0.828 | 0.957 | 0.876 |
+| Identifier queries (n = 10) | 0.90 | 0.90 | 0.950 | 0.950 |
+
+**Finding: the embedding model already handles identifiers, so hybrid search still does not pay off.** Semantic search
+ranked the right runbook first for 9 of 10 identifier queries, including both SQLSTATE pairs; hybrid matched it and
+lost elsewhere. The one miss, `raise wal_keep_size`, defeats both: the full-text parser splits `wal_keep_size` into
+`wal`, `keep`, `size`, which the `max_wal_size` runbook also contains.
+
+**Finding: a score threshold cannot abstain on in-domain questions.** Tuned on development (0.496), held-out abstention
+caught 6 of 7 no-answer questions but also refused 41% of answerable ones (balanced accuracy 0.72). In-domain questions
+without an answer score 0.40–0.52, inside the range of answerable ones. Retrieval scores say "related", not "answers
+it"; abstention stays with the grounded-citation check of the RAG answer, which refuses claims without a verbatim quote.
+
+**Decision:** semantic search stays the default; hybrid stays opt-in and gated. A reranker is not added: ranking is
+already at 0.93–0.96 Recall@1, and the open problem, deciding whether a source answers the question, is the one the
+citation validator already owns.
+
 ## Limitations
 
 - A small synthetic corpus written for this test, not production runbooks; one model, one recording, no confidence

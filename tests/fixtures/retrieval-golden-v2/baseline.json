@@ -1,0 +1,58 @@
+{
+  "version": "retrieval-golden-v2",
+  "digest": "sha256:85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
+  "note": "Measured from the first v2 recording (embeddinggemma:300m, Ollama 0.40.3, RTX 4070 Ti SUPER). Replay is deterministic: any drop is a regression.",
+  "development": {
+    "n": 25,
+    "recallAt1": 0.96,
+    "recallAt3": 1,
+    "recallAt5": 1,
+    "mrr": 0.98,
+    "ndcg5": 0.9838,
+    "spanHitAt5": 1,
+    "keywordRecallAt5": 0.88,
+    "keywordMrr": 0.548
+  },
+  "heldOut": {
+    "n": 29,
+    "recallAt1": 0.931,
+    "recallAt3": 0.9655,
+    "recallAt5": 1,
+    "mrr": 0.9569,
+    "ndcg5": 0.9676,
+    "spanHitAt5": 1,
+    "keywordRecallAt5": 0.6897,
+    "keywordMrr": 0.4684
+  },
+  "heldOutAbstention": {
+    "abstained": 18,
+    "precision": 0.3333,
+    "noAnswerRecall": 0.8571,
+    "answerableCoverage": 0.5862,
+    "balancedAccuracy": 0.7217
+  },
+  "hybrid": {
+    "development": {
+      "n": 25,
+      "recallAt1": 0.88,
+      "recallAt3": 0.92,
+      "recallAt5": 0.96,
+      "mrr": 0.9033,
+      "ndcg5": 0.9158,
+      "spanHitAt5": 0.96,
+      "keywordRecallAt5": 0.88,
+      "keywordMrr": 0.548
+    },
+    "heldOut": {
+      "n": 29,
+      "recallAt1": 0.8276,
+      "recallAt3": 0.931,
+      "recallAt5": 0.9655,
+      "mrr": 0.8764,
+      "ndcg5": 0.8987,
+      "spanHitAt5": 0.9655,
+      "keywordRecallAt5": 0.6897,
+      "keywordMrr": 0.4684
+    }
+  }
+}
