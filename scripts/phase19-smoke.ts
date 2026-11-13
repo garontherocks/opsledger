@@ -5,7 +5,7 @@ import { boundedQaPipeline, reviewPipelineArtifact } from '../apps/api/src/qa-pi
 import { SPECIALIST_CASES, specialistCaseContext } from './phase18-cases.ts';
 const sha = await phase19Runner.currentSha();
 assert.equal(sha, process.env.GITHUB_SHA, 'Actual CI checkout SHA');
-const context = specialistCaseContext(SPECIALIST_CASES[0]!, sha);
+const context = specialistCaseContext(SPECIALIST_CASES[0], sha);
 // Synthetic change scenario. Actual registered suites execute against this checkout.
 const result = await boundedQaPipeline(
   { sha, paths: ['packages/contracts/src/lifecycle.ts', 'apps/api/src/qa-orchestration.ts'] },

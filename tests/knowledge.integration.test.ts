@@ -289,7 +289,7 @@ test('Phase 3 version/search/ACL/audit acceptance', async t => {
       const first = await knowledge.events('north-editor', NORTH, 3);
       assert.equal(first.items.length, 3);
       assert.ok(first.nextBefore);
-      const older = await knowledge.events('north-editor', NORTH, 3, first.nextBefore!);
+      const older = await knowledge.events('north-editor', NORTH, 3, first.nextBefore);
       assert.ok(!older.items.some(x => first.items.some(y => x.seq === y.seq)));
       assert.ok(first.items.every(x => typeof x.requestId === 'string' && !('body' in x) && !('password' in x)));
       assert.equal((await request('north-reporter', 'GET', '/api/v1/workspaces/' + NORTH + '/audit')).statusCode, 403);

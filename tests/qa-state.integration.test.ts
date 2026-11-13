@@ -177,8 +177,8 @@ test('Phase 15 durable QA state/history/memory and actual child restart', async 
         store.checkpoint(owner, run.id, 1, key),
         store.checkpoint(owner, run.id, 1, key),
       ]);
-      assert.equal(outcomes[0]!.revision, 2);
-      assert.equal(outcomes[1]!.revision, 2);
+      assert.equal(outcomes[0].revision, 2);
+      assert.equal(outcomes[1].revision, 2);
       assert.equal((await store.read(owner, run.id)).history.length, 2);
       completed++;
     });

@@ -324,7 +324,7 @@ test('Phase 4 real pg-boss, recovery, file and notification acceptance', async t
       );
       const first = await ops.notices('north-reporter', NORTH, 1);
       assert.ok(first.nextBefore);
-      const next = await ops.notices('north-reporter', NORTH, 1, first.nextBefore!);
+      const next = await ops.notices('north-reporter', NORTH, 1, first.nextBefore);
       assert.notEqual(first.items[0]!.id, next.items[0].id);
       await assert.rejects(ops.notices('north-responder', NORTH, 1, first.items[0]!.id), { code: 'invalid_cursor' });
     });
@@ -350,7 +350,7 @@ test('Phase 4 real pg-boss, recovery, file and notification acceptance', async t
     await t.test('operation history is scoped and pending file removal waits for work or failure', async () => {
       const first = await ops.list('north-reporter', NORTH, 1, undefined, incident.id);
       assert.ok(first.nextBefore);
-      const second = await ops.list('north-reporter', NORTH, 1, first.nextBefore!, incident.id);
+      const second = await ops.list('north-reporter', NORTH, 1, first.nextBefore, incident.id);
       assert.notEqual(first.items[0]!.id, second.items[0]!.id);
       await assert.rejects(ops.list('north-responder', NORTH, 1, first.items[0]!.id, incident.id), {
         code: 'invalid_cursor',

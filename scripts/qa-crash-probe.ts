@@ -1,5 +1,5 @@
 // Test-only fixed crash probe. No endpoint or model can select its modes.
-import { Pool, type PoolClient } from 'pg';
+import { Pool } from 'pg';
 import { QaStore } from '../apps/api/src/qa-state.ts';
 import { QaWorkflow, QA_CHECKS, type QaRunner } from '../apps/api/src/qa-workflow.ts';
 import { hash } from '../apps/api/src/qa-agent.ts';
@@ -23,8 +23,9 @@ Object.assign(pool, {
     return new Proxy(c, {
       get(target, prop) {
         if (prop === 'query')
-          return async (...args: Parameters<PoolClient['query']>) => {
-            const r = await Reflect.apply(target.query, target, args);
+          // Without a callback, pg's query resolves a promise; the overload set includes the void callback form.
+          return async (...args: unknown[]) => {
+            const r = await (target.query as (...a: unknown[]) => Promise<unknown>).apply(target, args);
             if (typeof args[0] === 'string' && args[0].startsWith('INSERT INTO ' + tables[mode]))
               process.kill(process.pid, 'SIGKILL');
             return r;

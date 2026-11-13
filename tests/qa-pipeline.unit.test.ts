@@ -9,7 +9,7 @@ import {
 import { SPECIALIST_CASES, specialistCaseContext } from '../scripts/phase18-cases.ts';
 import { hash } from '../apps/api/src/qa-agent.ts';
 const sha = 'c06bc4b3ab7c5830a8da8ef63328f5ba2e412d26';
-const context = () => specialistCaseContext(SPECIALIST_CASES[0]!, sha);
+const context = () => specialistCaseContext(SPECIALIST_CASES[0], sha);
 const provider = {
   generate: async () => ({
     text: JSON.stringify({
