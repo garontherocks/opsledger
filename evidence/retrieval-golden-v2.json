@@ -1,0 +1,2598 @@
+{
+  "at": "2026-11-13T16:49:49.238Z",
+  "dataset": "retrieval-golden-v2",
+  "official": true,
+  "recording": {
+    "version": "retrieval-golden-v2",
+    "model": "embeddinggemma:300m",
+    "digest": "sha256:85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
+    "dimensions": 768,
+    "indexVersion": "chunk-v1-768",
+    "chunkerSha256": "f9af68f9c242d0b9f9582954cdeee7804a44613ba3bdb5bbfc8966f087f57e6e",
+    "corpusSha256": "adeb36e7549e05fff1c3f5c36b6c64cf63f1d9d09431630632d35ac180864012",
+    "queriesSha256": "bea119c932c26148d6410087676464d0575456a460584be20088e757d8a9fad4",
+    "runtime": "Ollama 0.40.3",
+    "recordedAt": "2026-11-13T16:49:37.113Z",
+    "hardware": "NVIDIA GeForce RTX 4070 Ti SUPER"
+  },
+  "method": "Embeddings recorded on the desktop with the pinned model, replayed through the production index and exact-cosine search on PostgreSQL + pgvector. Keyword baseline: any query term, ranked by ts_rank_cd.",
+  "development": {
+    "n": 25,
+    "recallAt1": 0.96,
+    "recallAt3": 1,
+    "recallAt5": 1,
+    "mrr": 0.98,
+    "ndcg5": 0.9838,
+    "spanHitAt5": 1,
+    "keywordRecallAt5": 0.88,
+    "keywordMrr": 0.548
+  },
+  "heldOut": {
+    "n": 29,
+    "recallAt1": 0.931,
+    "recallAt3": 0.9655,
+    "recallAt5": 1,
+    "mrr": 0.9569,
+    "ndcg5": 0.9676,
+    "spanHitAt5": 1,
+    "keywordRecallAt5": 0.6897,
+    "keywordMrr": 0.4684
+  },
+  "abstention": {
+    "tunedOn": "development",
+    "threshold": 0.496221,
+    "development": {
+      "abstained": 12,
+      "precision": 0.5,
+      "noAnswerRecall": 1,
+      "answerableCoverage": 0.76,
+      "balancedAccuracy": 0.88
+    },
+    "heldOut": {
+      "abstained": 18,
+      "precision": 0.3333,
+      "noAnswerRecall": 0.8571,
+      "answerableCoverage": 0.5862,
+      "balancedAccuracy": 0.7217
+    }
+  },
+  "hybrid": {
+    "development": {
+      "n": 25,
+      "recallAt1": 0.88,
+      "recallAt3": 0.92,
+      "recallAt5": 0.96,
+      "mrr": 0.9033,
+      "ndcg5": 0.9158,
+      "spanHitAt5": 0.96,
+      "keywordRecallAt5": 0.88,
+      "keywordMrr": 0.548
+    },
+    "heldOut": {
+      "n": 29,
+      "recallAt1": 0.8276,
+      "recallAt3": 0.931,
+      "recallAt5": 0.9655,
+      "mrr": 0.8764,
+      "ndcg5": 0.8987,
+      "spanHitAt5": 0.9655,
+      "keywordRecallAt5": 0.6897,
+      "keywordMrr": 0.4684
+    },
+    "byType": {
+      "cross-lingual": {
+        "n": 8,
+        "recallAt1": 0.5,
+        "recallAt3": 0.75,
+        "recallAt5": 0.75,
+        "mrr": 0.5833,
+        "ndcg5": 0.625,
+        "spanHitAt5": 0.75,
+        "keywordRecallAt5": 0,
+        "keywordMrr": 0
+      },
+      "hard-negative": {
+        "n": 5,
+        "recallAt1": 0.8,
+        "recallAt3": 0.8,
+        "recallAt5": 1,
+        "mrr": 0.85,
+        "ndcg5": 0.8861,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 1,
+        "keywordMrr": 0.5333
+      },
+      "identifier": {
+        "n": 10,
+        "recallAt1": 0.9,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 0.95,
+        "ndcg5": 0.9631,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 1,
+        "keywordMrr": 0.8
+      },
+      "lexical": {
+        "n": 7,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1,
+        "ndcg5": 0.9948,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 0.8571,
+        "keywordMrr": 0.5714
+      },
+      "multi-chunk": {
+        "n": 3,
+        "recallAt1": 0.6667,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 0.7778,
+        "ndcg5": 0.8333,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 1,
+        "keywordMrr": 1
+      },
+      "paraphrase": {
+        "n": 12,
+        "recallAt1": 0.9167,
+        "recallAt3": 0.9167,
+        "recallAt5": 1,
+        "mrr": 0.9375,
+        "ndcg5": 0.9526,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 0.75,
+        "keywordMrr": 0.3569
+      },
+      "superseded": {
+        "n": 2,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1,
+        "ndcg5": 1,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 1,
+        "keywordMrr": 0.75
+      },
+      "symptom": {
+        "n": 7,
+        "recallAt1": 1,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 1,
+        "ndcg5": 1,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 1,
+        "keywordMrr": 0.5476
+      }
+    },
+    "byLanguage": {
+      "en": {
+        "n": 45,
+        "recallAt1": 0.8667,
+        "recallAt3": 0.9111,
+        "recallAt5": 0.9556,
+        "mrr": 0.8963,
+        "ndcg5": 0.9101,
+        "spanHitAt5": 0.9556,
+        "keywordRecallAt5": 0.8667,
+        "keywordMrr": 0.5396
+      },
+      "es": {
+        "n": 9,
+        "recallAt1": 0.7778,
+        "recallAt3": 1,
+        "recallAt5": 1,
+        "mrr": 0.8519,
+        "ndcg5": 0.8889,
+        "spanHitAt5": 1,
+        "keywordRecallAt5": 0.3333,
+        "keywordMrr": 0.3333
+      }
+    },
+    "method": "Reciprocal Rank Fusion (k=60, 20 candidates each) of exact cosine and chunk full text"
+  },
+  "byType": {
+    "cross-lingual": {
+      "n": 8,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "mrr": 1,
+      "ndcg5": 1,
+      "spanHitAt5": 1,
+      "keywordRecallAt5": 0,
+      "keywordMrr": 0
+    },
+    "hard-negative": {
+      "n": 5,
+      "recallAt1": 0.8,
+      "recallAt3": 0.8,
+      "recallAt5": 1,
+      "mrr": 0.85,
+      "ndcg5": 0.8861,
+      "spanHitAt5": 1,
+      "keywordRecallAt5": 1,
+      "keywordMrr": 0.5333
+    },
+    "identifier": {
+      "n": 10,
+      "recallAt1": 0.9,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "mrr": 0.95,
+      "ndcg5": 0.9631,
+      "spanHitAt5": 1,
+      "keywordRecallAt5": 1,
+      "keywordMrr": 0.8
+    },
+    "lexical": {
+      "n": 7,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "mrr": 1,
+      "ndcg5": 0.9948,
+      "spanHitAt5": 1,
+      "keywordRecallAt5": 0.8571,
+      "keywordMrr": 0.5714
+    },
+    "multi-chunk": {
+      "n": 3,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "mrr": 1,
+      "ndcg5": 1,
+      "spanHitAt5": 1,
+      "keywordRecallAt5": 1,
+      "keywordMrr": 1
+    },
+    "paraphrase": {
+      "n": 12,
+      "recallAt1": 0.9167,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "mrr": 0.9583,
+      "ndcg5": 0.9692,
+      "spanHitAt5": 1,
+      "keywordRecallAt5": 0.75,
+      "keywordMrr": 0.3569
+    },
+    "superseded": {
+      "n": 2,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "mrr": 1,
+      "ndcg5": 1,
+      "spanHitAt5": 1,
+      "keywordRecallAt5": 1,
+      "keywordMrr": 0.75
+    },
+    "symptom": {
+      "n": 7,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "mrr": 1,
+      "ndcg5": 1,
+      "spanHitAt5": 1,
+      "keywordRecallAt5": 1,
+      "keywordMrr": 0.5476
+    }
+  },
+  "byLanguage": {
+    "en": {
+      "n": 45,
+      "recallAt1": 0.9333,
+      "recallAt3": 0.9778,
+      "recallAt5": 1,
+      "mrr": 0.9611,
+      "ndcg5": 0.9701,
+      "spanHitAt5": 1,
+      "keywordRecallAt5": 0.8667,
+      "keywordMrr": 0.5396
+    },
+    "es": {
+      "n": 9,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "mrr": 1,
+      "ndcg5": 1,
+      "spanHitAt5": 1,
+      "keywordRecallAt5": 0.3333,
+      "keywordMrr": 0.3333
+    }
+  },
+  "leaks": [],
+  "results": [
+    {
+      "id": "q01",
+      "split": "development",
+      "type": "lexical",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6923909462663482,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r01",
+          "score": 0.692391
+        },
+        {
+          "runbook": "r24",
+          "score": 0.574274
+        },
+        {
+          "runbook": "r17",
+          "score": 0.388956
+        },
+        {
+          "runbook": "r22",
+          "score": 0.361565
+        },
+        {
+          "runbook": "r02",
+          "score": 0.359215
+        }
+      ]
+    },
+    {
+      "id": "q02",
+      "split": "held-out",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6784469314687281,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r01",
+          "score": 0.678447
+        },
+        {
+          "runbook": "r17",
+          "score": 0.502626
+        },
+        {
+          "runbook": "r24",
+          "score": 0.470765
+        },
+        {
+          "runbook": "r21",
+          "score": 0.455841
+        },
+        {
+          "runbook": "r22",
+          "score": 0.444968
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "split": "development",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 2,
+      "ndcg5": 0.6309297535714574,
+      "spanHit": true,
+      "topScore": 0.3932679901617866,
+      "keywordRank": 5,
+      "hits": [
+        {
+          "runbook": "r24",
+          "score": 0.393268
+        },
+        {
+          "runbook": "r01",
+          "score": 0.390574
+        },
+        {
+          "runbook": "r26",
+          "score": 0.385593
+        },
+        {
+          "runbook": "r09",
+          "score": 0.339214
+        },
+        {
+          "runbook": "r23",
+          "score": 0.336674
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "split": "held-out",
+      "type": "cross-lingual",
+      "lang": "es",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.38203351283475373,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r01",
+          "score": 0.382034
+        },
+        {
+          "runbook": "r24",
+          "score": 0.331297
+        },
+        {
+          "runbook": "r02",
+          "score": 0.269659
+        },
+        {
+          "runbook": "r15",
+          "score": 0.257913
+        },
+        {
+          "runbook": "r17",
+          "score": 0.245449
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "split": "development",
+      "type": "lexical",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 0.9639404333166532,
+      "spanHit": true,
+      "topScore": 0.7355533434291768,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r02",
+          "score": 0.735553
+        },
+        {
+          "runbook": "r03",
+          "score": 0.552392
+        },
+        {
+          "runbook": "r17",
+          "score": 0.484152
+        },
+        {
+          "runbook": "r17",
+          "score": 0.465226
+        },
+        {
+          "runbook": "r24",
+          "score": 0.380178
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "split": "held-out",
+      "type": "hard-negative",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 4,
+      "ndcg5": 0.4306765580733931,
+      "spanHit": true,
+      "topScore": 0.5385185434201073,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r10",
+          "score": 0.538519
+        },
+        {
+          "runbook": "r17",
+          "score": 0.433459
+        },
+        {
+          "runbook": "r17",
+          "score": 0.402368
+        },
+        {
+          "runbook": "r02",
+          "score": 0.388517
+        },
+        {
+          "runbook": "r22",
+          "score": 0.366295
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "split": "development",
+      "type": "cross-lingual",
+      "lang": "es",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5652726992152128,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r02",
+          "score": 0.565273
+        },
+        {
+          "runbook": "r17",
+          "score": 0.417273
+        },
+        {
+          "runbook": "r24",
+          "score": 0.405257
+        },
+        {
+          "runbook": "r03",
+          "score": 0.387161
+        },
+        {
+          "runbook": "r17",
+          "score": 0.368283
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "split": "held-out",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.3062253277822401,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r02",
+          "score": 0.306225
+        },
+        {
+          "runbook": "r17",
+          "score": 0.28789
+        },
+        {
+          "runbook": "r11",
+          "score": 0.28547
+        },
+        {
+          "runbook": "r09",
+          "score": 0.272029
+        },
+        {
+          "runbook": "r07",
+          "score": 0.257739
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "split": "development",
+      "type": "hard-negative",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6709859567293062,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r03",
+          "score": 0.670986
+        },
+        {
+          "runbook": "r02",
+          "score": 0.30136
+        },
+        {
+          "runbook": "r17",
+          "score": 0.293055
+        },
+        {
+          "runbook": "r24",
+          "score": 0.269087
+        },
+        {
+          "runbook": "r18",
+          "score": 0.266549
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "split": "held-out",
+      "type": "hard-negative",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.4176290929317503,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r03",
+          "score": 0.417629
+        },
+        {
+          "runbook": "r07",
+          "score": 0.287863
+        },
+        {
+          "runbook": "r17",
+          "score": 0.269136
+        },
+        {
+          "runbook": "r24",
+          "score": 0.238624
+        },
+        {
+          "runbook": "r02",
+          "score": 0.235416
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "split": "development",
+      "type": "cross-lingual",
+      "lang": "es",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6152990827142657,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r03",
+          "score": 0.615299
+        },
+        {
+          "runbook": "r02",
+          "score": 0.251181
+        },
+        {
+          "runbook": "r17",
+          "score": 0.247061
+        },
+        {
+          "runbook": "r07",
+          "score": 0.238145
+        },
+        {
+          "runbook": "r24",
+          "score": 0.225597
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "split": "held-out",
+      "type": "symptom",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.516398654854229,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r04",
+          "score": 0.516399
+        },
+        {
+          "runbook": "r06",
+          "score": 0.367386
+        },
+        {
+          "runbook": "r05",
+          "score": 0.332487
+        },
+        {
+          "runbook": "r13",
+          "score": 0.318996
+        },
+        {
+          "runbook": "r15",
+          "score": 0.265565
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "split": "development",
+      "type": "lexical",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5277469000892621,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r04",
+          "score": 0.527747
+        },
+        {
+          "runbook": "r12",
+          "score": 0.261798
+        },
+        {
+          "runbook": "r05",
+          "score": 0.201329
+        },
+        {
+          "runbook": "r06",
+          "score": 0.200031
+        },
+        {
+          "runbook": "r08",
+          "score": 0.190249
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "split": "held-out",
+      "type": "cross-lingual",
+      "lang": "es",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.48226977092166634,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r04",
+          "score": 0.48227
+        },
+        {
+          "runbook": "r12",
+          "score": 0.286899
+        },
+        {
+          "runbook": "r16",
+          "score": 0.28158
+        },
+        {
+          "runbook": "r05",
+          "score": 0.233618
+        },
+        {
+          "runbook": "r06",
+          "score": 0.226772
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "split": "development",
+      "type": "hard-negative",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5265498694062881,
+      "keywordRank": 3,
+      "hits": [
+        {
+          "runbook": "r05",
+          "score": 0.52655
+        },
+        {
+          "runbook": "r06",
+          "score": 0.405946
+        },
+        {
+          "runbook": "r01",
+          "score": 0.386688
+        },
+        {
+          "runbook": "r21",
+          "score": 0.378857
+        },
+        {
+          "runbook": "r22",
+          "score": 0.303906
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "split": "held-out",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5779380864089972,
+      "keywordRank": 3,
+      "hits": [
+        {
+          "runbook": "r05",
+          "score": 0.577938
+        },
+        {
+          "runbook": "r06",
+          "score": 0.384707
+        },
+        {
+          "runbook": "r02",
+          "score": 0.36739
+        },
+        {
+          "runbook": "r03",
+          "score": 0.326707
+        },
+        {
+          "runbook": "r01",
+          "score": 0.323795
+        }
+      ]
+    },
+    {
+      "id": "q17",
+      "split": "development",
+      "type": "hard-negative",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.43130250422896077,
+      "keywordRank": 3,
+      "hits": [
+        {
+          "runbook": "r06",
+          "score": 0.431303
+        },
+        {
+          "runbook": "r05",
+          "score": 0.412087
+        },
+        {
+          "runbook": "r04",
+          "score": 0.281794
+        },
+        {
+          "runbook": "r08",
+          "score": 0.267373
+        },
+        {
+          "runbook": "r21",
+          "score": 0.231576
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "split": "held-out",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.48433375171833914,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r06",
+          "score": 0.484334
+        },
+        {
+          "runbook": "r05",
+          "score": 0.243149
+        },
+        {
+          "runbook": "r01",
+          "score": 0.226128
+        },
+        {
+          "runbook": "r04",
+          "score": 0.219534
+        },
+        {
+          "runbook": "r16",
+          "score": 0.216617
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "split": "development",
+      "type": "symptom",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.508234589801158,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r07",
+          "score": 0.508235
+        },
+        {
+          "runbook": "r09",
+          "score": 0.291595
+        },
+        {
+          "runbook": "r23",
+          "score": 0.291466
+        },
+        {
+          "runbook": "r25",
+          "score": 0.270706
+        },
+        {
+          "runbook": "r22",
+          "score": 0.270024
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "split": "held-out",
+      "type": "cross-lingual",
+      "lang": "es",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.4562098164183237,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r07",
+          "score": 0.45621
+        },
+        {
+          "runbook": "r24",
+          "score": 0.304917
+        },
+        {
+          "runbook": "r25",
+          "score": 0.235185
+        },
+        {
+          "runbook": "r09",
+          "score": 0.219593
+        },
+        {
+          "runbook": "r26",
+          "score": 0.212345
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "split": "development",
+      "type": "symptom",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6521025273984168,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r08",
+          "score": 0.652103
+        },
+        {
+          "runbook": "r25",
+          "score": 0.476828
+        },
+        {
+          "runbook": "r22",
+          "score": 0.404777
+        },
+        {
+          "runbook": "r09",
+          "score": 0.386338
+        },
+        {
+          "runbook": "r21",
+          "score": 0.370349
+        }
+      ]
+    },
+    {
+      "id": "q22",
+      "split": "held-out",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.3868416356414668,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r08",
+          "score": 0.386842
+        },
+        {
+          "runbook": "r17",
+          "score": 0.330648
+        },
+        {
+          "runbook": "r26",
+          "score": 0.298658
+        },
+        {
+          "runbook": "r17",
+          "score": 0.288371
+        },
+        {
+          "runbook": "r03",
+          "score": 0.279029
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "split": "development",
+      "type": "symptom",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.3846949178344137,
+      "keywordRank": 3,
+      "hits": [
+        {
+          "runbook": "r09",
+          "score": 0.384695
+        },
+        {
+          "runbook": "r18",
+          "score": 0.272011
+        },
+        {
+          "runbook": "r08",
+          "score": 0.230346
+        },
+        {
+          "runbook": "r22",
+          "score": 0.204355
+        },
+        {
+          "runbook": "r13",
+          "score": 0.203457
+        }
+      ]
+    },
+    {
+      "id": "q24",
+      "split": "held-out",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.548363852891019,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r09",
+          "score": 0.548364
+        },
+        {
+          "runbook": "r18",
+          "score": 0.505893
+        },
+        {
+          "runbook": "r01",
+          "score": 0.357521
+        },
+        {
+          "runbook": "r24",
+          "score": 0.344363
+        },
+        {
+          "runbook": "r14",
+          "score": 0.335875
+        }
+      ]
+    },
+    {
+      "id": "q25",
+      "split": "development",
+      "type": "symptom",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.39815710815963956,
+      "keywordRank": 3,
+      "hits": [
+        {
+          "runbook": "r10",
+          "score": 0.398157
+        },
+        {
+          "runbook": "r26",
+          "score": 0.369561
+        },
+        {
+          "runbook": "r13",
+          "score": 0.354769
+        },
+        {
+          "runbook": "r14",
+          "score": 0.329528
+        },
+        {
+          "runbook": "r21",
+          "score": 0.302394
+        }
+      ]
+    },
+    {
+      "id": "q26",
+      "split": "held-out",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.455140452351514,
+      "keywordRank": 4,
+      "hits": [
+        {
+          "runbook": "r10",
+          "score": 0.45514
+        },
+        {
+          "runbook": "r26",
+          "score": 0.371304
+        },
+        {
+          "runbook": "r06",
+          "score": 0.369481
+        },
+        {
+          "runbook": "r13",
+          "score": 0.369119
+        },
+        {
+          "runbook": "r17",
+          "score": 0.367777
+        }
+      ]
+    },
+    {
+      "id": "q27",
+      "split": "held-out",
+      "type": "cross-lingual",
+      "lang": "es",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.549092930879772,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r10",
+          "score": 0.549093
+        },
+        {
+          "runbook": "r03",
+          "score": 0.378473
+        },
+        {
+          "runbook": "r17",
+          "score": 0.375721
+        },
+        {
+          "runbook": "r02",
+          "score": 0.360898
+        },
+        {
+          "runbook": "r26",
+          "score": 0.349838
+        }
+      ]
+    },
+    {
+      "id": "q28",
+      "split": "development",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5100070109978154,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r11",
+          "score": 0.510007
+        },
+        {
+          "runbook": "r10",
+          "score": 0.304211
+        },
+        {
+          "runbook": "r06",
+          "score": 0.284617
+        },
+        {
+          "runbook": "r05",
+          "score": 0.254737
+        },
+        {
+          "runbook": "r16",
+          "score": 0.231257
+        }
+      ]
+    },
+    {
+      "id": "q29",
+      "split": "held-out",
+      "type": "lexical",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5699706157945932,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r11",
+          "score": 0.569971
+        },
+        {
+          "runbook": "r06",
+          "score": 0.339151
+        },
+        {
+          "runbook": "r13",
+          "score": 0.326177
+        },
+        {
+          "runbook": "r04",
+          "score": 0.296392
+        },
+        {
+          "runbook": "r17",
+          "score": 0.29558
+        }
+      ]
+    },
+    {
+      "id": "q30",
+      "split": "development",
+      "type": "symptom",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6407461976560248,
+      "keywordRank": 3,
+      "hits": [
+        {
+          "runbook": "r12",
+          "score": 0.640746
+        },
+        {
+          "runbook": "r26",
+          "score": 0.330789
+        },
+        {
+          "runbook": "r21",
+          "score": 0.296478
+        },
+        {
+          "runbook": "r01",
+          "score": 0.289331
+        },
+        {
+          "runbook": "r13",
+          "score": 0.284948
+        }
+      ]
+    },
+    {
+      "id": "q31",
+      "split": "held-out",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.282228270370678,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r12",
+          "score": 0.282228
+        },
+        {
+          "runbook": "r06",
+          "score": 0.256241
+        },
+        {
+          "runbook": "r03",
+          "score": 0.245303
+        },
+        {
+          "runbook": "r24",
+          "score": 0.241074
+        },
+        {
+          "runbook": "r05",
+          "score": 0.234304
+        }
+      ]
+    },
+    {
+      "id": "q32",
+      "split": "development",
+      "type": "symptom",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.4807494202403487,
+      "keywordRank": 3,
+      "hits": [
+        {
+          "runbook": "r13",
+          "score": 0.480749
+        },
+        {
+          "runbook": "r21",
+          "score": 0.347926
+        },
+        {
+          "runbook": "r22",
+          "score": 0.315018
+        },
+        {
+          "runbook": "r09",
+          "score": 0.305766
+        },
+        {
+          "runbook": "r23",
+          "score": 0.296862
+        }
+      ]
+    },
+    {
+      "id": "q33",
+      "split": "held-out",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5118917517726579,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r13",
+          "score": 0.511892
+        },
+        {
+          "runbook": "r14",
+          "score": 0.362174
+        },
+        {
+          "runbook": "r09",
+          "score": 0.353668
+        },
+        {
+          "runbook": "r07",
+          "score": 0.34099
+        },
+        {
+          "runbook": "r22",
+          "score": 0.281747
+        }
+      ]
+    },
+    {
+      "id": "q34",
+      "split": "development",
+      "type": "paraphrase",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.4450198808276875,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r14",
+          "score": 0.44502
+        },
+        {
+          "runbook": "r11",
+          "score": 0.357211
+        },
+        {
+          "runbook": "r01",
+          "score": 0.313183
+        },
+        {
+          "runbook": "r12",
+          "score": 0.312271
+        },
+        {
+          "runbook": "r17",
+          "score": 0.292945
+        }
+      ]
+    },
+    {
+      "id": "q35",
+      "split": "held-out",
+      "type": "lexical",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.43686516771122486,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r14",
+          "score": 0.436865
+        },
+        {
+          "runbook": "r24",
+          "score": 0.300167
+        },
+        {
+          "runbook": "r23",
+          "score": 0.281832
+        },
+        {
+          "runbook": "r12",
+          "score": 0.277106
+        },
+        {
+          "runbook": "r09",
+          "score": 0.276937
+        }
+      ]
+    },
+    {
+      "id": "q36",
+      "split": "development",
+      "type": "lexical",
+      "lang": "es",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6710051302020394,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r15",
+          "score": 0.671005
+        },
+        {
+          "runbook": "r07",
+          "score": 0.222213
+        },
+        {
+          "runbook": "r05",
+          "score": 0.196302
+        },
+        {
+          "runbook": "r04",
+          "score": 0.18454
+        },
+        {
+          "runbook": "r06",
+          "score": 0.170036
+        }
+      ]
+    },
+    {
+      "id": "q37",
+      "split": "held-out",
+      "type": "cross-lingual",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5180518451256069,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r15",
+          "score": 0.518052
+        },
+        {
+          "runbook": "r07",
+          "score": 0.260493
+        },
+        {
+          "runbook": "r03",
+          "score": 0.241923
+        },
+        {
+          "runbook": "r05",
+          "score": 0.236212
+        },
+        {
+          "runbook": "r06",
+          "score": 0.227423
+        }
+      ]
+    },
+    {
+      "id": "q38",
+      "split": "development",
+      "type": "cross-lingual",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5379580719620962,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r16",
+          "score": 0.537958
+        },
+        {
+          "runbook": "r23",
+          "score": 0.406442
+        },
+        {
+          "runbook": "r13",
+          "score": 0.391322
+        },
+        {
+          "runbook": "r26",
+          "score": 0.390342
+        },
+        {
+          "runbook": "r25",
+          "score": 0.387884
+        }
+      ]
+    },
+    {
+      "id": "q39",
+      "split": "held-out",
+      "type": "lexical",
+      "lang": "es",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.576415520568962,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r16",
+          "score": 0.576416
+        },
+        {
+          "runbook": "r06",
+          "score": 0.339245
+        },
+        {
+          "runbook": "r05",
+          "score": 0.311675
+        },
+        {
+          "runbook": "r25",
+          "score": 0.310344
+        },
+        {
+          "runbook": "r15",
+          "score": 0.239359
+        }
+      ]
+    },
+    {
+      "id": "q40",
+      "split": "development",
+      "type": "multi-chunk",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.56643538666827,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r17",
+          "score": 0.566435
+        },
+        {
+          "runbook": "r17",
+          "score": 0.537419
+        },
+        {
+          "runbook": "r02",
+          "score": 0.425712
+        },
+        {
+          "runbook": "r03",
+          "score": 0.384736
+        },
+        {
+          "runbook": "r09",
+          "score": 0.309648
+        }
+      ]
+    },
+    {
+      "id": "q41",
+      "split": "held-out",
+      "type": "multi-chunk",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.3971329515338803,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r17",
+          "score": 0.397133
+        },
+        {
+          "runbook": "r17",
+          "score": 0.396011
+        },
+        {
+          "runbook": "r12",
+          "score": 0.300078
+        },
+        {
+          "runbook": "r07",
+          "score": 0.277185
+        },
+        {
+          "runbook": "r02",
+          "score": 0.248578
+        }
+      ]
+    },
+    {
+      "id": "q42",
+      "split": "held-out",
+      "type": "multi-chunk",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.41943379565788264,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r17",
+          "score": 0.419434
+        },
+        {
+          "runbook": "r02",
+          "score": 0.376481
+        },
+        {
+          "runbook": "r17",
+          "score": 0.346598
+        },
+        {
+          "runbook": "r03",
+          "score": 0.339205
+        },
+        {
+          "runbook": "r24",
+          "score": 0.303892
+        }
+      ]
+    },
+    {
+      "id": "q43",
+      "split": "development",
+      "type": "superseded",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6473330100974952,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r18",
+          "score": 0.647333
+        },
+        {
+          "runbook": "r09",
+          "score": 0.470882
+        },
+        {
+          "runbook": "r24",
+          "score": 0.356122
+        },
+        {
+          "runbook": "r17",
+          "score": 0.347425
+        },
+        {
+          "runbook": "r22",
+          "score": 0.337302
+        }
+      ]
+    },
+    {
+      "id": "q44",
+      "split": "held-out",
+      "type": "superseded",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6598940080183191,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r18",
+          "score": 0.659894
+        },
+        {
+          "runbook": "r09",
+          "score": 0.395885
+        },
+        {
+          "runbook": "r07",
+          "score": 0.319914
+        },
+        {
+          "runbook": "r24",
+          "score": 0.310225
+        },
+        {
+          "runbook": "r25",
+          "score": 0.306937
+        }
+      ]
+    },
+    {
+      "id": "q45",
+      "split": "development",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.1659565916087301,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r03",
+          "score": 0.165957
+        },
+        {
+          "runbook": "r05",
+          "score": 0.161626
+        },
+        {
+          "runbook": "r06",
+          "score": 0.147541
+        },
+        {
+          "runbook": "r04",
+          "score": 0.146217
+        },
+        {
+          "runbook": "r11",
+          "score": 0.141632
+        }
+      ]
+    },
+    {
+      "id": "q46",
+      "split": "development",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.27868007147672713,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r12",
+          "score": 0.27868
+        },
+        {
+          "runbook": "r04",
+          "score": 0.267117
+        },
+        {
+          "runbook": "r13",
+          "score": 0.169225
+        },
+        {
+          "runbook": "r06",
+          "score": 0.163264
+        },
+        {
+          "runbook": "r26",
+          "score": 0.159902
+        }
+      ]
+    },
+    {
+      "id": "q47",
+      "split": "development",
+      "type": "no-answer",
+      "lang": "es",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.1963063755497093,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r09",
+          "score": 0.196306
+        },
+        {
+          "runbook": "r06",
+          "score": 0.179219
+        },
+        {
+          "runbook": "r08",
+          "score": 0.177367
+        },
+        {
+          "runbook": "r05",
+          "score": 0.176893
+        },
+        {
+          "runbook": "r18",
+          "score": 0.173757
+        }
+      ]
+    },
+    {
+      "id": "q48",
+      "split": "held-out",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.4238142209385427,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r06",
+          "score": 0.423814
+        },
+        {
+          "runbook": "r05",
+          "score": 0.383492
+        },
+        {
+          "runbook": "r04",
+          "score": 0.269532
+        },
+        {
+          "runbook": "r01",
+          "score": 0.267021
+        },
+        {
+          "runbook": "r26",
+          "score": 0.230442
+        }
+      ]
+    },
+    {
+      "id": "q49",
+      "split": "held-out",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.44681366327062855,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r26",
+          "score": 0.446814
+        },
+        {
+          "runbook": "r01",
+          "score": 0.398483
+        },
+        {
+          "runbook": "r23",
+          "score": 0.366796
+        },
+        {
+          "runbook": "r16",
+          "score": 0.364969
+        },
+        {
+          "runbook": "r17",
+          "score": 0.350524
+        }
+      ]
+    },
+    {
+      "id": "q50",
+      "split": "held-out",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.384399670827437,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r23",
+          "score": 0.3844
+        },
+        {
+          "runbook": "r09",
+          "score": 0.362209
+        },
+        {
+          "runbook": "r01",
+          "score": 0.350996
+        },
+        {
+          "runbook": "r08",
+          "score": 0.341317
+        },
+        {
+          "runbook": "r07",
+          "score": 0.317631
+        }
+      ]
+    },
+    {
+      "id": "i01",
+      "split": "development",
+      "type": "identifier",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5465123597964812,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r21",
+          "score": 0.546512
+        },
+        {
+          "runbook": "r22",
+          "score": 0.521198
+        },
+        {
+          "runbook": "r24",
+          "score": 0.325473
+        },
+        {
+          "runbook": "r01",
+          "score": 0.28667
+        },
+        {
+          "runbook": "r07",
+          "score": 0.285838
+        }
+      ]
+    },
+    {
+      "id": "i02",
+      "split": "development",
+      "type": "identifier",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.5928422167928575,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r23",
+          "score": 0.592842
+        },
+        {
+          "runbook": "r24",
+          "score": 0.40904
+        },
+        {
+          "runbook": "r07",
+          "score": 0.381155
+        },
+        {
+          "runbook": "r25",
+          "score": 0.380371
+        },
+        {
+          "runbook": "r22",
+          "score": 0.321707
+        }
+      ]
+    },
+    {
+      "id": "i03",
+      "split": "development",
+      "type": "identifier",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6653364496635089,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r25",
+          "score": 0.665336
+        },
+        {
+          "runbook": "r22",
+          "score": 0.430272
+        },
+        {
+          "runbook": "r08",
+          "score": 0.385932
+        },
+        {
+          "runbook": "r07",
+          "score": 0.371503
+        },
+        {
+          "runbook": "r21",
+          "score": 0.353795
+        }
+      ]
+    },
+    {
+      "id": "i04",
+      "split": "development",
+      "type": "identifier",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6595209621242174,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r22",
+          "score": 0.659521
+        },
+        {
+          "runbook": "r21",
+          "score": 0.477968
+        },
+        {
+          "runbook": "r13",
+          "score": 0.352278
+        },
+        {
+          "runbook": "r25",
+          "score": 0.31269
+        },
+        {
+          "runbook": "r07",
+          "score": 0.289293
+        }
+      ]
+    },
+    {
+      "id": "i05",
+      "split": "held-out",
+      "type": "identifier",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6968585641128281,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r21",
+          "score": 0.696859
+        },
+        {
+          "runbook": "r22",
+          "score": 0.492973
+        },
+        {
+          "runbook": "r13",
+          "score": 0.438535
+        },
+        {
+          "runbook": "r05",
+          "score": 0.367166
+        },
+        {
+          "runbook": "r06",
+          "score": 0.35707
+        }
+      ]
+    },
+    {
+      "id": "i06",
+      "split": "held-out",
+      "type": "identifier",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.7364982616299972,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r22",
+          "score": 0.736498
+        },
+        {
+          "runbook": "r21",
+          "score": 0.552885
+        },
+        {
+          "runbook": "r25",
+          "score": 0.364509
+        },
+        {
+          "runbook": "r23",
+          "score": 0.360076
+        },
+        {
+          "runbook": "r13",
+          "score": 0.329037
+        }
+      ]
+    },
+    {
+      "id": "i07",
+      "split": "held-out",
+      "type": "identifier",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6707845941011944,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r24",
+          "score": 0.670785
+        },
+        {
+          "runbook": "r01",
+          "score": 0.37727
+        },
+        {
+          "runbook": "r18",
+          "score": 0.361386
+        },
+        {
+          "runbook": "r23",
+          "score": 0.361155
+        },
+        {
+          "runbook": "r17",
+          "score": 0.342068
+        }
+      ]
+    },
+    {
+      "id": "i08",
+      "split": "held-out",
+      "type": "identifier",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 2,
+      "ndcg5": 0.6309297535714574,
+      "spanHit": true,
+      "topScore": 0.49920338430243283,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r23",
+          "score": 0.499203
+        },
+        {
+          "runbook": "r24",
+          "score": 0.491931
+        },
+        {
+          "runbook": "r07",
+          "score": 0.404626
+        },
+        {
+          "runbook": "r25",
+          "score": 0.37686
+        },
+        {
+          "runbook": "r22",
+          "score": 0.352786
+        }
+      ]
+    },
+    {
+      "id": "i09",
+      "split": "held-out",
+      "type": "identifier",
+      "lang": "en",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.6955951607830957,
+      "keywordRank": 2,
+      "hits": [
+        {
+          "runbook": "r26",
+          "score": 0.695595
+        },
+        {
+          "runbook": "r25",
+          "score": 0.428883
+        },
+        {
+          "runbook": "r16",
+          "score": 0.300174
+        },
+        {
+          "runbook": "r08",
+          "score": 0.282355
+        },
+        {
+          "runbook": "r22",
+          "score": 0.276328
+        }
+      ]
+    },
+    {
+      "id": "i10",
+      "split": "held-out",
+      "type": "identifier",
+      "lang": "es",
+      "noAnswer": false,
+      "rank": 1,
+      "ndcg5": 1,
+      "spanHit": true,
+      "topScore": 0.518507670475534,
+      "keywordRank": 1,
+      "hits": [
+        {
+          "runbook": "r25",
+          "score": 0.518508
+        },
+        {
+          "runbook": "r16",
+          "score": 0.354384
+        },
+        {
+          "runbook": "r23",
+          "score": 0.325785
+        },
+        {
+          "runbook": "r26",
+          "score": 0.317991
+        },
+        {
+          "runbook": "r22",
+          "score": 0.296716
+        }
+      ]
+    },
+    {
+      "id": "n01",
+      "split": "development",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.44589300976272594,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r01",
+          "score": 0.445893
+        },
+        {
+          "runbook": "r22",
+          "score": 0.396237
+        },
+        {
+          "runbook": "r17",
+          "score": 0.395104
+        },
+        {
+          "runbook": "r21",
+          "score": 0.366692
+        },
+        {
+          "runbook": "r23",
+          "score": 0.326745
+        }
+      ]
+    },
+    {
+      "id": "n02",
+      "split": "development",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.4842076483531905,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r26",
+          "score": 0.484208
+        },
+        {
+          "runbook": "r25",
+          "score": 0.424143
+        },
+        {
+          "runbook": "r16",
+          "score": 0.353919
+        },
+        {
+          "runbook": "r01",
+          "score": 0.353665
+        },
+        {
+          "runbook": "r22",
+          "score": 0.334312
+        }
+      ]
+    },
+    {
+      "id": "n03",
+      "split": "development",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.4396794201854378,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r02",
+          "score": 0.439679
+        },
+        {
+          "runbook": "r07",
+          "score": 0.405142
+        },
+        {
+          "runbook": "r23",
+          "score": 0.385277
+        },
+        {
+          "runbook": "r09",
+          "score": 0.374464
+        },
+        {
+          "runbook": "r03",
+          "score": 0.364514
+        }
+      ]
+    },
+    {
+      "id": "n04",
+      "split": "held-out",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.4026006398260066,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r24",
+          "score": 0.402601
+        },
+        {
+          "runbook": "r01",
+          "score": 0.391995
+        },
+        {
+          "runbook": "r26",
+          "score": 0.374946
+        },
+        {
+          "runbook": "r17",
+          "score": 0.360472
+        },
+        {
+          "runbook": "r09",
+          "score": 0.288318
+        }
+      ]
+    },
+    {
+      "id": "n05",
+      "split": "held-out",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.46743538587518174,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r01",
+          "score": 0.467435
+        },
+        {
+          "runbook": "r23",
+          "score": 0.457442
+        },
+        {
+          "runbook": "r21",
+          "score": 0.401417
+        },
+        {
+          "runbook": "r17",
+          "score": 0.385223
+        },
+        {
+          "runbook": "r22",
+          "score": 0.383651
+        }
+      ]
+    },
+    {
+      "id": "n06",
+      "split": "held-out",
+      "type": "no-answer",
+      "lang": "es",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.40241926944542983,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r05",
+          "score": 0.402419
+        },
+        {
+          "runbook": "r02",
+          "score": 0.345696
+        },
+        {
+          "runbook": "r07",
+          "score": 0.343006
+        },
+        {
+          "runbook": "r23",
+          "score": 0.318055
+        },
+        {
+          "runbook": "r04",
+          "score": 0.314295
+        }
+      ]
+    },
+    {
+      "id": "n07",
+      "split": "held-out",
+      "type": "no-answer",
+      "lang": "en",
+      "noAnswer": true,
+      "rank": 0,
+      "ndcg5": 0,
+      "spanHit": false,
+      "topScore": 0.5166712363550247,
+      "keywordRank": 0,
+      "hits": [
+        {
+          "runbook": "r26",
+          "score": 0.516671
+        },
+        {
+          "runbook": "r25",
+          "score": 0.413305
+        },
+        {
+          "runbook": "r01",
+          "score": 0.36588
+        },
+        {
+          "runbook": "r17",
+          "score": 0.358686
+        },
+        {
+          "runbook": "r24",
+          "score": 0.349394
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Small synthetic corpus written for this test, not production runbooks",
+    "One embedding model and one recording; no confidence intervals",
+    "Retrieval quality only: generation and citation faithfulness are evaluated elsewhere"
+  ]
+}
